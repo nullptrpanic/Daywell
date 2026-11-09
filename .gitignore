@@ -1,0 +1,4 @@
+.*
+!.gitignore
+AGENTS.md
+/docs/superpowers/plans/
