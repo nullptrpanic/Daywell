@@ -1,0 +1,937 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0271D52DEB9C58CD15AD4C49 /* App/Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953575E987C8F2F60E968AA /* App/Theme.swift */; };
+		0C03625CADA94DE7A00B631F /* DaywellCore in Frameworks */ = {isa = PBXBuildFile; productRef = C06565FEA6E949AA9D5365CC /* DaywellCore */; };
+		19B803E6D03F56468C63232E /* DaywellActivityMonitor.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EF7F33D8B9D9B64B280FCF8A /* DaywellActivityMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2C3AC54F59234520A077D97F /* Platform/ScreenTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CFAD32247EBB1EFA670D1D /* Platform/ScreenTimeService.swift */; };
+		31AD8D03F4A6111B86E4CB3E /* Extensions/ActivityMonitor/ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F650949E4959C76232D8B /* Extensions/ActivityMonitor/ActivityMonitor.swift */; };
+		335A95EDA28605D84E8E1C5F /* App/SleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9F6CB8FC7E7C102DA19165 /* App/SleepView.swift */; };
+		33622A43C0EAB5BA37E89BEF /* Platform/ScreenTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CFAD32247EBB1EFA670D1D /* Platform/ScreenTimeService.swift */; };
+		5CFEB29CC4BA4AE30636ACFB /* App/ApplicationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558DAE83B378239461BE29FA /* App/ApplicationSelectionView.swift */; };
+		616DF3584B214F51A8734778 /* App/PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 018BDA9E5A564061A670B9FC /* App/PrivacyInfo.xcprivacy */; };
+		66C1A79C806207E20DD417A2 /* App/DaywellRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716028E24E3DA90758B20757 /* App/DaywellRootView.swift */; };
+		6C78BED6E1F9A53650A65B65 /* App/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A5CCB0147A1F44705D7DBD4 /* App/Assets.xcassets */; };
+		6EE53CE8FCAC3E4976DC8DCF /* App/SleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9F6CB8FC7E7C102DA19165 /* App/SleepView.swift */; };
+		71D74CC631CCF1A11C195517 /* Platform/PreviewScreenTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF227974B7829D5282C5726F /* Platform/PreviewScreenTimeService.swift */; };
+		7A6A1C6EC4A55026D04DBA8C /* DaywellShieldAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8A0C34FEECC9C376950AD873 /* DaywellShieldAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7E89BF7429822A2019C6EE5F /* DaywellShieldConfiguration.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C6CB53A7869F88CA5BAEDA53 /* DaywellShieldConfiguration.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		82AA8601CE1D4481A3F8F027 /* DaywellCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7F6FAE3C6F8C4984ADBE323E /* DaywellCore */; };
+		8594644BAF4694CEB38799A5 /* App/PeriodEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D3F18D2A9B4CDBE3D1E610 /* App/PeriodEditorView.swift */; };
+		885076588B2A4333BBC208DC /* Platform/ScreenTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CFAD32247EBB1EFA670D1D /* Platform/ScreenTimeService.swift */; };
+		8E1B9F3D006FD3FB04CAEC03 /* App/PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 018BDA9E5A564061A670B9FC /* App/PrivacyInfo.xcprivacy */; };
+		A3A6A736F3CDC3251C8BF961 /* App/DaywellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432EA8CF34C374BC95BDF18 /* App/DaywellModel.swift */; };
+		B1429749E4859E801BE3EF64 /* Platform/ScreenTimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CFAD32247EBB1EFA670D1D /* Platform/ScreenTimeService.swift */; };
+		B5C953970659A6DFE7512F97 /* App/Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953575E987C8F2F60E968AA /* App/Theme.swift */; };
+		B6224BFB0187534FB46342D8 /* App/DaywellApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F1094FABA6EEC4494B79F7 /* App/DaywellApp.swift */; };
+		B95DAD3859301CB8F399C2C0 /* DaywellCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CEE9DB87CD661F0CCD3F7F4 /* DaywellCore */; };
+		BD94B2BBC0C87AF79345ED7B /* Extensions/ShieldAction/ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A20BE6DC89AD993607768 /* Extensions/ShieldAction/ShieldActionExtension.swift */; };
+		BEB140A2FF5EB101752F8E85 /* Extensions/ShieldConfiguration/ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D03F5C38D262309C942F9 /* Extensions/ShieldConfiguration/ShieldConfigurationExtension.swift */; };
+		BFD5EECFF3A35D75FD81F577 /* DaywellCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9137C9E887408E9CD055B786 /* DaywellCore */; };
+		BFE0106AE9AE4CE1E89B967E /* App/DaywellRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716028E24E3DA90758B20757 /* App/DaywellRootView.swift */; };
+		C1FFFB61196F8C993C0041FD /* App/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A5CCB0147A1F44705D7DBD4 /* App/Assets.xcassets */; };
+		CBAAF3AD9226BD69708A3172 /* App/DaywellApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F1094FABA6EEC4494B79F7 /* App/DaywellApp.swift */; };
+		CE51074F1744E7CAB39DE5E5 /* App/DaywellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432EA8CF34C374BC95BDF18 /* App/DaywellModel.swift */; };
+		E330C67C76D7934C7CEB7685 /* App/PeriodEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D3F18D2A9B4CDBE3D1E610 /* App/PeriodEditorView.swift */; };
+		E92DEE8CF845B36EA9D54EE5 /* App/SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E49BA23317991582BFD23 /* App/SettingsView.swift */; };
+		EA1B26D3EF3E556ED770D277 /* App/SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E49BA23317991582BFD23 /* App/SettingsView.swift */; };
+		F17E55000000000000000002 /* App/FitnessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E55000000000000000001 /* App/FitnessView.swift */; };
+		F17E55000000000000000003 /* App/FitnessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E55000000000000000001 /* App/FitnessView.swift */; };
+		FF5349B60FC70137EA19AEDD /* DaywellCore in Frameworks */ = {isa = PBXBuildFile; productRef = 135E04C6B5F490818229170D /* DaywellCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2DDE556539E1A97F62BEDA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 47737E52E290FEAB21C3A89A;
+			remoteInfo = DaywellShieldConfiguration;
+		};
+		8AE286E62F7C5532958ADED5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 58FE383D127D82CB18A75401;
+			remoteInfo = DaywellActivityMonitor;
+		};
+		B8C31542C6DD9B52D99F8EE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6551BE206A78773CD914D3B9;
+			remoteInfo = DaywellShieldAction;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		59F0EF556AF35CA7586D8A1E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				19B803E6D03F56468C63232E /* DaywellActivityMonitor.appex in Embed App Extensions */,
+				7E89BF7429822A2019C6EE5F /* DaywellShieldConfiguration.appex in Embed App Extensions */,
+				7A6A1C6EC4A55026D04DBA8C /* DaywellShieldAction.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		018BDA9E5A564061A670B9FC /* App/PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = App/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
+		272869B039A19E98189B60EF /* Config/DaywellActivityMonitor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/DaywellActivityMonitor-Info.plist"; sourceTree = SOURCE_ROOT; };
+		2D9F6CB8FC7E7C102DA19165 /* App/SleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/SleepView.swift; sourceTree = SOURCE_ROOT; };
+		32C1BD9AD92CED6102EC83D5 /* Config/Daywell.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Config/Daywell.entitlements; sourceTree = SOURCE_ROOT; };
+		3EF5E82DDCB898F6F9F8097F /* Sources/DaywellCore/StateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/DaywellCore/StateStore.swift; sourceTree = SOURCE_ROOT; };
+		51CFAD32247EBB1EFA670D1D /* Platform/ScreenTimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform/ScreenTimeService.swift; sourceTree = SOURCE_ROOT; };
+		558DAE83B378239461BE29FA /* App/ApplicationSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/ApplicationSelectionView.swift; sourceTree = SOURCE_ROOT; };
+		5B1F650949E4959C76232D8B /* Extensions/ActivityMonitor/ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/ActivityMonitor/ActivityMonitor.swift; sourceTree = SOURCE_ROOT; };
+		5E5802C7D619A44AFEA1F126 /* Tests/DaywellCoreTests/StateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests/DaywellCoreTests/StateStoreTests.swift; sourceTree = SOURCE_ROOT; };
+		716028E24E3DA90758B20757 /* App/DaywellRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/DaywellRootView.swift; sourceTree = SOURCE_ROOT; };
+		7953575E987C8F2F60E968AA /* App/Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/Theme.swift; sourceTree = SOURCE_ROOT; };
+		7A3B07E93A2BC1BC78A54C4E /* Sources/DaywellCore/DaywellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/DaywellCore/DaywellState.swift; sourceTree = SOURCE_ROOT; };
+		7A5CCB0147A1F44705D7DBD4 /* App/Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = App/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		860A20BE6DC89AD993607768 /* Extensions/ShieldAction/ShieldActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/ShieldAction/ShieldActionExtension.swift; sourceTree = SOURCE_ROOT; };
+		8A0C34FEECC9C376950AD873 /* DaywellShieldAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DaywellShieldAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		93D8C3BEA30B2A2AB8A33A0B /* Config/Shield.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Config/Shield.entitlements; sourceTree = SOURCE_ROOT; };
+		985B47E509259274A09AB1D7 /* Sources/DaywellCore/Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/DaywellCore/Schedule.swift; sourceTree = SOURCE_ROOT; };
+		9DC7864F0A64878B7096C3FB /* Daywell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Daywell.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10B2FD74DE24FD2381D7DBF /* Tests/DaywellCoreTests/MonitorPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests/DaywellCoreTests/MonitorPlanTests.swift; sourceTree = SOURCE_ROOT; };
+		A11C2FF9695DCE55775667BA /* Sources/DaywellCore/MonitorPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/DaywellCore/MonitorPlan.swift; sourceTree = SOURCE_ROOT; };
+		A2ED506C280A92E88A19EC66 /* Config/Preview-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/Preview-Info.plist"; sourceTree = SOURCE_ROOT; };
+		AA4ACA445B3FBAF47CDE31AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		AF0D03F5C38D262309C942F9 /* Extensions/ShieldConfiguration/ShieldConfigurationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions/ShieldConfiguration/ShieldConfigurationExtension.swift; sourceTree = SOURCE_ROOT; };
+		AF227974B7829D5282C5726F /* Platform/PreviewScreenTimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform/PreviewScreenTimeService.swift; sourceTree = SOURCE_ROOT; };
+		BCFA14070C8F570C520EF850 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
+		C6CB53A7869F88CA5BAEDA53 /* DaywellShieldConfiguration.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DaywellShieldConfiguration.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3F1094FABA6EEC4494B79F7 /* App/DaywellApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/DaywellApp.swift; sourceTree = SOURCE_ROOT; };
+		D432EA8CF34C374BC95BDF18 /* App/DaywellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/DaywellModel.swift; sourceTree = SOURCE_ROOT; };
+		D6E810639854DD2C1D8CE04B /* Config/DaywellShieldConfiguration-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/DaywellShieldConfiguration-Info.plist"; sourceTree = SOURCE_ROOT; };
+		E1B09622F1FBEAA684897251 /* DaywellPreview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DaywellPreview.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E56E49BA23317991582BFD23 /* App/SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/SettingsView.swift; sourceTree = SOURCE_ROOT; };
+		E61F3483C6E4FE47D47A685A /* Config/Daywell.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/Daywell.xcconfig; sourceTree = SOURCE_ROOT; };
+		E82E07835F75789CC72C3EAA /* Config/DaywellShieldAction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/DaywellShieldAction-Info.plist"; sourceTree = SOURCE_ROOT; };
+		E94292134745369F37518E0C /* Tests/DaywellCoreTests/ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests/DaywellCoreTests/ScheduleTests.swift; sourceTree = SOURCE_ROOT; };
+		EBC0F7A1021D675A510E2228 /* Tests/DaywellCoreTests/ExemptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests/DaywellCoreTests/ExemptionTests.swift; sourceTree = SOURCE_ROOT; };
+		EF7F33D8B9D9B64B280FCF8A /* DaywellActivityMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DaywellActivityMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F17E55000000000000000001 /* App/FitnessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/FitnessView.swift; sourceTree = SOURCE_ROOT; };
+		F8B136C2FFBC6429D3F7E7FF /* Config/App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/App-Info.plist"; sourceTree = SOURCE_ROOT; };
+		F9D3F18D2A9B4CDBE3D1E610 /* App/PeriodEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/PeriodEditorView.swift; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2D3B8F54314B437C28081CA1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82AA8601CE1D4481A3F8F027 /* DaywellCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC328D33DA670F3FA8116AC4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF5349B60FC70137EA19AEDD /* DaywellCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC70E2F2D7C0F5AF7C65BAC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C03625CADA94DE7A00B631F /* DaywellCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C04B7582C65BD186BF45B565 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B95DAD3859301CB8F399C2C0 /* DaywellCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8C521A264AF78454EF7B3A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFD5EECFF3A35D75FD81F577 /* DaywellCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02BD7499D9C7A43BB6F7ADC6 /* DaywellCore */ = {
+			isa = PBXGroup;
+			children = (
+				7A3B07E93A2BC1BC78A54C4E /* Sources/DaywellCore/DaywellState.swift */,
+				A11C2FF9695DCE55775667BA /* Sources/DaywellCore/MonitorPlan.swift */,
+				985B47E509259274A09AB1D7 /* Sources/DaywellCore/Schedule.swift */,
+				3EF5E82DDCB898F6F9F8097F /* Sources/DaywellCore/StateStore.swift */,
+			);
+			name = DaywellCore;
+			sourceTree = "<group>";
+		};
+		07479753A6A783FB63EF7313 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				AF227974B7829D5282C5726F /* Platform/PreviewScreenTimeService.swift */,
+				51CFAD32247EBB1EFA670D1D /* Platform/ScreenTimeService.swift */,
+			);
+			name = Platform;
+			sourceTree = "<group>";
+		};
+		1C48CE29E4E135EE62951B22 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F17E55000000000000000001 /* App/FitnessView.swift */,
+				558DAE83B378239461BE29FA /* App/ApplicationSelectionView.swift */,
+				D3F1094FABA6EEC4494B79F7 /* App/DaywellApp.swift */,
+				D432EA8CF34C374BC95BDF18 /* App/DaywellModel.swift */,
+				716028E24E3DA90758B20757 /* App/DaywellRootView.swift */,
+				F9D3F18D2A9B4CDBE3D1E610 /* App/PeriodEditorView.swift */,
+				E56E49BA23317991582BFD23 /* App/SettingsView.swift */,
+				2D9F6CB8FC7E7C102DA19165 /* App/SleepView.swift */,
+				7953575E987C8F2F60E968AA /* App/Theme.swift */,
+				7A5CCB0147A1F44705D7DBD4 /* App/Assets.xcassets */,
+				018BDA9E5A564061A670B9FC /* App/PrivacyInfo.xcprivacy */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		44310AA8FFCD9ED407CB4FC0 /* Core Tests */ = {
+			isa = PBXGroup;
+			children = (
+				EBC0F7A1021D675A510E2228 /* Tests/DaywellCoreTests/ExemptionTests.swift */,
+				A10B2FD74DE24FD2381D7DBF /* Tests/DaywellCoreTests/MonitorPlanTests.swift */,
+				E94292134745369F37518E0C /* Tests/DaywellCoreTests/ScheduleTests.swift */,
+				5E5802C7D619A44AFEA1F126 /* Tests/DaywellCoreTests/StateStoreTests.swift */,
+			);
+			name = "Core Tests";
+			sourceTree = "<group>";
+		};
+		5151B46607EBC8890D8DFCC2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1B09622F1FBEAA684897251 /* DaywellPreview.app */,
+				9DC7864F0A64878B7096C3FB /* Daywell.app */,
+				EF7F33D8B9D9B64B280FCF8A /* DaywellActivityMonitor.appex */,
+				C6CB53A7869F88CA5BAEDA53 /* DaywellShieldConfiguration.appex */,
+				8A0C34FEECC9C376950AD873 /* DaywellShieldAction.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5619E268CFFE28118C19FC6A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A2ED506C280A92E88A19EC66 /* Config/Preview-Info.plist */,
+				F8B136C2FFBC6429D3F7E7FF /* Config/App-Info.plist */,
+				32C1BD9AD92CED6102EC83D5 /* Config/Daywell.entitlements */,
+				E61F3483C6E4FE47D47A685A /* Config/Daywell.xcconfig */,
+				272869B039A19E98189B60EF /* Config/DaywellActivityMonitor-Info.plist */,
+				E82E07835F75789CC72C3EAA /* Config/DaywellShieldAction-Info.plist */,
+				D6E810639854DD2C1D8CE04B /* Config/DaywellShieldConfiguration-Info.plist */,
+				93D8C3BEA30B2A2AB8A33A0B /* Config/Shield.entitlements */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
+		5BC1ECFF9E42FA959D518AA4 /* ShieldConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				AF0D03F5C38D262309C942F9 /* Extensions/ShieldConfiguration/ShieldConfigurationExtension.swift */,
+			);
+			name = ShieldConfiguration;
+			sourceTree = "<group>";
+		};
+		6D038C6489B966443225930B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CFD7426F0FAD1A3FF363869F /* ActivityMonitor */,
+				5BC1ECFF9E42FA959D518AA4 /* ShieldConfiguration */,
+				8EB6C65B4A0337B64AA9304C /* ShieldAction */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		8EB6C65B4A0337B64AA9304C /* ShieldAction */ = {
+			isa = PBXGroup;
+			children = (
+				860A20BE6DC89AD993607768 /* Extensions/ShieldAction/ShieldActionExtension.swift */,
+			);
+			name = ShieldAction;
+			sourceTree = "<group>";
+		};
+		CFD7426F0FAD1A3FF363869F /* ActivityMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				5B1F650949E4959C76232D8B /* Extensions/ActivityMonitor/ActivityMonitor.swift */,
+			);
+			name = ActivityMonitor;
+			sourceTree = "<group>";
+		};
+		FE8D22F5DFAC9843BAA04E5B /* Daywell */ = {
+			isa = PBXGroup;
+			children = (
+				1C48CE29E4E135EE62951B22 /* App */,
+				07479753A6A783FB63EF7313 /* Platform */,
+				6D038C6489B966443225930B /* Extensions */,
+				02BD7499D9C7A43BB6F7ADC6 /* DaywellCore */,
+				44310AA8FFCD9ED407CB4FC0 /* Core Tests */,
+				5619E268CFFE28118C19FC6A /* Config */,
+				BCFA14070C8F570C520EF850 /* Package.swift */,
+				AA4ACA445B3FBAF47CDE31AC /* README.md */,
+				5151B46607EBC8890D8DFCC2 /* Products */,
+			);
+			name = Daywell;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		31E5B3A9CFA48C20AFA8E429 /* Daywell */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB297A1651CAAF0C0BB0BCA5 /* Build configuration list for PBXNativeTarget "Daywell" */;
+			buildPhases = (
+				242CE44ADFC8F24BEBE437A7 /* Sources */,
+				BC328D33DA670F3FA8116AC4 /* Frameworks */,
+				C1E4375DD9866A545EC80221 /* Resources */,
+				59F0EF556AF35CA7586D8A1E /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C54CA2124F7A0E67537C60A /* PBXTargetDependency */,
+				8FDFE40A52D70BA2A73E93A9 /* PBXTargetDependency */,
+				181B929D2E41F13245F352CD /* PBXTargetDependency */,
+			);
+			name = Daywell;
+			packageProductDependencies = (
+				135E04C6B5F490818229170D /* DaywellCore */,
+			);
+			productName = Daywell;
+			productReference = 9DC7864F0A64878B7096C3FB /* Daywell.app */;
+			productType = "com.apple.product-type.application";
+		};
+		47737E52E290FEAB21C3A89A /* DaywellShieldConfiguration */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 422A8E53D682B6CC9BFCA003 /* Build configuration list for PBXNativeTarget "DaywellShieldConfiguration" */;
+			buildPhases = (
+				5BC500E33FA8B23D6894BC4C /* Sources */,
+				2D3B8F54314B437C28081CA1 /* Frameworks */,
+				3F0769AC511F7807CBAC4582 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DaywellShieldConfiguration;
+			packageProductDependencies = (
+				7F6FAE3C6F8C4984ADBE323E /* DaywellCore */,
+			);
+			productName = DaywellShieldConfiguration;
+			productReference = C6CB53A7869F88CA5BAEDA53 /* DaywellShieldConfiguration.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		58FE383D127D82CB18A75401 /* DaywellActivityMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C38F94378CCFAAE627EBFDB5 /* Build configuration list for PBXNativeTarget "DaywellActivityMonitor" */;
+			buildPhases = (
+				62DA67C99290893CDAD18623 /* Sources */,
+				D8C521A264AF78454EF7B3A1 /* Frameworks */,
+				B55BC7DDF5DD8E2BE157E605 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DaywellActivityMonitor;
+			packageProductDependencies = (
+				9137C9E887408E9CD055B786 /* DaywellCore */,
+			);
+			productName = DaywellActivityMonitor;
+			productReference = EF7F33D8B9D9B64B280FCF8A /* DaywellActivityMonitor.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		6551BE206A78773CD914D3B9 /* DaywellShieldAction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B8BF5C4C57910BA408BE2B4 /* Build configuration list for PBXNativeTarget "DaywellShieldAction" */;
+			buildPhases = (
+				1E48A2F6E008CC8F57CDDACA /* Sources */,
+				BC70E2F2D7C0F5AF7C65BAC3 /* Frameworks */,
+				2AFCC07D58BD2E2562265BA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DaywellShieldAction;
+			packageProductDependencies = (
+				C06565FEA6E949AA9D5365CC /* DaywellCore */,
+			);
+			productName = DaywellShieldAction;
+			productReference = 8A0C34FEECC9C376950AD873 /* DaywellShieldAction.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		E50775906674DF29CDC5E940 /* DaywellPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C4A97FAD39CB58312CF7F10 /* Build configuration list for PBXNativeTarget "DaywellPreview" */;
+			buildPhases = (
+				D8CB29A8681738ADEACB7948 /* Sources */,
+				C04B7582C65BD186BF45B565 /* Frameworks */,
+				9F27C3B210A6951F8FA452AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DaywellPreview;
+			packageProductDependencies = (
+				9CEE9DB87CD661F0CCD3F7F4 /* DaywellCore */,
+			);
+			productName = DaywellPreview;
+			productReference = E1B09622F1FBEAA684897251 /* DaywellPreview.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					31E5B3A9CFA48C20AFA8E429 = {
+						CreatedOnToolsVersion = 16.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.FamilyControls = {
+								enabled = 1;
+							};
+						};
+					};
+					47737E52E290FEAB21C3A89A = {
+						CreatedOnToolsVersion = 16.0;
+						SystemCapabilities = {
+							com.apple.FamilyControls = {
+								enabled = 1;
+							};
+						};
+					};
+					58FE383D127D82CB18A75401 = {
+						CreatedOnToolsVersion = 16.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.FamilyControls = {
+								enabled = 1;
+							};
+						};
+					};
+					6551BE206A78773CD914D3B9 = {
+						CreatedOnToolsVersion = 16.0;
+						SystemCapabilities = {
+							com.apple.FamilyControls = {
+								enabled = 1;
+							};
+						};
+					};
+					E50775906674DF29CDC5E940 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+				};
+			};
+			buildConfigurationList = 6650A2B5E24FA7522CE6B81C /* Build configuration list for PBXProject "Daywell" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				"zh-Hans",
+				en,
+				Base,
+			);
+			mainGroup = FE8D22F5DFAC9843BAA04E5B /* Daywell */;
+			packageReferences = (
+				CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */,
+			);
+			productRefGroup = 5151B46607EBC8890D8DFCC2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E50775906674DF29CDC5E940 /* DaywellPreview */,
+				31E5B3A9CFA48C20AFA8E429 /* Daywell */,
+				58FE383D127D82CB18A75401 /* DaywellActivityMonitor */,
+				47737E52E290FEAB21C3A89A /* DaywellShieldConfiguration */,
+				6551BE206A78773CD914D3B9 /* DaywellShieldAction */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2AFCC07D58BD2E2562265BA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3F0769AC511F7807CBAC4582 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F27C3B210A6951F8FA452AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C78BED6E1F9A53650A65B65 /* App/Assets.xcassets in Resources */,
+				8E1B9F3D006FD3FB04CAEC03 /* App/PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55BC7DDF5DD8E2BE157E605 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C1E4375DD9866A545EC80221 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1FFFB61196F8C993C0041FD /* App/Assets.xcassets in Resources */,
+				616DF3584B214F51A8734778 /* App/PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1E48A2F6E008CC8F57CDDACA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C3AC54F59234520A077D97F /* Platform/ScreenTimeService.swift in Sources */,
+				BD94B2BBC0C87AF79345ED7B /* Extensions/ShieldAction/ShieldActionExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		242CE44ADFC8F24BEBE437A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F17E55000000000000000002 /* App/FitnessView.swift in Sources */,
+				5CFEB29CC4BA4AE30636ACFB /* App/ApplicationSelectionView.swift in Sources */,
+				B6224BFB0187534FB46342D8 /* App/DaywellApp.swift in Sources */,
+				A3A6A736F3CDC3251C8BF961 /* App/DaywellModel.swift in Sources */,
+				66C1A79C806207E20DD417A2 /* App/DaywellRootView.swift in Sources */,
+				8594644BAF4694CEB38799A5 /* App/PeriodEditorView.swift in Sources */,
+				E92DEE8CF845B36EA9D54EE5 /* App/SettingsView.swift in Sources */,
+				335A95EDA28605D84E8E1C5F /* App/SleepView.swift in Sources */,
+				0271D52DEB9C58CD15AD4C49 /* App/Theme.swift in Sources */,
+				33622A43C0EAB5BA37E89BEF /* Platform/ScreenTimeService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BC500E33FA8B23D6894BC4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				885076588B2A4333BBC208DC /* Platform/ScreenTimeService.swift in Sources */,
+				BEB140A2FF5EB101752F8E85 /* Extensions/ShieldConfiguration/ShieldConfigurationExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		62DA67C99290893CDAD18623 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31AD8D03F4A6111B86E4CB3E /* Extensions/ActivityMonitor/ActivityMonitor.swift in Sources */,
+				B1429749E4859E801BE3EF64 /* Platform/ScreenTimeService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8CB29A8681738ADEACB7948 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F17E55000000000000000003 /* App/FitnessView.swift in Sources */,
+				CBAAF3AD9226BD69708A3172 /* App/DaywellApp.swift in Sources */,
+				CE51074F1744E7CAB39DE5E5 /* App/DaywellModel.swift in Sources */,
+				BFE0106AE9AE4CE1E89B967E /* App/DaywellRootView.swift in Sources */,
+				E330C67C76D7934C7CEB7685 /* App/PeriodEditorView.swift in Sources */,
+				EA1B26D3EF3E556ED770D277 /* App/SettingsView.swift in Sources */,
+				6EE53CE8FCAC3E4976DC8DCF /* App/SleepView.swift in Sources */,
+				B5C953970659A6DFE7512F97 /* App/Theme.swift in Sources */,
+				71D74CC631CCF1A11C195517 /* Platform/PreviewScreenTimeService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		181B929D2E41F13245F352CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6551BE206A78773CD914D3B9 /* DaywellShieldAction */;
+			targetProxy = B8C31542C6DD9B52D99F8EE8 /* PBXContainerItemProxy */;
+		};
+		8C54CA2124F7A0E67537C60A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 58FE383D127D82CB18A75401 /* DaywellActivityMonitor */;
+			targetProxy = 8AE286E62F7C5532958ADED5 /* PBXContainerItemProxy */;
+		};
+		8FDFE40A52D70BA2A73E93A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 47737E52E290FEAB21C3A89A /* DaywellShieldConfiguration */;
+			targetProxy = 2DDE556539E1A97F62BEDA82 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		085AB4176116EC190E93ED92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/Daywell.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/DaywellActivityMonitor-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID).ActivityMonitor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		240FF30169A611DFA7B3FEDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Config/Daywell.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+			};
+			name = Debug;
+		};
+		3D553B551D2688E2E7A15153 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E61F3483C6E4FE47D47A685A /* Config/Daywell.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8492E9DFBB08E2ED79E5CF2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/Preview-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_PREVIEW_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DAYWELL_PREVIEW";
+			};
+			name = Debug;
+		};
+		8D655A7132FE8D728ADDB9B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/Shield.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/DaywellShieldAction-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID).ShieldAction";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		AA60E62D3E7BAEF305ADABEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E61F3483C6E4FE47D47A685A /* Config/Daywell.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				"ONLY_ACTIVE_ARCH[sdk=iphonesimulator*]" = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+			};
+			name = Debug;
+		};
+		AEA0E0C16A8F3FE761423087 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/Daywell.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/DaywellActivityMonitor-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID).ActivityMonitor";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D5970897F13DCD45ECF8CAF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/Shield.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/DaywellShieldConfiguration-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID).ShieldConfiguration";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D96100B49D3291BFE4AF45A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/Shield.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/DaywellShieldConfiguration-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID).ShieldConfiguration";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F8752DA69128E1D160C23DC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/Shield.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/DaywellShieldAction-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID).ShieldAction";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F92567DCD301D3C2A9BE92F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/Preview-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_PREVIEW_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DAYWELL_PREVIEW";
+			};
+			name = Release;
+		};
+		FE1F0FBD8B48A85560AB4569 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Config/Daywell.entitlements;
+				DEVELOPMENT_TEAM = 3U9S9CK5PJ;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Config/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DAYWELL_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0C4A97FAD39CB58312CF7F10 /* Build configuration list for PBXNativeTarget "DaywellPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8492E9DFBB08E2ED79E5CF2E /* Debug */,
+				F92567DCD301D3C2A9BE92F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		422A8E53D682B6CC9BFCA003 /* Build configuration list for PBXNativeTarget "DaywellShieldConfiguration" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5970897F13DCD45ECF8CAF3 /* Debug */,
+				D96100B49D3291BFE4AF45A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6650A2B5E24FA7522CE6B81C /* Build configuration list for PBXProject "Daywell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA60E62D3E7BAEF305ADABEA /* Debug */,
+				3D553B551D2688E2E7A15153 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B8BF5C4C57910BA408BE2B4 /* Build configuration list for PBXNativeTarget "DaywellShieldAction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D655A7132FE8D728ADDB9B0 /* Debug */,
+				F8752DA69128E1D160C23DC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C38F94378CCFAAE627EBFDB5 /* Build configuration list for PBXNativeTarget "DaywellActivityMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AEA0E0C16A8F3FE761423087 /* Debug */,
+				085AB4176116EC190E93ED92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB297A1651CAAF0C0BB0BCA5 /* Build configuration list for PBXNativeTarget "Daywell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				240FF30169A611DFA7B3FEDC /* Debug */,
+				FE1F0FBD8B48A85560AB4569 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		135E04C6B5F490818229170D /* DaywellCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */;
+			productName = DaywellCore;
+		};
+		7F6FAE3C6F8C4984ADBE323E /* DaywellCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */;
+			productName = DaywellCore;
+		};
+		9137C9E887408E9CD055B786 /* DaywellCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */;
+			productName = DaywellCore;
+		};
+		9CEE9DB87CD661F0CCD3F7F4 /* DaywellCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */;
+			productName = DaywellCore;
+		};
+		C06565FEA6E949AA9D5365CC /* DaywellCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF21FADD42EAB8F8303A3895 /* XCLocalSwiftPackageReference "." */;
+			productName = DaywellCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}
