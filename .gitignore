@@ -1,5 +1,6 @@
 .*
 !.gitignore
+!/.github/
 AGENTS.md
 /docs/**/plan/
 /docs/**/plans/
