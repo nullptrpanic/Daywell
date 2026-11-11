@@ -2,7 +2,7 @@ import DaywellCore
 import SwiftUI
 
 private enum DaywellWebsite {
-  static let support = URL(string: "https://nullptrpanic.github.io/daywell-support/")!
+  static let support = URL(string: "https://nullptrpanic.github.io/Daywell/")!
   static let privacy = support.appendingPathComponent("privacy.html")
 }
 

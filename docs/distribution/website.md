@@ -11,34 +11,33 @@ The buildless website in `website/` supplies the two public pages required for D
 
 The user explicitly selected `liyufeiat010@gmail.com` as the public contact address. Never substitute another account or expose signing information when publishing.
 
-**Current status:** The user requested local-only delivery on 2026-11-11. No repository creation, commits, pushes, or publication are authorized. The files and ZIP package are ready for later publication when explicitly requested.
+**Current status:** The site is hosted from the existing `nullptrpanic/Daywell` repository. Both public pages, the stylesheet, and the app icon were verified accessible on 2026-11-11. Local edits become public only after they reach the publishing branch and the GitHub Pages deployment succeeds. Follow the user's explicit authorization requirements for Git commits and pushes.
 
-## Intended hosting
+## Hosting
 
-Use a separate public GitHub repository named `nullptrpanic/daywell-support`. Publish only the files inside `website/` to its root. Do not copy the app repository, build artifacts, or private account information into the website repository.
+Use the existing `nullptrpanic/Daywell` repository and GitHub Actions. Configure the Pages artifact upload with `path: website` so that the contents of `website/` become the website root. Keep the application source, build artifacts, and `.apikey/` credentials outside the Pages artifact.
 
-The intended URLs are:
+The public URLs are:
 
 | App Store Connect field | URL |
 | --- | --- |
-| Support URL | `https://nullptrpanic.github.io/daywell-support/` |
-| Privacy Policy URL | `https://nullptrpanic.github.io/daywell-support/privacy.html` |
+| Support URL | `https://nullptrpanic.github.io/Daywell/` |
+| Privacy Policy URL | `https://nullptrpanic.github.io/Daywell/privacy.html` |
 
-**These addresses are deployment targets, not proof that the site is live.** Verify both anonymously after enabling Pages. The app's Settings links use the same base URL in `DaywellWebsite` in `App/SettingsView.swift`; publish the site before distributing that app build.
+Verify both URLs anonymously after each deployment. The app's Settings links use the same base URL in `DaywellWebsite` in `App/SettingsView.swift`. Keep the case of `Daywell` in the URL. The `website/` source directory is not part of the public URL.
 
-## First publication
+## Publish Website Updates
 
-1. Obtain the user's explicit permission to create/push the website commit, as required by the global working agreements. This is separate from the app repository, whose changes remain uncommitted.
-2. Authenticate with GitHub using the supported connection or CLI flow. Never paste tokens into chat or save them in the website files.
-3. Create the public `daywell-support` repository under the intended account, or verify ownership and contents if it already exists. Do not overwrite an unrelated repository.
-4. Copy only `index.html`, `privacy.html`, `styles.css`, and `assets/app-icon.png` to that repository. Use a focused Conventional Commit such as `docs(site): add Daywell privacy and support pages`.
-5. Open repository **Settings → Pages → Build and deployment**. Choose **Deploy from a branch**, select the website branch and **/(root)**, and save.
-6. Wait for the Pages deployment to succeed. Verify both public pages, the stylesheet, and icon return successful responses without requiring a GitHub login.
-7. Fill the verified URLs into App Store Connect. Upload an app build containing the new Settings links, with an incremented build number, and verify the links on a device.
+1. Edit the source in `website/` and verify links, content, and assets locally. Keep the public contact address consistent on both pages.
+2. Review the repository's existing Pages workflow before changing it. In **Settings → Pages → Build and deployment**, the source should be **GitHub Actions**. The workflow must upload `website/` with `actions/upload-pages-artifact` and deploy it with `actions/deploy-pages`.
+3. Ensure the website files and workflow are on the publishing branch, and that the workflow's push trigger and deployment environment allow that branch. A workflow created on GitHub may not yet exist in the current local checkout. If creating it locally, check whether the blanket `.*` ignore rule excludes `.github/`, and add a targeted exception as needed while preserving the credential ignore rules.
+4. Commit and push only when explicitly authorized by the user, following the global working agreements. Use a focused Conventional Commit for the website changes. No separate website repository or Apple API key is required for Pages publication.
+5. Wait for the Pages deployment to succeed. Verify both public pages, the stylesheet, and icon return successful responses without requiring a GitHub login, and confirm that the published content matches the intended update.
+6. Fill the verified URLs into App Store Connect. Changes to the App's link destinations require a new build with an incremented build number. Changes confined to website text or styling are published through Pages and do not require an App rebuild.
 
 ## Maintenance
 
-Edit source in `website/`, review privacy statements against actual code changes, and update the policy's date when its contents change. Publish the same source files to the dedicated site repository after authorization. If hosting changes, update both the policy's hosting section and `DaywellWebsite` before shipping the next app build.
+Edit source in `website/`, review privacy statements against actual code changes, and update the policy's date when its contents change. Publish the source files through the current repository's Pages workflow after authorization. If hosting changes, update both the policy's hosting section and `DaywellWebsite` before shipping the next app build.
 
 The policy distinguishes local app data, optional Apple backup/diagnostics services, voluntarily sent support emails, and GitHub Pages visitor logs. Keep those distinctions accurate; a statement about no app telemetry does not mean the hosting or email providers never process personal data.
 
@@ -50,4 +49,4 @@ The policy distinguishes local app data, optional Apple backup/diagnostics servi
 - Keep preview outputs, ZIP archives, build logs, and DerivedData under `build/`.
 - Compile the app after changing its Settings links.
 
-References: [Apple privacy requirements](https://developer.apple.com/app-store/app-privacy-details/), [App Review Guidelines 5.1.1](https://developer.apple.com/app-store/review/guidelines/#data-collection-and-storage), [GitHub Pages setup](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+References: [Apple privacy requirements](https://developer.apple.com/app-store/app-privacy-details/), [App Review Guidelines 5.1.1](https://developer.apple.com/app-store/review/guidelines/#data-collection-and-storage), [GitHub Pages setup](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site), [Custom GitHub Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
