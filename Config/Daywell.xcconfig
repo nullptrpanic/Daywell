@@ -1,0 +1,17 @@
+// Configure your own development team in Xcode's Signing & Capabilities pane.
+// All targets must use the same team and the same app group.
+DAYWELL_BUNDLE_ID = com.nullptrpanic.Daywell
+DAYWELL_PREVIEW_BUNDLE_ID = $(DAYWELL_BUNDLE_ID).preview
+DAYWELL_APP_GROUP = group.$(DAYWELL_BUNDLE_ID)
+
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+SWIFT_VERSION = 5.0
+TARGETED_DEVICE_FAMILY = 1,2
+SDKROOT = iphoneos
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
+SUPPORTS_MACCATALYST = NO
+CODE_SIGN_STYLE = Automatic
+CURRENT_PROJECT_VERSION = 10
+MARKETING_VERSION = 1.0.0
+ENABLE_USER_SCRIPT_SANDBOXING = YES
+SWIFT_EMIT_LOC_STRINGS = NO
