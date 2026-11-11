@@ -1,4 +1,14 @@
 .*
 !.gitignore
 AGENTS.md
-/docs/superpowers/plans/
+/docs/**/plan/
+/docs/**/plans/
+
+# Local App Store Connect API credentials
+/.apikey/
+
+# Local Xcode state and build output
+/build/
+xcuserdata/
+*.xcuserstate
+DerivedData/
