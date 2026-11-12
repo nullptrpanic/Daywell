@@ -32,7 +32,9 @@ final class ScreenTimeService: @unchecked Sendable {
   }
 
   func read() throws -> DaywellState { try storage.read() }
-  func refresh() throws -> DaywellState { try read() }
+  func refresh() throws -> DaywellState {
+    try storage.transaction { $0.refresh(at: Date(), calendar: .current) }.state
+  }
 
   func savePeriod(_ period: LockPeriod, verifiedSessionIDs: Set<String>) throws -> DaywellState {
     try storage.transaction {
@@ -58,7 +60,11 @@ final class ScreenTimeService: @unchecked Sendable {
   func updateFitness(
     initial: FitnessTraining, _ change: (inout FitnessTraining) -> Void
   ) throws -> DaywellState {
-    try storage.transaction { $0.updateFitness(initial: initial, change) }.state
+    try storage.transaction {
+      $0.refresh(at: Date(), calendar: .current)
+      $0.updateFitness(initial: initial, change)
+      $0.refresh(at: Date(), calendar: .current)
+    }.state
   }
 
   func beginExemption() throws -> DaywellState { throw ScreenTimeError.previewUnavailable }

@@ -4,14 +4,12 @@ import UIKit
 
 enum DaywellTab: String, CaseIterable, Identifiable {
   case sleep = "睡眠"
-  case screen = "用机"
   case fitness = "健身"
   case settings = "设置"
   var id: Self { self }
   var icon: String {
     switch self {
     case .sleep: return "moon.zzz.fill"
-    case .screen: return "iphone"
     case .fitness: return "figure.strengthtraining.traditional"
     case .settings: return "gearshape"
     }
@@ -32,10 +30,6 @@ struct DaywellRootView: View {
         SleepView(
           openSettings: { settingsTab = .sleep },
           openAuthorizationSettings: openAuthorizationSettings)
-      case .screen:
-        FutureModuleView(
-          message: "把时间，留给更重要的事。", detail: "设备使用管理将在后续版本加入。",
-          openSettings: { settingsTab = .screen })
       case .fitness: FitnessView { settingsTab = .fitness }
       case .settings: GlobalSettingsView()
       }
@@ -97,29 +91,6 @@ struct DaywellRootView: View {
     .frame(maxWidth: .infinity)
     .background(DaywellTheme.surface)
     .overlay(alignment: .top) { Rectangle().fill(DaywellTheme.border).frame(height: 1) }
-  }
-}
-
-private struct FutureModuleView: View {
-  let message: String
-  let detail: String
-  let openSettings: () -> Void
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 24) {
-      PageHeading(tab: .screen, openSettings: openSettings)
-      Spacer()
-      VStack(spacing: 18) {
-        Image(systemName: "iphone").font(.system(size: 52, weight: .light)).foregroundStyle(
-          DaywellTheme.accent)
-        Text(message).font(.title2.bold()).multilineTextAlignment(.center)
-        Text(detail).font(.subheadline).foregroundStyle(DaywellTheme.muted)
-        Text("敬请期待").font(.caption.weight(.medium)).padding(.horizontal, 16).padding(.vertical, 8)
-          .background(DaywellTheme.soft, in: Capsule())
-      }.frame(maxWidth: .infinity)
-      Spacer()
-      Spacer()
-    }.padding(24).frame(maxWidth: 1080).frame(maxWidth: .infinity)
   }
 }
 

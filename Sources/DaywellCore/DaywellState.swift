@@ -12,12 +12,19 @@ public struct LockSession: Codable, Equatable, Sendable, Identifiable {
   public internal(set) var selectionData: Data
   public let policy: ExemptionPolicy
   public internal(set) var usedCount = 0
+  // Uses made by the matching sleep/morning session; retained when that history is pruned.
+  public internal(set) var linkedUsedCount: Int?
   public internal(set) var exemption: Exemption?
   public let morningSourceID: String?
+  public internal(set) var cancelledAt: Date? = nil
   public var isMorning: Bool { morningSourceID != nil }
   public var id: String { morningSourceID.map { "morning." + $0 } ?? occurrence.id }
-  public var remainingCount: Int { max(0, policy.allowedCount - usedCount) }
-  public var nextExemptionMinutes: Int? { policy.durationMinutes(forUseAt: usedCount) }
+  public var remainingCount: Int {
+    max(0, policy.allowedCount - usedCount - (linkedUsedCount ?? 0))
+  }
+  public var nextExemptionMinutes: Int? {
+    policy.durationMinutes(forUseAt: policy.allowedCount - remainingCount)
+  }
   public func isExempt(at date: Date) -> Bool {
     guard let exemption else { return false }
     return exemption.start <= date && date < exemption.end
@@ -57,6 +64,11 @@ public struct DaywellState: Codable, Equatable, Sendable {
   public internal(set) var morningWindows: [MorningWindow] = []
   public internal(set) var reservation: ExemptionReservation?
   public var monitoringError: String?
+  public internal(set) var morningCancelledThrough: Date?
+  public internal(set) var lastEvaluatedAt: Date?
+  // High-water mark of reusable sleep shield stores, including the original store.
+  // Persist it so another process can clear every batch after an exemption or stop.
+  public var sleepShieldStoreCount = 1
   public var hadAuthorization = false
   public var needsApplicationReselection = false
 
@@ -78,14 +90,20 @@ public struct DaywellState: Codable, Equatable, Sendable {
     morningPolicy =
       version == 1 ? .standard : try values.decode(MorningPolicy.self, forKey: .morningPolicy)
     fitness = try values.decodeIfPresent(FitnessTraining.self, forKey: .fitness)
+    morningCancelledThrough = try values.decodeIfPresent(
+      Date.self, forKey: .morningCancelledThrough)
+    lastEvaluatedAt = try values.decodeIfPresent(Date.self, forKey: .lastEvaluatedAt)
     reservation = try values.decodeIfPresent(ExemptionReservation.self, forKey: .reservation)
     monitoringError = try values.decodeIfPresent(String.self, forKey: .monitoringError)
+    sleepShieldStoreCount =
+      try values.decodeIfPresent(Int.self, forKey: .sleepShieldStoreCount) ?? 1
     hadAuthorization = try values.decode(Bool.self, forKey: .hadAuthorization)
     needsApplicationReselection = try values.decode(Bool.self, forKey: .needsApplicationReselection)
+    synchronizeLinkedExemptionCounts()
   }
 
   public func activeSessions(at date: Date) -> [LockSession] {
-    sessions.filter { $0.occurrence.contains(date) }
+    sessions.filter { $0.cancelledAt == nil && $0.occurrence.contains(date) }
   }
 
   public func blockingSessions(at date: Date) -> [LockSession] {
@@ -93,7 +111,8 @@ public struct DaywellState: Codable, Equatable, Sendable {
   }
 
   public func hasFitnessRestriction(at date: Date) -> Bool {
-    hadAuthorization && fitness?.isLocked(at: date) == true
+    hadAuthorization && !activeSessions(at: date).contains { !$0.isMorning }
+      && fitness?.isLocked(at: date) == true
   }
 
   public func exemptionOffer(at date: Date) -> ExemptionOffer? {
@@ -103,6 +122,8 @@ public struct DaywellState: Codable, Equatable, Sendable {
       blocking.allSatisfy({ $0.remainingCount > 0 }),
       reservation.map({ date >= $0.validUntil }) ?? true
     else { return nil }
+    var preview = self
+    guard (try? preview.reserveExemption(at: date)) != nil else { return nil }
     let grantEnds = blocking.compactMap { session -> Date? in
       guard let minutes = session.nextExemptionMinutes else { return nil }
       return min(session.occurrence.end, date.addingTimeInterval(Double(minutes) * 60))
@@ -115,8 +136,14 @@ public struct DaywellState: Codable, Equatable, Sendable {
   }
 
   public mutating func refresh(at date: Date, calendar: Calendar) {
-    defer { prepareMornings(at: date, calendar: calendar) }
+    defer {
+      prepareMornings(at: date, calendar: calendar)
+      reconcileLockRules(at: date)
+      synchronizeLinkedExemptionCounts()
+      lastEvaluatedAt = max(lastEvaluatedAt ?? date, date)
+    }
     // Retain recent occurrences so relaunching or moving the clock back doesn't reset their quota.
+    fitness?.refresh(at: date)
     let retention = date.addingTimeInterval(-8 * 24 * 60 * 60)
     sessions.removeAll { $0.occurrence.end < retention }
     if let reservation, date >= reservation.validUntil { self.reservation = nil }
@@ -135,15 +162,27 @@ public struct DaywellState: Codable, Equatable, Sendable {
     for period in periods {
       // Keep the original absolute interval stable during edits and time-zone changes.
       guard
-        !activeSessions(at: date).contains(where: { !$0.isMorning && $0.period.id == period.id }),
-        let occurrence = period.occurrence(containing: date, calendar: calendar),
-        !sessions.contains(where: { $0.id == occurrence.id })
+        !activeSessions(at: date).contains(where: { !$0.isMorning && $0.period.id == period.id })
       else { continue }
-      sessions.append(
-        LockSession(
-          period: period, occurrence: occurrence,
-          selectionData: selectionData, policy: policy.normalizedForConfiguration,
-          morningSourceID: nil))
+      var occurrences = [PeriodOccurrence]()
+      if let current = period.occurrence(containing: date, calendar: calendar) {
+        occurrences.append(current)
+      }
+      // Catch up a short sleep that started and ended while the app/extension was idle.
+      var cursor = max(lastEvaluatedAt ?? date, retention)
+      while cursor < date,
+        let next = period.nextOccurrence(after: cursor, calendar: calendar), next.start <= date
+      {
+        occurrences.append(next)
+        cursor = next.start
+      }
+      for occurrence in occurrences where !sessions.contains(where: { $0.id == occurrence.id }) {
+        sessions.append(
+          LockSession(
+            period: period, occurrence: occurrence,
+            selectionData: selectionData, policy: policy.normalizedForConfiguration,
+            morningSourceID: nil))
+      }
     }
   }
 
@@ -169,14 +208,31 @@ public struct DaywellState: Codable, Equatable, Sendable {
       throw DaywellError.overlappingPeriods(candidate: period, existing: conflict)
     }
     refresh(at: date, calendar: calendar)
+    if shouldCheckForOverlap, period.isEnabled {
+      let candidates = [
+        period.occurrence(containing: date, calendar: calendar),
+        period.nextOccurrence(after: date, calendar: calendar),
+      ].compactMap { $0 }
+      if let conflict = activeSessions(at: date).first(where: { existing in
+        !existing.isMorning && existing.period.id != period.id
+          && candidates.contains {
+            $0.start < existing.occurrence.end && existing.occurrence.start < $0.end
+          }
+      }) {
+        throw DaywellError.overlappingPeriods(candidate: period, existing: conflict.period)
+      }
+    }
     let running = activeSessions(at: date).filter { $0.period.id == period.id }
-    if !period.isEnabled, !running.isEmpty {
+    if !period.isEnabled {
       let runningIDs = Set(running.map(\.id))
       guard runningIDs.isSubset(of: verifiedSessionIDs) else {
         throw DaywellError.deactivationVerificationRequired(sessionIDs: runningIDs)
       }
-      // Remove the source sleep snapshot so refresh cannot recreate its morning window.
-      let endedSleepIDs = Set(running.map { $0.morningSourceID ?? $0.id })
+      // An accumulating morning has no active lock session yet. Cancel its source
+      // snapshot too, so refresh and delayed threshold callbacks cannot recreate it.
+      let endedSleepIDs = Set(
+        running.map { $0.morningSourceID ?? $0.id }
+          + pendingMornings(at: date).filter { $0.period.id == period.id }.map(\.id))
       sessions.removeAll { endedSleepIDs.contains($0.morningSourceID ?? $0.id) }
       morningWindows.removeAll { endedSleepIDs.contains($0.id) }
       if reservation?.grants.contains(where: { grant in
@@ -224,6 +280,14 @@ public struct DaywellState: Codable, Equatable, Sendable {
               timeIntervalSince1970: ceil(
                 date.timeIntervalSince1970 + Double($0.nextExemptionMinutes!) * 60))))
       })
+    var preview = self
+    preview.reservation = pending
+    guard
+      MonitorPlan.make(for: preview, at: date, calendar: .current).count
+        <= MonitorPlan.activityLimit
+    else {
+      throw DaywellError.monitoringCapacityExceeded
+    }
     reservation = pending
     return pending
   }
@@ -233,7 +297,18 @@ public struct DaywellState: Codable, Equatable, Sendable {
       let pending = reservation, pending.id == id, date >= pending.createdAt,
       date < pending.validUntil,
       Set(pending.grants.map(\.sessionID)) == Set(blockingSessions(at: date).map(\.id)),
-      pending.grants.allSatisfy({ $0.end > date }),
+      pending.grants.allSatisfy({ grant in
+        guard let session = sessions.first(where: { $0.id == grant.sessionID }),
+          let minutes = session.nextExemptionMinutes
+        else { return false }
+        // A reservation made before upgrading may still contain the old, independent duration.
+        let latestEnd = min(
+          session.occurrence.end,
+          Date(
+            timeIntervalSince1970: ceil(
+              pending.createdAt.timeIntervalSince1970 + Double(minutes) * 60)))
+        return grant.end > date && grant.end <= latestEnd
+      }),
       blockingSessions(at: date).allSatisfy({ $0.remainingCount > 0 })
     else {
       throw DaywellError.staleReservation
@@ -245,7 +320,21 @@ public struct DaywellState: Codable, Equatable, Sendable {
       sessions[index].usedCount += 1
       sessions[index].exemption = Exemption(requestID: id, start: pending.createdAt, end: grant.end)
     }
+    synchronizeLinkedExemptionCounts()
     reservation = nil
+  }
+
+  mutating func synchronizeLinkedExemptionCounts() {
+    // Keep per-session uses intact so old snapshots can be combined without double counting.
+    for morning in sessions.indices {
+      guard let sourceID = sessions[morning].morningSourceID,
+        let sleep = sessions.firstIndex(where: { $0.id == sourceID })
+      else { continue }
+      sessions[morning].linkedUsedCount = max(
+        sessions[morning].linkedUsedCount ?? 0, sessions[sleep].usedCount)
+      sessions[sleep].linkedUsedCount = max(
+        sessions[sleep].linkedUsedCount ?? 0, sessions[morning].usedCount)
+    }
   }
 
   public mutating func cancelReservation(_ id: UUID) {
@@ -282,8 +371,14 @@ public struct DaywellState: Codable, Equatable, Sendable {
     initial: FitnessTraining, _ update: (inout FitnessTraining) -> Void
   ) {
     var training = fitness ?? initial
+    let previousCompletion = training.lastCompletedAt
     update(&training)
     fitness = training
+    if let completed = training.lastCompletedAt, completed != previousCompletion {
+      morningCancelledThrough = max(morningCancelledThrough ?? completed, completed)
+      // This also handles a final group, which resets the visible count to zero.
+      reconcileLockRules(at: completed)
+    }
   }
 
   public mutating func replaceSelectionAfterAuthorization(_ data: Data?) {
@@ -294,8 +389,9 @@ public struct DaywellState: Codable, Equatable, Sendable {
         LockSession(
           period: session.period, occurrence: session.occurrence,
           selectionData: data ?? Data(), policy: session.policy,
-          usedCount: session.usedCount, exemption: session.exemption,
-          morningSourceID: session.morningSourceID)
+          usedCount: session.usedCount, linkedUsedCount: session.linkedUsedCount,
+          exemption: session.exemption,
+          morningSourceID: session.morningSourceID, cancelledAt: session.cancelledAt)
       }
       for index in morningWindows.indices { morningWindows[index].selectionData = data ?? Data() }
     }
@@ -314,11 +410,16 @@ public struct DaywellState: Codable, Equatable, Sendable {
     var updatedSessions = sessions
     var updatedMornings = morningWindows
     if let data {
-      for index in updatedSessions.indices where updatedSessions[index].occurrence.contains(date) {
+      for index in updatedSessions.indices
+      where updatedSessions[index].cancelledAt == nil
+        && updatedSessions[index].occurrence.contains(date)
+      {
         updatedSessions[index].selectionData = try merge(updatedSessions[index].selectionData, data)
       }
       // Once usage accumulation starts, changing the event would reset its counter.
-      for index in updatedMornings.indices where updatedMornings[index].sleep.contains(date) {
+      for index in updatedMornings.indices
+      where updatedMornings[index].cancelledAt == nil && updatedMornings[index].sleep.contains(date)
+      {
         updatedMornings[index].selectionData = try merge(updatedMornings[index].selectionData, data)
       }
     }
@@ -329,6 +430,7 @@ public struct DaywellState: Codable, Equatable, Sendable {
 
   public func validate() throws {
     guard schemaVersion == 2 else { throw DaywellError.unsupportedSchema }
+    guard (1...49).contains(sleepShieldStoreCount) else { throw DaywellError.invalidState }
     try fitness?.validate()
     guard Set(periods.map(\.id)).count == periods.count,
       Set(sessions.map(\.id)).count == sessions.count,
@@ -345,7 +447,8 @@ public struct DaywellState: Codable, Equatable, Sendable {
       try session.period.validate()
       guard session.occurrence.periodID == session.period.id,
         session.occurrence.start < session.occurrence.end,
-        session.usedCount >= 0, session.usedCount <= session.policy.allowedCount
+        session.usedCount >= 0, session.usedCount <= session.policy.allowedCount,
+        (session.linkedUsedCount ?? 0) >= 0
       else {
         throw DaywellError.invalidState
       }

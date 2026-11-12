@@ -14,6 +14,7 @@ enum ScreenTimeError: LocalizedError {
   case selectionLimitExceeded
   case activeSelectionLimitExceeded
   case invalidAllowedApplications
+  case combinedSelectionLimitExceeded
 
   var errorDescription: String? {
     switch self {
@@ -25,7 +26,8 @@ enum ScreenTimeError: LocalizedError {
     case .selectionLimitExceeded: return "应用、类别和网站各可单独选择最多 50 个。需要限制更多应用时，请按类别圈选。"
     case .activeSelectionLimitExceeded:
       return "本轮仍保留原来的锁定范围，加入后会超过系统的 50 个上限。请减少新增项，或在本轮结束后修改。"
-    case .invalidAllowedApplications: return "请逐个选择要豁免的 App，最多 50 个。"
+    case .invalidAllowedApplications: return "豁免名单最多支持 50 个 App，请减少圈选。"
+    case .combinedSelectionLimitExceeded: return "同时执行的锁定范围过多，请先结束部分时段后重试。"
     }
   }
 }
@@ -149,7 +151,67 @@ final class ScreenTimeService: @unchecked Sendable {
   func updateFitness(
     initial: FitnessTraining, _ change: (inout FitnessTraining) -> Void
   ) throws -> DaywellState {
-    try update { $0.updateFitness(initial: initial, change) }
+    if Self.isSimulator { return try update { $0.updateFitness(initial: initial, change) } }
+    let authorization = readAuthorization()
+    do {
+      return try storage.coordinateMonitoring {
+        let before = try storage.read()
+        var proposed = before
+        proposed.updateAuthorization(authorization)
+        proposed.refresh(at: Date(), calendar: .current)
+        proposed.updateFitness(initial: initial, change)
+        proposed.refresh(at: Date(), calendar: .current)
+        try validateCapacity(of: proposed, replacing: before)
+        let plans =
+          proposed.hadAuthorization
+          ? MonitorPlan.make(for: proposed, at: Date(), calendar: .current) : []
+        // Keep the original rest wake-up until the replacement is installed and
+        // committed. An SDK rejection must not consume a group or promise a rest.
+        let previousPlans = MonitorPlan.make(for: before, at: Date(), calendar: .current)
+        do {
+          pruneMonitors(keeping: plans + previousPlans)
+          for plan in plans
+          where plan.name.hasPrefix(MonitorPlan.fitnessRestPrefix)
+            || plan.name.hasPrefix(MonitorPlan.fitnessIdlePrefix)
+          {
+            try register(plan)
+          }
+          let latestAuthorization = readAuthorization()
+          _ = try storage.transaction(
+            { state in
+              guard state.fitness == before.fitness,
+                (latestAuthorization ?? state.hadAuthorization) == proposed.hadAuthorization
+              else { throw ScreenTimeError.configurationChanged }
+              let original = state
+              state.updateAuthorization(latestAuthorization)
+              state.refresh(at: Date(), calendar: .current)
+              if let training = proposed.fitness {
+                state.updateFitness(initial: initial) { $0 = training }
+              }
+              state.refresh(at: Date(), calendar: .current)
+              try validateCapacity(of: state, replacing: original)
+            }, afterSave: applyShields)
+          return try synchronizeCoordinatedSchedules()
+        } catch {
+          // A concurrent reset/revocation wins. Reconcile its latest state and
+          // remove any staged wake-up that no longer belongs to the saved workout.
+          _ = try? synchronizeCoordinatedSchedules()
+          throw error
+        }
+      }
+    } catch {
+      if !(error is DaywellError) && !(error is ScreenTimeError) { recordMonitoringError(error) }
+      throw error
+    }
+  }
+
+  private func validateCapacity(of state: DaywellState, replacing previous: DaywellState) throws {
+    let now = Date()
+    let capacity = MonitorPlan.requiredCapacity(for: state, at: now, calendar: .current)
+    guard
+      capacity <= MonitorPlan.activityLimit
+        || capacity <= MonitorPlan.requiredCapacity(for: previous, at: now, calendar: .current)
+    else { throw DaywellError.monitoringCapacityExceeded }
   }
 
   @discardableResult
@@ -177,15 +239,6 @@ final class ScreenTimeService: @unchecked Sendable {
         guard merged.fitsShieldLimits else { throw ScreenTimeError.activeSelectionLimitExceeded }
         return try JSONEncoder().encode(merged)
       }
-      var active = FamilyActivitySelection(includeEntireCategory: false)
-      for session in state.activeSessions(at: now) where !session.selectionData.isEmpty {
-        let selection = try JSONDecoder().decode(
-          FamilyActivitySelection.self, from: session.selectionData)
-        active.applicationTokens.formUnion(selection.applicationTokens)
-        active.categoryTokens.formUnion(selection.categoryTokens)
-        active.webDomainTokens.formUnion(selection.webDomainTokens)
-      }
-      guard active.fitsShieldLimits else { throw ScreenTimeError.activeSelectionLimitExceeded }
     }
   }
 
@@ -231,19 +284,13 @@ final class ScreenTimeService: @unchecked Sendable {
   func reachFitnessDeadline(activity: DeviceActivityName) throws {
     guard !Self.isSimulator else { return }
     let authorization = readAuthorization()
-    _ = try storage.transaction(
-      { $0.updateAuthorization(authorization) },
-      afterSave: { state in
-        guard state.hadAuthorization else {
-          fitnessSettings.clearAllSettings()
-          return
-        }
-        let now = Date()
-        guard let deadline = state.fitness?.restEndsAt, deadline <= now,
-          activity.rawValue == MonitorPlan.fitnessRestName(for: deadline)
-        else { return }
-        try applyFitnessShield(state.fitness, except: allowedApplications(in: state), at: now)
-      })
+    _ = try storage.transaction {
+      $0.updateAuthorization(authorization)
+      $0.refresh(at: Date(), calendar: .current)
+    }
+    // Starting/stopping a monitor can call us synchronously. The outer reconciler
+    // then owns registration and shields; never reenter DeviceActivity from here.
+    do { _ = try synchronizeSchedules() } catch DaywellError.stateBusy {}
   }
 
   func beginExemption() throws -> DaywellState {
@@ -296,14 +343,18 @@ final class ScreenTimeService: @unchecked Sendable {
         { state in
           if !Self.isSimulator { state.updateAuthorization(authorization) }
           state.refresh(at: Date(), calendar: .current)
+          let previous = state
           try change(&state)
           state.refresh(at: Date(), calendar: .current)
+          try validateCapacity(of: state, replacing: previous)
         })
       return try synchronizeSchedules()
     } catch {
       // A rejected edit never reached the monitor registration step.
       switch error as? DaywellError {
-      case .overlappingPeriods?, .deactivationVerificationRequired?, .stateBusy?: break
+      case .overlappingPeriods?, .deactivationVerificationRequired?, .stateBusy?,
+        .monitoringCapacityExceeded?:
+        break
       default:
         switch error as? ScreenTimeError {
         case .authorizationRequired?, .activeSelectionLimitExceeded?: break
@@ -338,16 +389,7 @@ final class ScreenTimeService: @unchecked Sendable {
       // Install one-shot release guards before registering starts that can call back immediately.
       for plan in plans.sorted(by: { !$0.repeats && $1.repeats }) {
         do {
-          let name = DeviceActivityName(plan.name)
-          let schedule = DeviceActivitySchedule(
-            intervalStart: plan.start, intervalEnd: plan.end,
-            repeats: plan.repeats, warningTime: plan.warning)
-          let events = try usageEvents(for: plan)
-          if center.schedule(for: name) != schedule || center.events(for: name) != events {
-            try center.startMonitoring(name, during: schedule, events: events)
-            registeredActivities.insert(name)
-            logger.info("Registered activity \(plan.name, privacy: .private(mask: .hash))")
-          }
+          try register(plan)
         } catch {
           if registrationError == nil { registrationError = error }
           logger.error(
@@ -361,6 +403,8 @@ final class ScreenTimeService: @unchecked Sendable {
           let latest =
             live.hadAuthorization ? MonitorPlan.make(for: live, at: Date(), calendar: .current) : []
           guard latest == plans else { return }
+          live.sleepShieldStoreCount = max(
+            live.sleepShieldStoreCount, try sleepShieldBatches(live).count)
           live.monitoringError = registrationError?.localizedDescription
           confirmed = true
         },
@@ -388,6 +432,19 @@ final class ScreenTimeService: @unchecked Sendable {
     }
   }
 
+  private func register(_ plan: MonitorPlan) throws {
+    let name = DeviceActivityName(plan.name)
+    let schedule = DeviceActivitySchedule(
+      intervalStart: plan.start, intervalEnd: plan.end,
+      repeats: plan.repeats, warningTime: plan.warning)
+    let events = try usageEvents(for: plan)
+    if center.schedule(for: name) != schedule || center.events(for: name) != events {
+      try center.startMonitoring(name, during: schedule, events: events)
+      logger.info("Registered activity \(plan.name, privacy: .private(mask: .hash))")
+    }
+    registeredActivities.insert(name)
+  }
+
   private func usageEvents(for plan: MonitorPlan) throws -> [DeviceActivityEvent.Name:
     DeviceActivityEvent]
   {
@@ -411,17 +468,46 @@ final class ScreenTimeService: @unchecked Sendable {
   private func applyShields(_ state: DaywellState) throws {
     guard !Self.isSimulator else { return }
     guard state.hadAuthorization else {
-      settings.clearAllSettings()
+      clearSleepShields(state)
       fitnessSettings.clearAllSettings()
       return
     }
     let now = Date()
     let alwaysAllowed = try allowedApplications(in: state)
-    applyFitnessShield(state.fitness, except: alwaysAllowed, at: now)
-    guard !state.needsApplicationReselection else {
-      settings.clearAllSettings()
-      return
+    let fitnessOwnsLock = state.hasFitnessRestriction(at: now)
+    if fitnessOwnsLock { applyFitnessShield(state.fitness, except: alwaysAllowed, at: now) }
+    // Install the incoming owner's restriction before removing the outgoing store.
+    let batches = try sleepShieldBatches(state)
+    for index in 0..<state.sleepShieldStoreCount {
+      let store = sleepStore(at: index)
+      guard index < batches.count else {
+        store.clearAllSettings()
+        continue
+      }
+      let batch = batches[index]
+      store.shield.applications = batch.applicationTokens.isEmpty ? nil : batch.applicationTokens
+      store.shield.applicationCategories =
+        batch.categoryTokens.isEmpty
+        ? nil : .specific(batch.categoryTokens, except: alwaysAllowed)
+      store.shield.webDomains = batch.webDomainTokens.isEmpty ? nil : batch.webDomainTokens
+      store.shield.webDomainCategories =
+        batch.categoryTokens.isEmpty ? nil : .specific(batch.categoryTokens)
     }
+    if !fitnessOwnsLock { fitnessSettings.clearAllSettings() }
+  }
+
+  private func sleepStore(at index: Int) -> ManagedSettingsStore {
+    index == 0 ? settings : ManagedSettingsStore(named: .init("daywell.sleep.part.\(index)"))
+  }
+
+  private func clearSleepShields(_ state: DaywellState) {
+    for index in 0..<state.sleepShieldStoreCount { sleepStore(at: index).clearAllSettings() }
+  }
+
+  private func sleepShieldBatches(_ state: DaywellState) throws -> [FamilyActivitySelection] {
+    guard state.hadAuthorization, !state.needsApplicationReselection else { return [] }
+    let now = Date()
+    let alwaysAllowed = try allowedApplications(in: state)
     var applications: Set<ApplicationToken> = []
     var categories: Set<ActivityCategoryToken> = []
     var domains: Set<WebDomainToken> = []
@@ -439,25 +525,56 @@ final class ScreenTimeService: @unchecked Sendable {
       domains.formUnion(selection.webDomainTokens)
     }
     applications.subtract(alwaysAllowed)
-    // Older selections can contain expanded category members. Keep their supported
-    // category shields even when an expanded token set is too large for iOS.
-    let limit = Self.shieldTokenLimit
-    let shieldsApplications = (1...limit).contains(applications.count)
-    let shieldsCategories = (1...limit).contains(categories.count)
-    let shieldsDomains = (1...limit).contains(domains.count)
-    if applications.count > limit || categories.count > limit || domains.count > limit {
-      logger.warning("Sleep selection exceeds the supported token count; reselect by category")
+    // Each named store has its own token capacity. Never turn an oversized union
+    // into nil: valid snapshots can contain different selections across sessions.
+    let stores = (0..<state.sleepShieldStoreCount).map { sleepStore(at: $0) }
+    let appBatches = try tokenBatches(
+      applications, keeping: stores.map { $0.shield.applications ?? [] })
+    let categoryBatches = try tokenBatches(
+      categories,
+      keeping: stores.map {
+        if case .specific(let tokens, _)? = $0.shield.applicationCategories { return tokens }
+        return []
+      })
+    let domainBatches = try tokenBatches(
+      domains, keeping: stores.map { $0.shield.webDomains ?? [] })
+    let count = max(appBatches.count, categoryBatches.count, domainBatches.count)
+    // iOS supports 50 named stores; reserve one for fitness and reuse fixed names.
+    guard count <= 49 else { throw ScreenTimeError.combinedSelectionLimitExceeded }
+    return (0..<count).map { index in
+      var batch = FamilyActivitySelection(includeEntireCategory: false)
+      if index < appBatches.count { batch.applicationTokens = appBatches[index] }
+      if index < categoryBatches.count { batch.categoryTokens = categoryBatches[index] }
+      if index < domainBatches.count { batch.webDomainTokens = domainBatches[index] }
+      return batch
     }
-    settings.shield.applications = shieldsApplications ? applications : nil
-    settings.shield.applicationCategories =
-      shieldsCategories ? .specific(categories, except: alwaysAllowed) : nil
-    settings.shield.webDomains = shieldsDomains ? domains : nil
-    settings.shield.webDomainCategories = shieldsCategories ? .specific(categories) : nil
-    if shieldsApplications || shieldsCategories || shieldsDomains {
-      logger.debug(
-        "Sleep shield submitted with \(applications.count) apps, \(categories.count) categories and \(domains.count) domains"
-      )
+  }
+
+  private func tokenBatches<Token: Hashable & Encodable>(
+    _ tokens: Set<Token>, keeping existing: [Set<Token>]
+  ) throws -> [Set<Token>] {
+    // Keep live tokens in their existing store. Re-sorting the entire union could
+    // remove an app from one store before another receives it, briefly releasing it.
+    var remaining = tokens
+    var batches = existing.map { previous in
+      let retained = previous.intersection(remaining)
+      remaining.subtract(retained)
+      return retained
     }
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .sortedKeys
+    var added = try remaining.map { (token: $0, key: try encoder.encode($0).base64EncodedString()) }
+      .sorted { $0.key < $1.key }.map(\.token)
+    for index in batches.indices where !added.isEmpty {
+      let count = min(Self.shieldTokenLimit - batches[index].count, added.count)
+      batches[index].formUnion(added.prefix(count))
+      added.removeFirst(count)
+    }
+    for index in stride(from: 0, to: added.count, by: Self.shieldTokenLimit) {
+      batches.append(Set(added[index..<min(index + Self.shieldTokenLimit, added.count)]))
+    }
+    while batches.last?.isEmpty == true { batches.removeLast() }
+    return batches
   }
 
   private func allowedApplications(in state: DaywellState) throws -> Set<ApplicationToken> {
@@ -472,20 +589,16 @@ final class ScreenTimeService: @unchecked Sendable {
   private func applyFitnessShield(
     _ training: FitnessTraining?, except alwaysAllowed: Set<ApplicationToken>, at date: Date
   ) {
-    guard let restEnd = training?.restEndsAt else {
+    guard let training, training.isLocked(at: date), let idle = training.inactivityEndsAt,
+      registeredActivities.contains(.init(MonitorPlan.fitnessIdleName(for: idle)))
+    else {
+      // Do not create an indefinite restriction if its automatic cleanup failed.
       fitnessSettings.clearAllSettings()
       return
     }
-    if date >= restEnd {
-      // The system exempts the controlling app from the all-category policy.
-      fitnessSettings.shield.applicationCategories = .all(except: alwaysAllowed)
-      // Website shielding is separate from app shielding, including Safari browsing.
-      fitnessSettings.shield.webDomainCategories = .all()
-      logger.debug("Fitness shield submitted after the rest deadline")
-    } else if registeredActivities.contains(.init(MonitorPlan.fitnessRestName(for: restEnd))) {
-      // Only release an existing lock once its replacement wake-up has been registered.
-      fitnessSettings.clearAllSettings()
-    }
+    fitnessSettings.shield.applicationCategories = .all(except: alwaysAllowed)
+    fitnessSettings.shield.webDomainCategories = .all()
+    logger.debug("Fitness shield submitted after the rest deadline")
   }
 
   private func recordMonitoringError(_ error: Error) {

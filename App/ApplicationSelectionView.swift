@@ -19,8 +19,7 @@ struct ApplicationSelectionView: View {
 
   private var canSave: Bool {
     if purpose == .restricted { return selection.fitsShieldLimits }
-    return selection.categoryTokens.isEmpty && selection.webDomainTokens.isEmpty
-      && selection.applicationTokens.count <= ScreenTimeService.shieldTokenLimit
+    return selection.applicationTokens.count <= ScreenTimeService.shieldTokenLimit
   }
 
   private var pickerSelection: Binding<FamilyActivitySelection> {
@@ -36,21 +35,27 @@ struct ApplicationSelectionView: View {
       VStack(spacing: 0) {
         Text(
           purpose == .alwaysAllowed
-            ? "展开类别，逐个勾选电话、信息等要保留的 App。如果列表中有 Daywell，也可以一并选上。"
+            ? "选择电话、信息等要保留的 App。勾选类别会加入其中的 App，网站不加入豁免名单。"
             : "选择要锁定的应用、类别或网站。「豁免名单」中的 App 会跳过。新增项立即加入当前锁定，移除项从下轮生效。"
         )
         .font(.footnote).foregroundStyle(.secondary).padding()
+        if purpose == .alwaysAllowed {
+          Text("已选 \(selection.applicationTokens.count) 个 App，最多 50 个")
+            .font(.footnote)
+            .foregroundStyle(canSave ? DaywellTheme.muted : .red)
+            .padding(.horizontal)
+        }
         if !canSave {
           Text(
             purpose == .restricted
               ? ScreenTimeError.selectionLimitExceeded.localizedDescription
-              : "请只选择具体的 App，最多 50 个。"
+              : "已超过豁免名单上限，请取消部分 App 后再完成。"
           )
           .font(.footnote).foregroundStyle(DaywellTheme.muted).padding(.horizontal)
-          if purpose == .restricted {
-            Button("清空圈选") { selection = FamilyActivitySelection(includeEntireCategory: false) }
-              .padding(.top, 8)
+          Button("清空圈选") {
+            selection = FamilyActivitySelection(includeEntireCategory: purpose == .alwaysAllowed)
           }
+          .padding(.top, 8)
         }
         FamilyActivityPicker(selection: pickerSelection)
       }

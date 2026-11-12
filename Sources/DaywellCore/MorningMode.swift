@@ -30,6 +30,7 @@ public struct MorningWindow: Codable, Equatable, Sendable, Identifiable {
   public internal(set) var selectionData: Data
   public let policy: ExemptionPolicy
   public let morning: MorningPolicy
+  public internal(set) var cancelledAt: Date? = nil
   public var id: String { sleep.id }
   public var start: Date { sleep.end }
   public var monitorName: String { MonitorPlan.prefix + "morning." + id }
@@ -39,7 +40,8 @@ public struct MorningWindow: Codable, Equatable, Sendable, Identifiable {
 extension DaywellState {
   public func pendingMornings(at date: Date) -> [MorningWindow] {
     morningWindows.filter { window in
-      window.contains(date) && !sessions.contains { $0.morningSourceID == window.id }
+      window.cancelledAt == nil && window.contains(date)
+        && !sessions.contains { $0.morningSourceID == window.id }
     }
   }
 
@@ -47,6 +49,9 @@ extension DaywellState {
     refresh(at: date, calendar: calendar)
     guard !needsApplicationReselection,
       let window = morningWindows.first(where: { $0.monitorName == monitorName }),
+      window.cancelledAt == nil,
+      !activeSessions(at: date).contains(where: { !$0.isMorning }),
+      fitness?.isLocked(at: date) != true,
       !window.selectionData.isEmpty,
       window.contains(date),
       date >= window.start.addingTimeInterval(Double(window.morning.usageMinutes) * 60),
@@ -61,6 +66,7 @@ extension DaywellState {
         period: window.period,
         occurrence: PeriodOccurrence(periodID: window.period.id, start: date, end: end),
         selectionData: window.selectionData, policy: window.policy, morningSourceID: window.id))
+    synchronizeLinkedExemptionCounts()
   }
 
   mutating func prepareMornings(at date: Date, calendar: Calendar) {
@@ -74,15 +80,25 @@ extension DaywellState {
     func window(
       period: LockPeriod, sleep: PeriodOccurrence, selection: Data, policy: ExemptionPolicy
     ) -> MorningWindow? {
-      guard period.morningEnabled,
-        let next = period.nextOccurrence(after: sleep.end, calendar: calendar), next.start > date
-      else { return nil }
+      guard period.morningEnabled else { return nil }
+      // Skip an adjacent handoff. Keep other future sleeps out of this event's
+      // interval: cancelling/rescheduling them must not stop or reset current usage.
+      // Actual sleep starts cancel the window through the durable state rules.
+      let adjacent = periods.contains {
+        $0.nextOccurrence(after: sleep.end.addingTimeInterval(-1), calendar: calendar)?.start
+          == sleep.end
+      }
+      guard !adjacent else { return nil }
+      let next =
+        period.nextOccurrence(after: sleep.end, calendar: calendar)?.start
+        ?? sleep.end.addingTimeInterval(8 * 24 * 60 * 60)
       return MorningWindow(
-        period: period, sleep: sleep, end: next.start,
+        period: period, sleep: sleep, end: next,
         selectionData: selection, policy: policy, morning: morningPolicy)
     }
 
-    var candidates = sessions.filter { !$0.isMorning }.compactMap { session in
+    var candidates = sessions.filter { !$0.isMorning && $0.cancelledAt == nil }.compactMap {
+      session in
       window(
         period: session.period, sleep: session.occurrence,
         selection: session.selectionData, policy: session.policy)

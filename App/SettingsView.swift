@@ -124,13 +124,6 @@ struct SettingsView: View {
             FitnessSettingsCard()
             FitnessRestSettingsCard()
           }
-          if tab == .screen {
-            VStack(alignment: .leading, spacing: 10) {
-              Label("应用规则", systemImage: "iphone").font(.headline)
-              Text("用机管理将在后续版本加入，届时可为每个 App 设置使用额度与豁免。")
-                .font(.subheadline).foregroundStyle(DaywellTheme.muted)
-            }.daywellCard()
-          }
           if tab == .sleep {
             MorningSettingsCard()
               .disabled(model.isBusy || model.startupError != nil)
@@ -174,7 +167,7 @@ struct SettingsView: View {
       Text(
         count == 0
           ? "此设置下不提供临时豁免，锁定页不会显示豁免按钮。修改会在后续时段生效。"
-          : "每个时段单独计算，最多 5 次。默认 2 次，时长依次为 10、5、3、2、1 分钟，可分别调整。修改会在后续时段生效。"
+          : "每轮睡眠与随后的清晨模式共用次数，最多 5 次。默认 2 次，时长依次为 10、5、3、2、1 分钟，可分别调整。修改会在后续时段生效。"
       )
       .font(.footnote).foregroundStyle(DaywellTheme.muted)
       if hasChanges {
@@ -215,7 +208,7 @@ private struct MorningSettingsCard: View {
       Stepper(value: $lockMinutes, in: 1...1440) {
         settingValue("用满后锁定", minutes: lockMinutes)
       }.accessibilityIdentifier("settings.morning.lock")
-      Text("在睡眠时段里开启清晨模式后，使用这些统一设置。累计使用圈选应用，用满后锁定一次；豁免次数和时长沿用下方设置。修改从后续睡眠生效。")
+      Text("在睡眠时段里开启清晨模式后，使用这些统一设置。累计使用圈选应用，用满后锁定一次。豁免次数与对应睡眠时段共用，时长接着睡眠期间的使用顺序计算。修改从后续睡眠生效。")
         .font(.footnote).foregroundStyle(DaywellTheme.muted)
       if usageMinutes != model.state.morningPolicy.usageMinutes
         || lockMinutes != model.state.morningPolicy.lockMinutes

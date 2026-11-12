@@ -12,6 +12,11 @@ enum World {
   static var onStart: (() throws -> Void)?
   static var onStop: (() throws -> Void)?
   static var rejectGrace = false
+  static var rejectFitness = false
+  static var rejectFitnessIdle = false
+  static var monitorLimit: Int?
+  static var startCounts: [DeviceActivityName: Int] = [:]
+  static var onShieldChange: (() -> Void)?
   static var mainThreadInitializations = 0
   static func deviceActivityCall(_ name: String) {
     if monitoringCallInProgress { reentrantCalls.append(name) }
@@ -69,6 +74,7 @@ struct DeviceActivityEvent: Equatable {
   let threshold: DateComponents
 }
 struct DeviceActivityCenter {
+  enum MonitoringError: Error { case excessiveActivities }
   static var schedules: [DeviceActivityName: DeviceActivitySchedule] = [:]
   static var registeredEvents:
     [DeviceActivityName: [DeviceActivityEvent.Name: DeviceActivityEvent]] = [:]
@@ -90,6 +96,16 @@ struct DeviceActivityCenter {
   ) throws {
     World.deviceActivityCall("startMonitoring")
     if World.rejectGrace && name.rawValue.contains(".grace.") { throw POSIXError(.EIO) }
+    if World.rejectFitness && name.rawValue.hasPrefix(MonitorPlan.fitnessRestPrefix) {
+      throw POSIXError(.EIO)
+    }
+    if World.rejectFitnessIdle && name.rawValue.hasPrefix(MonitorPlan.fitnessIdlePrefix) {
+      throw POSIXError(.EIO)
+    }
+    if let limit = World.monitorLimit, Self.schedules[name] == nil, Self.schedules.count >= limit {
+      throw MonitoringError.excessiveActivities
+    }
+    World.startCounts[name, default: 0] += 1
     Self.schedules[name] = schedule
     Self.registeredEvents[name] = events
     if let callback = World.onStart {
@@ -113,12 +129,18 @@ struct DeviceActivityCenter {
     }
   }
 }
+class DeviceActivityMonitor {
+  func intervalDidStart(for activity: DeviceActivityName) {}
+  func intervalDidEnd(for activity: DeviceActivityName) {}
+  func intervalWillEndWarning(for activity: DeviceActivityName) {}
+  func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {}
+}
 final class FakeShield {
   enum CategoryPolicy: Equatable {
     case all(except: Set<Int> = [])
     case specific(Set<Int>, except: Set<Int> = [])
   }
-  var applications: Set<Int>?
+  var applications: Set<Int>? { didSet { World.onShieldChange?() } }
   var applicationCategories: CategoryPolicy?
   var webDomains: Set<Int>?
   var webDomainCategories: CategoryPolicy?

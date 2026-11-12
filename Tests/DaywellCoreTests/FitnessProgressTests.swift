@@ -64,8 +64,8 @@ struct FitnessProgressTests {
     state.fitness = training
     state.alwaysAllowedApplicationsData = Data([1])
     let plans = MonitorPlan.make(for: state, at: nextGroup, calendar: shanghai)
-    #expect(plans.count == 1)
-    let plan = try #require(plans.first)
+    #expect(plans.count == 2)
+    let plan = try #require(plans.first { $0.name.hasPrefix(MonitorPlan.fitnessRestPrefix) })
     #expect(shanghai.date(from: plan.start) == nextGroup.addingTimeInterval(120))
   }
 
@@ -81,14 +81,17 @@ struct FitnessProgressTests {
     #expect(restored.fitness?.restSecondsRemaining(at: start.addingTimeInterval(12)) == 18)
 
     let plans = MonitorPlan.make(for: restored, at: start, calendar: shanghai)
-    let wake = try #require(plans.first)
+    let wake = try #require(plans.first { $0.name.hasPrefix(MonitorPlan.fitnessRestPrefix) })
     let monitorStart = try #require(shanghai.date(from: wake.start))
     let monitorEnd = try #require(shanghai.date(from: wake.end))
-    #expect(plans.count == 1)
+    #expect(plans.count == 2)
     #expect(monitorStart == start.addingTimeInterval(30))
     #expect(monitorEnd.timeIntervalSince(monitorStart) >= 15 * 60)
     #expect(!wake.repeats)
-    #expect(MonitorPlan.make(for: restored, at: monitorStart, calendar: shanghai).isEmpty)
+    #expect(
+      MonitorPlan.make(for: restored, at: monitorStart, calendar: shanghai).map(\.name) == [
+        MonitorPlan.fitnessIdleName(for: start.addingTimeInterval(1800))
+      ])
   }
 
   @Test func pendingAuthorizationDoesNotEraseTheRestOrAllowedApplications() throws {
@@ -107,7 +110,7 @@ struct FitnessProgressTests {
     #expect(state.hadAuthorization)
     #expect(state.alwaysAllowedApplicationsData == allowed)
     #expect(state.fitness?.restSecondsRemaining(at: start) == 30)
-    #expect(MonitorPlan.make(for: state, at: start, calendar: shanghai).count == 1)
+    #expect(MonitorPlan.make(for: state, at: start, calendar: shanghai).count == 2)
 
     state.updateAuthorization(false)
     #expect(!state.hadAuthorization)
@@ -126,12 +129,12 @@ struct FitnessProgressTests {
     state.fitness = training
 
     #expect(state.fitness?.restSecondsRemaining(at: start) == 30)
-    #expect(MonitorPlan.make(for: state, at: start, calendar: shanghai).count == 1)
+    #expect(MonitorPlan.make(for: state, at: start, calendar: shanghai).count == 2)
     #expect(!state.hasFitnessRestriction(at: start.addingTimeInterval(29)))
     #expect(state.hasFitnessRestriction(at: start.addingTimeInterval(30)))
 
     state.alwaysAllowedApplicationsData = Data([1])
-    #expect(MonitorPlan.make(for: state, at: start, calendar: shanghai).count == 1)
+    #expect(MonitorPlan.make(for: state, at: start, calendar: shanghai).count == 2)
     #expect(state.hasFitnessRestriction(at: start.addingTimeInterval(30)))
     state.markAuthorizationRevoked()
     #expect(!state.hasFitnessRestriction(at: start.addingTimeInterval(30)))

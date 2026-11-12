@@ -8,6 +8,11 @@ import Foundation
       .appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: World.directory) }
     let store = try StateStore(directory: World.directory)
+    if scenario.hasPrefix("interaction-") {
+      try await LockInteractionChecks.run(scenario, store: store)
+      print("Passed:", scenario)
+      return
+    }
     let now = Date()
     let calendar = Calendar.current
     func clock(_ date: Date) throws -> ClockTime {
@@ -26,7 +31,9 @@ import Foundation
       state.hadAuthorization = true
       state.selectionData = selection
       state.alwaysAllowedApplicationsData = try JSONEncoder().encode(Set([1]))
-      if scenario != "fitness" && scenario != "fitness-websites" {
+      if scenario != "fitness" && scenario != "fitness-websites"
+        && scenario != "oversized-allowlist"
+      {
         state.periods = [period]
         state.refresh(at: now, calendar: calendar)
       }
@@ -126,7 +133,12 @@ import Foundation
         state.periods = [sleep]
         state.sessions = []
         state.morningWindows = []
-        state.refresh(at: now.addingTimeInterval(-5400), calendar: calendar)
+        state.morningCancelledThrough = nil
+        state.lastEvaluatedAt = nil
+        let sleepTime = now.addingTimeInterval(-5400)
+        state.refresh(at: sleepTime, calendar: calendar)
+        let pending = try state.reserveExemption(at: sleepTime)
+        try state.commitExemption(pending.id, at: sleepTime)
       }
       let before = try store.read()
       let window = before.pendingMornings(at: now).first!
@@ -157,6 +169,69 @@ import Foundation
       check(
         World.reentrantCalls.isEmpty,
         "Morning callback reentered monitoring: \(World.reentrantCalls)")
+      check(
+        after.exemptionOffer(at: Date())?.remainingCount == 1,
+        "The morning callback replenished the sleep allowance")
+      World.onStart = nil
+      let granted = try service.beginExemption()
+      let morning = granted.activeSessions(at: Date()).first { $0.isMorning }!
+      let duration = morning.exemption!.end.timeIntervalSince(morning.exemption!.start)
+      check(
+        (300...301).contains(duration), "Morning did not continue with the second, five-minute use")
+      check(morning.remainingCount == 0, "The shared allowance was not exhausted")
+      _ = try service.endExemptions()
+      do {
+        _ = try service.beginExemption()
+        check(false, "Morning granted another exemption after the shared allowance was exhausted")
+      } catch DaywellError.allowanceExhausted {}
+      check(
+        ManagedSettingsStore.stores[.init("daywell.sleep")]!.applications == [2],
+        "An exhausted morning allowance released the restriction")
+    } else if scenario == "morning-cancel-while-accumulating" {
+      var sleep = try LockPeriod(
+        start: clock(now.addingTimeInterval(-7200)), end: clock(now.addingTimeInterval(-3600)),
+        morningEnabled: true)
+      try store.transaction { state in
+        state.periods = [sleep]
+        state.sessions = []
+        state.morningWindows = []
+        state.morningCancelledThrough = nil
+        state.lastEvaluatedAt = nil
+        state.refresh(at: now.addingTimeInterval(-5400), calendar: calendar)
+      }
+      let service = try ScreenTimeService()
+      let before = try service.refresh()
+      let window = before.pendingMornings(at: now).first!
+      let name = DeviceActivityName(window.monitorName)
+      check(
+        !DeviceActivityCenter().events(for: name).isEmpty,
+        "The accumulating morning was not registered before cancellation")
+      World.onStop = {
+        do {
+          try ScreenTimeService().reachMorningLimit(
+            activity: name, event: .init(MonitorPlan.UsageThreshold.eventName))
+        } catch DaywellError.stateBusy {
+          // The outer cancellation owns monitor coordination and completes the sync.
+        }
+      }
+      sleep.isEnabled = false
+      _ = try service.savePeriod(sleep, verifiedSessionIDs: [])
+      check(
+        DeviceActivityCenter().activities.isEmpty,
+        "Disabling the period left its morning monitor registered")
+      try ScreenTimeService().reachMorningLimit(
+        activity: name, event: .init(MonitorPlan.UsageThreshold.eventName))
+      let after = try store.read()
+      check(after.pendingMornings(at: Date()).isEmpty, "Cancellation recreated the morning window")
+      check(after.blockingSessions(at: Date()).isEmpty, "A late threshold callback relocked apps")
+      let shield = ManagedSettingsStore.stores[.init("daywell.sleep")]!
+      check(
+        shield.applications == nil && shield.applicationCategories == nil
+          && shield.webDomains == nil && shield.webDomainCategories == nil,
+        "A cancelled morning applied a shield")
+      check(World.callbackErrors.isEmpty, "Cancellation callback failed: \(World.callbackErrors)")
+      check(World.reentrantCalls.isEmpty, "Cancellation reentered monitor registration")
+      check(World.callsUnderLock.isEmpty, "Cancellation called DeviceActivity under the state lock")
     } else if scenario == "exemption-callback" {
       let service = try ScreenTimeService()
       _ = try service.refresh()
@@ -206,6 +281,60 @@ import Foundation
       check(
         try store.read().monitoringError == nil,
         "Expected callback contention was recorded as a monitoring failure")
+    } else if scenario == "allowlist-category-selection" {
+      let model = DaywellModel()
+      await model.refresh()
+      // The system picker can check a parent category when its only app is selected.
+      // With category expansion enabled, its concrete apps and websites are returned too.
+      let picked = FamilyActivitySelection(
+        includeEntireCategory: true, applicationTokens: [2], categoryTokens: [3],
+        webDomainTokens: [4])
+      let saved = await model.saveAlwaysAllowed(picked)
+      check(saved, "A selected app was rejected because its parent category was checked")
+      check(model.errorMessage == nil, "Saving concrete exempt apps reported an error")
+      check(
+        try JSONDecoder().decode(
+          Set<ApplicationToken>.self, from: store.read().alwaysAllowedApplicationsData!) == [2],
+        "The exemption list did not persist exactly the selected concrete apps")
+      check(
+        ManagedSettingsStore.stores[.init("daywell.sleep")]!.applications == nil,
+        "Saving the exemption list did not release the selected app")
+      let relaunched = DaywellModel()
+      await relaunched.refresh()
+      check(
+        relaunched.alwaysAllowedSelection.applicationTokens == [2],
+        "Reopening the exemption list lost the saved app")
+      check(
+        relaunched.alwaysAllowedSelection.includeEntireCategory,
+        "The exemption picker would omit concrete apps from a selected category")
+      check(
+        relaunched.alwaysAllowedSelection.categoryTokens.isEmpty
+          && relaunched.alwaysAllowedSelection.webDomainTokens.isEmpty,
+        "Categories or websites were saved as exemptions")
+      let cleared = await relaunched.saveAlwaysAllowed(
+        FamilyActivitySelection(includeEntireCategory: true))
+      check(cleared, "Clearing the exemption list was rejected")
+      check(
+        try store.read().alwaysAllowedApplicationsData == nil, "Clearing left exempt apps saved")
+      check(
+        ManagedSettingsStore.stores[.init("daywell.sleep")]!.applications == [2],
+        "Clearing the exemption list did not restore the original app restriction")
+    } else if scenario == "allowlist-selection-limit" {
+      let model = DaywellModel()
+      await model.refresh()
+      let accepted = await model.saveAlwaysAllowed(
+        FamilyActivitySelection(
+          includeEntireCategory: true, applicationTokens: Set(1...50), categoryTokens: [3]))
+      check(accepted, "Exactly 50 exempt apps were rejected")
+      let before = try store.read().alwaysAllowedApplicationsData
+      let rejected = await model.saveAlwaysAllowed(
+        FamilyActivitySelection(
+          includeEntireCategory: true, applicationTokens: Set(1...51), categoryTokens: [3]))
+      check(!rejected, "More than 50 exempt apps were accepted")
+      check(model.errorMessage != nil, "An oversized selection had no error explanation")
+      check(
+        try store.read().alwaysAllowedApplicationsData == before,
+        "Rejecting an oversized selection changed the saved exemption list")
     } else if scenario == "oversized-allowlist" {
       try store.transaction { state in
         state.alwaysAllowedApplicationsData = try JSONEncoder().encode(Set(1...51))

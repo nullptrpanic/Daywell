@@ -98,6 +98,105 @@ struct MorningModeTests {
     #expect(state.sessions.filter(\.isMorning).isEmpty)
   }
 
+  @Test(arguments: [false, true])
+  func closingAnAccumulatingMorningSurvivesRelaunch(_ sleepWasStarted: Bool) throws {
+    var state = DaywellState()
+    state.selectionData = Data([1])
+    var period = try LockPeriod(
+      start: ClockTime(hour: 7, minute: 0), end: ClockTime(hour: 11, minute: 0),
+      morningEnabled: true)
+    state.periods = [period]
+    state.refresh(at: date("2026-11-12T06:00:00+08:00"), calendar: shanghai)
+    if sleepWasStarted {
+      state.refresh(at: date("2026-11-12T07:30:00+08:00"), calendar: shanghai)
+    }
+    let now = date("2026-11-12T11:05:00+08:00")
+    let window = try #require(state.pendingMornings(at: now).first)
+    #expect(state.activeSessions(at: now).isEmpty)
+    period.isEnabled = false
+
+    try state.savePeriod(period, at: now, calendar: shanghai)
+    #expect(MonitorPlan.make(for: state, at: now, calendar: shanghai).isEmpty)
+    var restored = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(state))
+    let later = date("2026-11-12T11:21:00+08:00")
+    restored.reachMorningLimit(monitorName: window.monitorName, at: later, calendar: shanghai)
+    #expect(restored.blockingSessions(at: later).isEmpty)
+    #expect(restored.pendingMornings(at: later).isEmpty)
+    #expect(MonitorPlan.make(for: restored, at: later, calendar: shanghai).isEmpty)
+
+    period.isEnabled = true
+    try restored.savePeriod(period, at: later, calendar: shanghai)
+    restored.reachMorningLimit(monitorName: window.monitorName, at: later, calendar: shanghai)
+    #expect(restored.blockingSessions(at: later).isEmpty)
+    #expect(restored.pendingMornings(at: later).isEmpty)
+    #expect(restored.morningWindows.first?.start == date("2026-11-13T11:00:00+08:00"))
+    try restored.validate()
+  }
+
+  @Test func closingOneAccumulatingMorningPreservesOtherPeriods() throws {
+    var state = DaywellState()
+    state.selectionData = Data([1])
+    var first = try LockPeriod(
+      start: ClockTime(hour: 7, minute: 0), end: ClockTime(hour: 8, minute: 0),
+      morningEnabled: true)
+    let second = try LockPeriod(
+      start: ClockTime(hour: 9, minute: 0), end: ClockTime(hour: 10, minute: 0),
+      morningEnabled: true)
+    state.periods = [first, second]
+    state.refresh(at: date("2026-11-12T07:30:00+08:00"), calendar: shanghai)
+    state.refresh(at: date("2026-11-12T09:30:00+08:00"), calendar: shanghai)
+    let now = date("2026-11-12T11:05:00+08:00")
+    let cancelled = try #require(
+      state.morningWindows.first { $0.period.id == first.id && $0.start < now })
+    let retained = try #require(state.pendingMornings(at: now).first { $0.period.id == second.id })
+    let retainedPlan = try #require(
+      MonitorPlan.make(for: state, at: now, calendar: shanghai).first {
+        $0.name == retained.monitorName
+      })
+    first.isEnabled = false
+
+    try state.savePeriod(first, at: now, calendar: shanghai)
+    let plans = MonitorPlan.make(for: state, at: now, calendar: shanghai)
+    #expect(!plans.contains { $0.name == cancelled.monitorName })
+    #expect(plans.contains(retainedPlan))
+    state.reachMorningLimit(monitorName: cancelled.monitorName, at: now, calendar: shanghai)
+    #expect(state.blockingSessions(at: now).isEmpty)
+    state.reachMorningLimit(monitorName: retained.monitorName, at: now, calendar: shanghai)
+    #expect(state.blockingSessions(at: now).map(\.period.id) == [second.id])
+    try state.validate()
+  }
+
+  @Test(arguments: [false, true])
+  func closingDuringExemptionPreventsRecoveryFromRelocking(_ morning: Bool) throws {
+    var state = try preparedMorningState()
+    let sleep = date("2026-11-09T23:30:00+08:00")
+    state.refresh(at: sleep, calendar: shanghai)
+    let window = try #require(state.morningWindows.first)
+    let start = morning ? date("2026-11-10T07:20:00+08:00") : sleep
+    if morning {
+      state.reachMorningLimit(monitorName: window.monitorName, at: start, calendar: shanghai)
+    }
+    let pending = try state.reserveExemption(at: start)
+    try state.commitExemption(pending.id, at: start)
+    let now = start.addingTimeInterval(120)
+    let session = try #require(state.activeSessions(at: now).first)
+    #expect(session.isExempt(at: now))
+    var disabled = state.periods[0]
+    disabled.isEnabled = false
+    #expect(throws: DaywellError.deactivationVerificationRequired(sessionIDs: [session.id])) {
+      try state.savePeriod(disabled, at: now, calendar: shanghai)
+    }
+    try state.savePeriod(disabled, at: now, calendar: shanghai, verifiedSessionIDs: [session.id])
+
+    var restored = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(state))
+    let later = start.addingTimeInterval(11 * 60)
+    restored.refresh(at: later, calendar: shanghai)
+    restored.reachMorningLimit(monitorName: window.monitorName, at: later, calendar: shanghai)
+    #expect(restored.blockingSessions(at: later).isEmpty)
+    #expect(MonitorPlan.make(for: restored, at: later, calendar: shanghai).isEmpty)
+    try restored.validate()
+  }
+
   @Test func closingAnActiveMorningRoundPreventsDelayedCallbacksFromRelocking() throws {
     var state = try preparedMorningState()
     state.refresh(at: date("2026-11-09T23:30:00+08:00"), calendar: shanghai)
@@ -156,6 +255,170 @@ struct MorningModeTests {
     #expect(state.blockingSessions(at: date("2026-11-10T07:50:00+08:00")).isEmpty)
   }
 
+  @Test(arguments: [0, 1, 2])
+  func morningContinuesItsSleepAllowanceAfterRelaunch(sleepUses: Int) throws {
+    var state = try preparedMorningState()
+    let sleep = date("2026-11-09T23:30:00+08:00")
+    state.refresh(at: sleep, calendar: shanghai)
+    for index in 0..<sleepUses {
+      let instant = sleep.addingTimeInterval(Double(index) * 660)
+      let pending = try state.reserveExemption(at: instant)
+      try state.commitExemption(pending.id, at: instant)
+    }
+    state = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(state))
+    let window = try #require(state.morningWindows.first)
+    let morning = date("2026-11-10T07:20:00+08:00")
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+
+    let lock = try #require(state.blockingSessions(at: morning).first)
+    let expectedMinutes: [Int?] = [10, 5, nil]
+    #expect(lock.remainingCount == [2, 1, 0][sleepUses])
+    #expect(lock.nextExemptionMinutes == expectedMinutes[sleepUses])
+    if sleepUses == 2 {
+      #expect(state.exemptionOffer(at: morning) == nil)
+      #expect(throws: DaywellError.allowanceExhausted) {
+        try state.reserveExemption(at: morning)
+      }
+    } else {
+      #expect(state.exemptionOffer(at: morning)?.duration == [600.0, 300.0][sleepUses])
+    }
+    try state.validate()
+  }
+
+  @Test func sharedAllowanceDoesNotRefillUntilTheNextSleepOccurrence() throws {
+    var state = try preparedMorningState()
+    let sleep = date("2026-11-09T23:30:00+08:00")
+    state.refresh(at: sleep, calendar: shanghai)
+    let first = try state.reserveExemption(at: sleep)
+    try state.commitExemption(first.id, at: sleep)
+    let window = try #require(state.morningWindows.first)
+    let morning = date("2026-11-10T07:20:00+08:00")
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+    let second = try state.reserveExemption(at: morning)
+    #expect(second.grants.first?.end == date("2026-11-10T07:25:00+08:00"))
+    try state.commitExemption(second.id, at: morning)
+    state.endExemptions(at: morning)
+    state = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(state))
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+    #expect(state.blockingSessions(at: morning).first?.remainingCount == 0)
+    #expect(state.exemptionOffer(at: morning) == nil)
+
+    // Moving the clock back must not make the sleep half spend the same allowance again.
+    let earlier = date("2026-11-10T00:00:00+08:00")
+    state.refresh(at: earlier, calendar: shanghai)
+    #expect(state.blockingSessions(at: earlier).first?.remainingCount == 0)
+    #expect(state.exemptionOffer(at: earlier) == nil)
+
+    let anotherPeriod = try LockPeriod(
+      start: ClockTime(hour: 7, minute: 30), end: ClockTime(hour: 8, minute: 30))
+    try state.savePeriod(anotherPeriod, at: morning, calendar: shanghai)
+    let overlap = date("2026-11-10T07:35:00+08:00")
+    state.refresh(at: overlap, calendar: shanghai)
+    #expect(state.activeSessions(at: overlap).allSatisfy { !$0.isMorning })
+    #expect(
+      state.activeSessions(at: overlap).first { $0.period.id == anotherPeriod.id }?.remainingCount
+        == 2)
+
+    let nextSleep = date("2026-11-10T23:30:00+08:00")
+    state.refresh(at: nextSleep, calendar: shanghai)
+    #expect(state.blockingSessions(at: nextSleep).first?.remainingCount == 2)
+    #expect(state.exemptionOffer(at: nextSleep)?.duration == 600)
+    try state.validate()
+  }
+
+  @Test(arguments: [0, 1, 2])
+  func legacyIndependentUsesAreCombinedWithoutCancelingAGrantedExemption(sleepUses: Int) throws {
+    var state = try preparedMorningState()
+    state.refresh(at: date("2026-11-09T23:30:00+08:00"), calendar: shanghai)
+    let window = try #require(state.morningWindows.first)
+    let morning = date("2026-11-10T07:20:00+08:00")
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+    let end = date("2026-11-10T07:30:00+08:00")
+    // A pre-fix snapshot counts each half independently and can already exceed their shared quota.
+    for index in state.sessions.indices {
+      if state.sessions[index].isMorning {
+        state.sessions[index].usedCount = 1
+        state.sessions[index].exemption = Exemption(requestID: UUID(), start: morning, end: end)
+      } else {
+        state.sessions[index].usedCount = sleepUses
+      }
+    }
+    var json = try #require(
+      JSONSerialization.jsonObject(with: JSONEncoder().encode(state)) as? [String: Any])
+    json["sessions"] = (json["sessions"] as? [[String: Any]])?.map { session in
+      var legacy = session
+      legacy.removeValue(forKey: "linkedUsedCount")
+      return legacy
+    }
+    var restored = try JSONDecoder().decode(
+      DaywellState.self, from: JSONSerialization.data(withJSONObject: json))
+    for _ in 0..<3 {
+      let lock = try #require(restored.activeSessions(at: morning).first)
+      #expect(lock.remainingCount == [1, 0, 0][sleepUses])
+      #expect(lock.isExempt(at: morning))
+      #expect(lock.exemption?.end == end)
+      try restored.validate()
+      restored = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(restored))
+    }
+  }
+
+  @Test func pruningSleepHistoryDoesNotRefundTheLinkedMorningAllowance() throws {
+    var state = try morningState()
+    state.morningPolicy = try MorningPolicy(usageMinutes: 10, lockMinutes: 1440)
+    let sleep = date("2026-11-09T23:30:00+08:00")
+    state.refresh(at: sleep, calendar: shanghai)
+    let first = try state.reserveExemption(at: sleep)
+    try state.commitExemption(first.id, at: sleep)
+    let window = try #require(state.morningWindows.first)
+    let morning = date("2026-11-10T07:20:00+08:00")
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+    state.refresh(at: date("2026-11-18T08:00:00+08:00"), calendar: shanghai)
+    #expect(!state.sessions.contains { $0.id == window.id })
+    state = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(state))
+    state.hadAuthorization = true
+    state.markAuthorizationRevoked()
+    state.replaceSelectionAfterAuthorization(Data([7]))
+    let retained = try #require(state.sessions.first { $0.morningSourceID == window.id })
+    #expect(retained.remainingCount == 1)
+    #expect(retained.nextExemptionMinutes == 5)
+    try state.validate()
+  }
+
+  @Test func anOldMorningReservationCannotGrantTheFirstDurationAgain() throws {
+    var state = try preparedMorningState()
+    let sleep = date("2026-11-09T23:30:00+08:00")
+    state.refresh(at: sleep, calendar: shanghai)
+    let first = try state.reserveExemption(at: sleep)
+    try state.commitExemption(first.id, at: sleep)
+    let window = try #require(state.morningWindows.first)
+    let morning = date("2026-11-10T07:20:00+08:00")
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+    let lock = try #require(state.activeSessions(at: morning).first)
+    let oldReservation = ExemptionReservation(
+      id: UUID(), createdAt: morning,
+      grants: [.init(sessionID: lock.id, end: morning.addingTimeInterval(600))])
+    state.reservation = oldReservation
+    let before = state.sessions
+    #expect(throws: DaywellError.staleReservation) {
+      try state.commitExemption(oldReservation.id, at: morning)
+    }
+    #expect(state.sessions == before)
+  }
+
+  @Test func aSleepSnapshotCreatedAfterTheMorningStillSharesItsUsedAllowance() throws {
+    var state = try preparedMorningState()
+    let window = try #require(state.morningWindows.first)
+    let morning = date("2026-11-10T07:20:00+08:00")
+    state.reachMorningLimit(monitorName: window.monitorName, at: morning, calendar: shanghai)
+    let first = try state.reserveExemption(at: morning)
+    try state.commitExemption(first.id, at: morning)
+    let sleep = date("2026-11-09T23:30:00+08:00")
+    state.refresh(at: sleep, calendar: shanghai)
+    #expect(state.activeSessions(at: sleep).first?.remainingCount == 1)
+    #expect(state.exemptionOffer(at: sleep)?.duration == 300)
+    try state.validate()
+  }
+
   @Test func endingMorningDoesNotRemoveAnotherSleepRestriction() throws {
     var state = try preparedMorningState()
     let window = try #require(state.morningWindows.first)
@@ -164,7 +427,7 @@ struct MorningModeTests {
     state.reachMorningLimit(
       monitorName: window.monitorName, at: date("2026-11-10T07:20:00+08:00"), calendar: shanghai)
     state.refresh(at: date("2026-11-10T07:35:00+08:00"), calendar: shanghai)
-    #expect(state.blockingSessions(at: date("2026-11-10T07:35:00+08:00")).count == 2)
+    #expect(state.blockingSessions(at: date("2026-11-10T07:35:00+08:00")).count == 1)
     let after = date("2026-11-10T07:50:00+08:00")
     #expect(state.blockingSessions(at: after).count == 1)
     #expect(state.blockingSessions(at: after).first?.isMorning == false)

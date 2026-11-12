@@ -1,5 +1,6 @@
 import DaywellCore
 import DeviceActivity
+import Foundation
 import OSLog
 
 final class ActivityMonitor: DeviceActivityMonitor {
@@ -24,26 +25,46 @@ final class ActivityMonitor: DeviceActivityMonitor {
     _ event: DeviceActivityEvent.Name, activity: DeviceActivityName
   ) {
     super.eventDidReachThreshold(event, activity: activity)
-    do {
+    reconcileWithRetry {
       try ScreenTimeService().reachMorningLimit(activity: activity, event: event)
-    } catch {
-      logger.error("Unable to start morning break: \(error.localizedDescription, privacy: .public)")
     }
   }
 
   private func reconcile(_ activity: DeviceActivityName) {
     logger.debug("Received activity callback \(activity.rawValue, privacy: .private(mask: .hash))")
-    do {
+    reconcileWithRetry {
       let service = try ScreenTimeService()
       if activity.rawValue.hasPrefix(MonitorPlan.fitnessRestPrefix) {
         try service.reachFitnessDeadline(activity: activity)
       } else {
         try service.refresh()
       }
-    } catch {
-      // Retain existing shields on failure. Never clear all restrictions on a single period's end.
-      logger.error(
-        "Unable to reconcile Screen Time: \(error.localizedDescription, privacy: .public)")
+    }
+  }
+
+  private func reconcileWithRetry(_ operation: () throws -> Void) {
+    // Complete retries while the extension callback is alive. A detached timer can
+    // be suspended immediately after returning. The state lock itself has a 1 s
+    // timeout, so retries remain bounded and never wait indefinitely for the app.
+    for attempt in 0..<3 {
+      do {
+        try operation()
+        return
+      } catch {
+        switch error {
+        case DaywellError.stateBusy, ScreenTimeError.configurationChanged:
+          if attempt < 2 {
+            Thread.sleep(forTimeInterval: 0.05)
+            continue
+          }
+        default: break
+        }
+        // Recompute and remove only expired restrictions on a successful retry;
+        // never clear another feature's valid lock just because this call failed.
+        logger.error(
+          "Unable to reconcile Screen Time: \(error.localizedDescription, privacy: .public)")
+        return
+      }
     }
   }
 }

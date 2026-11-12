@@ -4,30 +4,22 @@ import Testing
 @testable import DaywellCore
 
 struct ExemptionTests {
-  @Test func trainingLockRejectsExemptionsIncludingOneReservedBeforeTheDeadline() throws {
+  @Test func sleepExemptionRemainsValidWhenWorkoutRestEnds() throws {
     var state = try sampleState()
     state.hadAuthorization = true
     let start = date("2026-11-09T13:01:00+08:00")
     state.refresh(at: start, calendar: shanghai)
-    var training = FitnessTraining(restEnabled: true)
-    training.completeGroup(at: start)
-    state.fitness = training
-    let duringRest = start.addingTimeInterval(25)
-    #expect(state.exemptionOffer(at: duringRest) != nil)
-    let reservation = try state.reserveExemption(at: duringRest)
-    let locked = start.addingTimeInterval(30)
-    #expect(throws: DaywellError.staleReservation) {
-      try state.commitExemption(reservation.id, at: locked)
-    }
-    state.cancelReservation(reservation.id)
-    #expect(state.exemptionOffer(at: locked) == nil)
-    #expect(throws: DaywellError.fitnessRestrictionActive) {
-      try state.reserveExemption(at: locked)
-    }
-    #expect(state.activeSessions(at: locked).first?.usedCount == 0)
+    state.updateFitness(initial: FitnessTraining(restEnabled: true)) { $0.completeGroup(at: start) }
+    let reservation = try state.reserveExemption(at: start.addingTimeInterval(25))
+    let deadline = start.addingTimeInterval(30)
+    state.refresh(at: deadline, calendar: shanghai)
+    try state.commitExemption(reservation.id, at: deadline)
+    #expect(!state.hasFitnessRestriction(at: deadline))
+    #expect(state.activeSessions(at: deadline).first?.usedCount == 1)
+    #expect(state.blockingSessions(at: deadline).isEmpty)
   }
 
-  @Test func oneExhaustedOverlapPreventsPartialGrant() throws {
+  @Test func exhaustedLegacyOverlapDoesNotConsumeTheNewOwnerQuota() throws {
     var state = try sampleState()
     state.policy = try ExemptionPolicy(allowedCount: 1, durationMinutes: 10)
     let start = date("2026-11-09T13:01:00+08:00")
@@ -38,10 +30,10 @@ struct ExemptionTests {
       try LockPeriod(start: ClockTime(hour: 13, minute: 15), end: ClockTime(hour: 15, minute: 0)))
     let later = date("2026-11-09T13:16:00+08:00")
     state.refresh(at: later, calendar: shanghai)
-    #expect(throws: DaywellError.allowanceExhausted) { try state.reserveExemption(at: later) }
-    #expect(state.blockingSessions(at: later).count == 2)
-    #expect(state.activeSessions(at: later).map(\.remainingCount) == [0, 1])
-    #expect(state.reservation == nil)
+    let next = try state.reserveExemption(at: later)
+    #expect(next.grants.count == 1)
+    #expect(state.activeSessions(at: later).map(\.remainingCount) == [1])
+    #expect(state.sessions.first?.remainingCount == 0)
   }
 
   @Test func zeroAllowanceKeepsPeriodLocked() throws {
@@ -118,7 +110,7 @@ struct ExemptionTests {
     #expect(state == before)
   }
 
-  @Test func verifiedDeactivationEndsOnlyTheChosenPeriod() throws {
+  @Test func verifiedDeactivationDoesNotReviveAnOlderCancelledSleep() throws {
     var state = try sampleState()
     let other = try LockPeriod(
       start: ClockTime(hour: 13, minute: 30), end: ClockTime(hour: 15, minute: 0))
@@ -126,20 +118,14 @@ struct ExemptionTests {
     let now = date("2026-11-09T13:31:00+08:00")
     state.refresh(at: now, calendar: shanghai)
     _ = try state.reserveExemption(at: now)
-    var disabled = state.periods[0]
+    var disabled = other
     disabled.isEnabled = false
-
-    let session = try #require(state.activeSessions(at: now).first { $0.period.id == disabled.id })
-    let otherSession = try #require(
-      state.activeSessions(at: now).first { $0.period.id == other.id })
+    let session = try #require(state.activeSessions(at: now).first)
     #expect(throws: DaywellError.deactivationVerificationRequired(sessionIDs: [session.id])) {
-      try state.savePeriod(
-        disabled, at: now, calendar: shanghai, verifiedSessionIDs: [otherSession.id])
+      try state.savePeriod(disabled, at: now, calendar: shanghai, verifiedSessionIDs: ["obsolete"])
     }
     try state.savePeriod(disabled, at: now, calendar: shanghai, verifiedSessionIDs: [session.id])
-
-    #expect(state.periods.first?.isEnabled == false)
-    #expect(state.blockingSessions(at: now).map(\.period.id) == [other.id])
+    #expect(state.activeSessions(at: now).isEmpty)
     #expect(state.reservation == nil)
     try state.validate()
   }
@@ -171,7 +157,7 @@ struct ExemptionTests {
     #expect(state.activeSessions(at: nextDay).first?.remainingCount == 2)
   }
 
-  @Test func overlapRequiresEachBlockingPeriodAndEndingOneKeepsOtherLocked() throws {
+  @Test func legacyOverlapHasOneOwnerAndOldEndDoesNotUnlockIt() throws {
     var state = try sampleState()
     state.periods.append(
       try LockPeriod(start: ClockTime(hour: 13, minute: 30), end: ClockTime(hour: 15, minute: 0)))
@@ -179,7 +165,7 @@ struct ExemptionTests {
     state.refresh(at: now, calendar: shanghai)
     let reservation = try state.reserveExemption(at: now)
     try state.commitExemption(reservation.id, at: now)
-    #expect(state.activeSessions(at: now).map(\.remainingCount) == [1, 1])
+    #expect(state.activeSessions(at: now).map(\.remainingCount) == [1])
     #expect(state.blockingSessions(at: now).isEmpty)
     let end = date("2026-11-09T14:00:00+08:00")
     state.refresh(at: end, calendar: shanghai)
@@ -187,7 +173,7 @@ struct ExemptionTests {
     #expect(state.activeSessions(at: end).first?.remainingCount == 1)
   }
 
-  @Test func newPeriodDuringExemptionLocksIndependently() throws {
+  @Test func replacementPeriodDuringExemptionUsesOnlyNewQuota() throws {
     var state = try sampleState()
     state.periods.append(
       try LockPeriod(start: ClockTime(hour: 13, minute: 5), end: ClockTime(hour: 15, minute: 0)))
@@ -200,7 +186,7 @@ struct ExemptionTests {
     #expect(state.blockingSessions(at: later).count == 1)
     let second = try state.reserveExemption(at: later)
     try state.commitExemption(second.id, at: later)
-    #expect(state.activeSessions(at: later).map(\.remainingCount) == [1, 1])
+    #expect(state.activeSessions(at: later).map(\.remainingCount) == [1])
   }
 
   @Test func canceledReservationAndEarlyRelockDoNotRefundOrConsumeExtra() throws {

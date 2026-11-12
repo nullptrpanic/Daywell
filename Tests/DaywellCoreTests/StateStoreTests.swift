@@ -5,6 +5,19 @@ import Testing
 @testable import DaywellCore
 
 struct StateStoreTests {
+  @Test func previousStateWithoutShieldStoreCountStillLoads() throws {
+    var state = try sampleState()
+    state.refresh(at: date("2026-11-09T13:01:00+08:00"), calendar: shanghai)
+    var saved = try #require(
+      JSONSerialization.jsonObject(with: JSONEncoder().encode(state)) as? [String: Any])
+    saved.removeValue(forKey: "sleepShieldStoreCount")
+    let restored = try JSONDecoder().decode(
+      DaywellState.self, from: JSONSerialization.data(withJSONObject: saved))
+    #expect(restored == state)
+    #expect(restored.sleepShieldStoreCount == 1)
+    try restored.validate()
+  }
+
   @Test(.enabled(if: getuid() != 0))
   func inaccessibleStateIsReportedInsteadOfLoadingAnEmptyConfiguration() throws {
     let directory = temporaryDirectory()

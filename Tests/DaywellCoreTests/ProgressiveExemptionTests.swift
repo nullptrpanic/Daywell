@@ -20,10 +20,10 @@ struct ProgressiveExemptionTests {
     state.periods.append(
       try LockPeriod(start: ClockTime(hour: 13, minute: 15), end: ClockTime(hour: 15, minute: 0)))
     state.refresh(at: date("2026-11-09T13:16:00+08:00"), calendar: shanghai)
-    #expect(state.exemptionOffer(at: date("2026-11-09T13:16:00+08:00")) == nil)
+    #expect(state.exemptionOffer(at: date("2026-11-09T13:16:00+08:00"))?.remainingCount == 2)
   }
 
-  @Test func offerRespectsExistingExemptionAndPeriodEnd() throws {
+  @Test func replacementSleepUsesItsOwnQuotaAndRespectsPeriodEnd() throws {
     var state = try sampleState()
     let start = date("2026-11-09T13:01:00+08:00")
     state.refresh(at: start, calendar: shanghai)
@@ -33,7 +33,7 @@ struct ProgressiveExemptionTests {
       try LockPeriod(start: ClockTime(hour: 13, minute: 5), end: ClockTime(hour: 15, minute: 0)))
     let later = date("2026-11-09T13:06:00+08:00")
     state.refresh(at: later, calendar: shanghai)
-    #expect(state.exemptionOffer(at: later)?.duration == 300)
+    #expect(state.exemptionOffer(at: later)?.duration == 600)
     var short = try sampleState()
     let almostEnd = date("2026-11-09T13:59:30+08:00")
     short.refresh(at: almostEnd, calendar: shanghai)
@@ -98,7 +98,7 @@ struct ProgressiveExemptionTests {
     #expect(throws: (any Error).self) { try decodedPolicy(durations: [1441, 5, 3, 2, 1]) }
   }
 
-  @Test func overlappingPeriodsUseTheirOwnAttemptNumber() throws {
+  @Test func legacyOverlapKeepsOnlyNewestPeriodsAttemptNumber() throws {
     var state = try sampleState()
     state.policy = try decodedPolicy()
     let firstTime = date("2026-11-09T13:01:00+08:00")
@@ -113,9 +113,9 @@ struct ProgressiveExemptionTests {
     try state.commitExemption(second.id, at: later)
     #expect(
       state.activeSessions(at: later).map(\.exemption?.end) == [
-        date("2026-11-09T13:17:00+08:00"), date("2026-11-09T13:22:00+08:00"),
+        date("2026-11-09T13:22:00+08:00")
       ])
-    #expect(state.activeSessions(at: later).map(\.remainingCount) == [3, 4])
+    #expect(state.activeSessions(at: later).map(\.remainingCount) == [4])
   }
 
   @Test func savedCustomDurationsAndNextAttemptSurviveReload() throws {

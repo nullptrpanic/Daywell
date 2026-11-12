@@ -8,7 +8,9 @@ public struct MonitorPlan: Equatable, Sendable {
     public let minutes: Int
   }
   public static let prefix = "daywell."
+  public static let activityLimit = 20
   public static let fitnessRestPrefix = prefix + "fitness.rest."
+  public static let fitnessIdlePrefix = prefix + "fitness.idle."
   public let name: String
   public let start: DateComponents
   public let end: DateComponents
@@ -22,6 +24,10 @@ public struct MonitorPlan: Equatable, Sendable {
 
   public static func fitnessRestName(for end: Date) -> String {
     fitnessRestPrefix + String(Int64(ceil(end.timeIntervalSince1970)))
+  }
+
+  public static func fitnessIdleName(for end: Date) -> String {
+    fitnessIdlePrefix + String(Int64(ceil(end.timeIntervalSince1970)))
   }
 
   public static func make(for state: DaywellState, at date: Date, calendar: Calendar) -> [Self] {
@@ -81,7 +87,13 @@ public struct MonitorPlan: Equatable, Sendable {
         addDeadline(name: name, start: pending.createdAt, end: grant.end)
       }
     }
-    if let restEnd = state.fitness?.restEndsAt {
+    if let idleEnd = state.fitness?.inactivityEndsAt {
+      let boundary = Date(timeIntervalSince1970: ceil(idleEnd.timeIntervalSince1970))
+      addDeadline(name: fitnessIdleName(for: idleEnd), start: boundary, end: boundary)
+    }
+    if let training = state.fitness, training.locksAfterRest,
+      let restEnd = training.restEndsAt, let idleEnd = training.inactivityEndsAt, restEnd < idleEnd
+    {
       let boundary = Date(timeIntervalSince1970: ceil(restEnd.timeIntervalSince1970))
       if boundary > date {
         // Start at the deadline so the first use after an idle rest can wake the monitor.
@@ -93,8 +105,10 @@ public struct MonitorPlan: Equatable, Sendable {
     plans.append(contentsOf: deadlines.values.sorted { $0.name < $1.name })
     var usageCalendar = Calendar(identifier: .gregorian)
     usageCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+    var upcomingUsage: [(start: Date, plan: Self)] = []
     for window in state.morningWindows where window.end > date {
-      guard !state.needsApplicationReselection, !window.selectionData.isEmpty,
+      guard window.cancelledAt == nil, !state.needsApplicationReselection,
+        !window.selectionData.isEmpty,
         !state.sessions.contains(where: { $0.morningSourceID == window.id })
       else { continue }
       // Keep the registration identical across device time-zone changes, otherwise
@@ -107,14 +121,35 @@ public struct MonitorPlan: Equatable, Sendable {
         from: max(window.end, window.start.addingTimeInterval(15 * 60)))
       start.timeZone = usageCalendar.timeZone
       end.timeZone = usageCalendar.timeZone
-      plans.append(
-        Self(
-          name: window.monitorName, start: start, end: end, repeats: false,
-          warning: nil,
-          usage: UsageThreshold(
-            selectionData: window.selectionData, minutes: window.morning.usageMinutes))
-      )
+      let plan = Self(
+        name: window.monitorName, start: start, end: end, repeats: false,
+        warning: nil,
+        usage: UsageThreshold(
+          selectionData: window.selectionData, minutes: window.morning.usageMinutes))
+      if window.start > date {
+        // Its sleep-start callback will register this event before usage begins.
+        // Never evict an already accumulating event to pre-register a future one.
+        upcomingUsage.append((window.start, plan))
+      } else {
+        plans.append(plan)
+      }
     }
+    let available = min(1, max(0, activityLimit - plans.count))
+    plans.append(
+      contentsOf: upcomingUsage.sorted {
+        $0.start == $1.start ? $0.plan.name < $1.plan.name : $0.start < $1.start
+      }.prefix(available).map(\.plan))
     return plans
+  }
+
+  public static func requiredCapacity(for state: DaywellState, at date: Date, calendar: Calendar)
+    -> Int
+  {
+    // Single-owner rules bound the transient monitors: current/next release guards,
+    // one grace, one morning event, fitness rest/idle and two staged replacements.
+    // Daily monitors can also contain a deleted-but-still-running frozen period.
+    let plans = make(for: state, at: date, calendar: calendar)
+    let daily = plans.filter { $0.name.hasPrefix(prefix + "period.") }.count
+    return max(daily + 8, plans.count + 2)
   }
 }

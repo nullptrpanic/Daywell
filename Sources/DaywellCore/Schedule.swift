@@ -14,6 +14,7 @@ public enum DaywellError: LocalizedError, Equatable {
   case staleReservation
   case invalidState
   case stateBusy
+  case monitoringCapacityExceeded
   case unsupportedSchema
 
   public var errorDescription: String? {
@@ -33,6 +34,7 @@ public enum DaywellError: LocalizedError, Equatable {
     case .staleReservation: return "锁定状态已变化，请重新发起豁免。"
     case .invalidState: return "本地数据无效，已保留原文件，请勿清除数据后重试。"
     case .stateBusy: return "锁定状态正在更新，请稍后重试。已保存的设置不会丢失。"
+    case .monitoringCapacityExceeded: return "同时安排的锁定任务过多，无法保证按时恢复。请先关闭部分时段后重试，原有设置已保留。"
     case .unsupportedSchema: return "本地数据来自更新版本，请更新 Daywell。"
     }
   }

@@ -94,7 +94,9 @@ final class DaywellModel: ObservableObject {
     }
 
     var alwaysAllowedSelection: FamilyActivitySelection {
-      var selection = FamilyActivitySelection(includeEntireCategory: false)
+      // Selecting the last app in a category can also check its parent. Keep the
+      // concrete apps in the picker result; the exemption list stores only those.
+      var selection = FamilyActivitySelection(includeEntireCategory: true)
       if let data = state.alwaysAllowedApplicationsData {
         selection.applicationTokens =
           (try? JSONDecoder().decode(Set<ApplicationToken>.self, from: data)) ?? []
@@ -187,8 +189,7 @@ final class DaywellModel: ObservableObject {
     }
 
     func saveAlwaysAllowed(_ selection: FamilyActivitySelection) async -> Bool {
-      guard selection.categoryTokens.isEmpty, selection.webDomainTokens.isEmpty,
-        selection.applicationTokens.count <= ScreenTimeService.shieldTokenLimit
+      guard selection.applicationTokens.count <= ScreenTimeService.shieldTokenLimit
       else {
         errorMessage = ScreenTimeError.invalidAllowedApplications.localizedDescription
         return false
@@ -279,7 +280,7 @@ final class DaywellModel: ObservableObject {
         + state.periods.compactMap {
           $0.nextOccurrence(after: startedAt, calendar: .current)?.start
         }
-        + [fitness.restEndsAt].compactMap { $0 }
+        + [fitness.restEndsAt, fitness.inactivityEndsAt].compactMap { $0 }
       nextRefresh = boundaries.filter { $0 > startedAt }.min() ?? now.addingTimeInterval(60)
       nextRefresh = min(nextRefresh, now.addingTimeInterval(60))
     }

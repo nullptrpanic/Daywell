@@ -54,7 +54,7 @@ struct FitnessView: View {
           .disabled(progress.completedGroups == 0 || celebrating || model.isBusy)
           .accessibilityLabel("重置本轮")
           .accessibilityIdentifier("fitness.reset")
-          Text("目标组数可在右上角设置中调整")
+          Text("30 分钟未完成新一组，本轮自动结束。目标组数可在右上角设置中调整。")
             .font(.footnote).foregroundStyle(DaywellTheme.muted)
         }
         .padding(24)
@@ -90,7 +90,9 @@ struct FitnessView: View {
     let locked = remaining == 0 && model.fitnessShieldApplied
     let title = locked ? "训练锁定中" : (remaining == 0 ? "休息结束" : "组间休息")
     let statusMessage: String
-    if let remaining {
+    if remaining != nil && !model.fitness.locksAfterRest {
+      statusMessage = "睡眠时段已接管，本次休息只计时，不锁定。"
+    } else if let remaining {
       statusMessage =
         remaining == 0 ? "休息时间到。完成下一组后重新计时。" : "记下一组后，从完整时长重新计时。"
     } else if progress.targetGroups == 1 {
@@ -332,7 +334,7 @@ struct FitnessRestSettingsCard: View {
         }
         .accessibilityIdentifier("settings.fitness.rest.duration")
       }
-      Text("每组完成后重新计时，休息结束会锁定应用。完成下一组开始新的休息，完成本轮后解除锁定。")
+      Text("每组完成后重新计时，休息结束会锁定应用。睡眠时段内只计时。完成本轮或 30 分钟未完成新一组后，自动结束本轮并解除运动锁定。")
         .font(.footnote).foregroundStyle(DaywellTheme.muted)
     }
     .daywellCard()

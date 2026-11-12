@@ -4,6 +4,28 @@ import Testing
 @testable import DaywellCore
 
 struct MonitorPlanTests {
+  @Test func singleMorningKeepsCapacityBoundedAfterTodaysLocksStart() throws {
+    var state = DaywellState()
+    state.selectionData = Data([1])
+    state.periods = try (0..<7).map {
+      try LockPeriod(
+        start: ClockTime(hour: 8 + $0, minute: 0), end: ClockTime(hour: 8 + $0, minute: 30),
+        morningEnabled: true)
+    }
+    for hour in 8..<15 {
+      state.refresh(
+        at: date("2026-11-09T\(String(format: "%02d", hour)):15:00+08:00"), calendar: shanghai)
+    }
+    let now = date("2026-11-09T15:00:00+08:00")
+    state.refresh(at: now, calendar: shanghai)
+    for window in state.pendingMornings(at: now) {
+      state.reachMorningLimit(monitorName: window.monitorName, at: now, calendar: shanghai)
+    }
+    #expect(
+      MonitorPlan.requiredCapacity(for: state, at: now, calendar: shanghai)
+        <= MonitorPlan.activityLimit)
+  }
+
   @Test func oneMinuteExemptionStillRegistersRecoveryBeforeUnlocking() throws {
     var state = try sampleState()
     state.policy = try ExemptionPolicy(allowedCount: 1, durationsMinutes: [1, 5, 3, 2, 1])
