@@ -16,6 +16,11 @@ public enum DaywellError: LocalizedError, Equatable {
   case stateBusy
   case monitoringCapacityExceeded
   case unsupportedSchema
+  case invalidFocusDuration
+  case focusApplicationRequired
+  case focusUnavailable
+  case focusAlreadyActive
+  case staleFocusSession
 
   public var errorDescription: String? {
     switch self {
@@ -36,6 +41,11 @@ public enum DaywellError: LocalizedError, Equatable {
     case .stateBusy: return "锁定状态正在更新，请稍后重试。已保存的设置不会丢失。"
     case .monitoringCapacityExceeded: return "同时安排的锁定任务过多，无法保证按时恢复。请先关闭部分时段后重试，原有设置已保留。"
     case .unsupportedSchema: return "本地数据来自更新版本，请更新 Daywell。"
+    case .invalidFocusDuration: return "聚焦时长需为 1–1440 的整数分钟。"
+    case .focusApplicationRequired: return "请先选择一个聚焦应用。"
+    case .focusUnavailable: return "当前有其他锁定正在执行，结束后可开启聚焦。临时豁免期间也不能开启。"
+    case .focusAlreadyActive: return "聚焦正在进行，请先结束当前这一轮。"
+    case .staleFocusSession: return "这轮聚焦已结束，请查看当前状态。"
     }
   }
 }

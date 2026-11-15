@@ -171,7 +171,7 @@ import Foundation
         }
         state.refresh(at: now, calendar: calendar)
         var fitness = FitnessTraining(restEnabled: true)
-        fitness.setRestSeconds(3600)
+        fitness.setRestSeconds(FitnessTraining.restSecondsRange.upperBound)
         fitness.completeGroup(at: now)
         state.fitness = fitness
       }

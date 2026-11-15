@@ -99,7 +99,7 @@ struct SleepView: View {
         }.buttonStyle(PrimaryButtonStyle()).disabled(model.isBusy || model.startupError != nil)
       } else if !model.isAuthorized {
         Button(action: openAuthorizationSettings) {
-          Label("开启屏幕使用时间授权", systemImage: "checkmark.shield")
+          Label("前往设置", systemImage: "checkmark.shield")
         }.buttonStyle(PrimaryButtonStyle())
       } else if !model.state.needsApplicationReselection {
         if !model.blockingSessions.isEmpty {

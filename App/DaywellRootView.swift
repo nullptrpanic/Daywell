@@ -4,12 +4,14 @@ import UIKit
 
 enum DaywellTab: String, CaseIterable, Identifiable {
   case sleep = "睡眠"
+  case focus = "聚焦"
   case fitness = "健身"
   case settings = "设置"
   var id: Self { self }
   var icon: String {
     switch self {
     case .sleep: return "moon.zzz.fill"
+    case .focus: return "scope"
     case .fitness: return "figure.strengthtraining.traditional"
     case .settings: return "gearshape"
     }
@@ -31,6 +33,10 @@ struct DaywellRootView: View {
           openSettings: { settingsTab = .sleep },
           openAuthorizationSettings: openAuthorizationSettings)
       case .fitness: FitnessView { settingsTab = .fitness }
+      case .focus:
+        FocusView(
+          openSettings: { settingsTab = .focus },
+          openAuthorizationSettings: openAuthorizationSettings)
       case .settings: GlobalSettingsView()
       }
     }
@@ -38,11 +44,13 @@ struct DaywellRootView: View {
     .background(DaywellTheme.background)
     .safeAreaInset(edge: .bottom, spacing: 0) { tabBar }
     .sheet(item: $settingsTab) { SettingsView(tab: $0) }
-    .task { await model.refresh() }
-    .onReceive(timer) { if scenePhase == .active { model.tick($0) } }
-    .onChange(of: scenePhase) { _, phase in
-      if phase == .active { Task { await model.refresh() } }
+    .task { await refreshOnActivation() }
+    .onReceive(
+      NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+    ) { _ in
+      Task { await refreshOnActivation() }
     }
+    .onReceive(timer) { if scenePhase == .active { model.tick($0) } }
     .onReceive(
       NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)
     ) { _ in
@@ -52,7 +60,7 @@ struct DaywellRootView: View {
       "需要处理一下",
       isPresented: Binding(
         get: { model.errorMessage != nil },
-        set: { if !$0 { model.errorMessage = nil } })
+        set: { if !$0 && model.errorMessage != nil { model.errorMessage = nil } })
     ) {
       Button("知道了") { model.errorMessage = nil }
     } message: {
@@ -62,6 +70,14 @@ struct DaywellRootView: View {
 
   private func openAuthorizationSettings() {
     tab = .settings
+  }
+
+  private func refreshOnActivation() async {
+    if await model.consumeFitnessNavigation() {
+      settingsTab = nil
+      tab = .fitness
+    }
+    await model.refresh()
   }
 
   private var tabBar: some View {

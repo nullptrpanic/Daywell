@@ -66,6 +66,7 @@ extension DaywellState {
         period: window.period,
         occurrence: PeriodOccurrence(periodID: window.period.id, start: date, end: end),
         selectionData: window.selectionData, policy: window.policy, morningSourceID: window.id))
+    reconcileFocus(at: date)
     synchronizeLinkedExemptionCounts()
   }
 

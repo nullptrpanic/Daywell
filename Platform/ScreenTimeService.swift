@@ -15,6 +15,7 @@ enum ScreenTimeError: LocalizedError {
   case activeSelectionLimitExceeded
   case invalidAllowedApplications
   case combinedSelectionLimitExceeded
+  case focusExceptionLimitExceeded
 
   var errorDescription: String? {
     switch self {
@@ -28,6 +29,7 @@ enum ScreenTimeError: LocalizedError {
       return "本轮仍保留原来的锁定范围，加入后会超过系统的 50 个上限。请减少新增项，或在本轮结束后修改。"
     case .invalidAllowedApplications: return "豁免名单最多支持 50 个 App，请减少圈选。"
     case .combinedSelectionLimitExceeded: return "同时执行的锁定范围过多，请先结束部分时段后重试。"
+    case .focusExceptionLimitExceeded: return "聚焦应用与豁免名单合计最多 50 个 App，请先减少豁免名单。"
     }
   }
 }
@@ -100,6 +102,11 @@ final class ScreenTimeService: @unchecked Sendable {
     return true
   }
 
+  static var supportsOpeningFitnessFromShield: Bool {
+    if #available(iOS 26.5, *) { return !isSimulator }
+    return false
+  }
+
   init() throws {
     let directory: URL
     #if targetEnvironment(simulator)
@@ -120,6 +127,20 @@ final class ScreenTimeService: @unchecked Sendable {
   }
 
   func read() throws -> DaywellState { try storage.read() }
+
+  func requestFitnessNavigation() throws -> Bool {
+    guard Self.supportsOpeningFitnessFromShield, isFitnessShieldApplied else { return false }
+    let now = Date()
+    var state = try storage.read()
+    state.refresh(at: now, calendar: .current)
+    guard state.hasFitnessRestriction(at: now) else { return false }
+    try storage.requestFitnessNavigation(at: now)
+    return true
+  }
+
+  func consumeFitnessNavigation() throws -> Bool {
+    try storage.consumeFitnessNavigation(at: Date())
+  }
 
   @discardableResult
   func refresh() throws -> DaywellState {
@@ -146,6 +167,82 @@ final class ScreenTimeService: @unchecked Sendable {
 
   func saveMorningPolicy(_ policy: MorningPolicy) throws -> DaywellState {
     try update { $0.morningPolicy = policy }
+  }
+
+  func saveFocusMinutes(_ minutes: Int) throws -> DaywellState {
+    try update { try $0.focusConfiguration.setMinutes(minutes) }
+  }
+
+  func saveFocusApplication(_ data: Data?) throws -> DaywellState {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .sortedKeys
+    let canonical = try data.map {
+      try encoder.encode(JSONDecoder().decode(ApplicationToken.self, from: $0))
+    }
+    return try update { state in
+      guard state.hadAuthorization else { throw ScreenTimeError.authorizationRequired }
+      guard state.focusSession == nil else { throw DaywellError.focusAlreadyActive }
+      state.focusConfiguration.applicationData = canonical
+    }
+  }
+
+  func beginFocus() throws -> DaywellState {
+    guard !Self.isSimulator else { throw ScreenTimeError.simulator }
+    let authorization = readAuthorization()
+    return try storage.coordinateMonitoring {
+      let before = try storage.read()
+      var proposed = before
+      proposed.updateAuthorization(authorization)
+      guard proposed.hadAuthorization else { throw ScreenTimeError.authorizationRequired }
+      let now = Date()
+      try proposed.startFocus(at: now, calendar: .current)
+      guard let session = proposed.focusSession else { throw DaywellError.staleFocusSession }
+      _ = try focusExceptions(applicationData: session.applicationData, in: proposed)
+      try validateCapacity(of: proposed, replacing: before)
+      let plans = MonitorPlan.make(for: proposed, at: now, calendar: .current)
+      guard let release = plans.first(where: { $0.name == session.monitorName }) else {
+        throw DaywellError.staleFocusSession
+      }
+      do {
+        let previous = MonitorPlan.make(for: before, at: now, calendar: .current)
+        pruneMonitors(keeping: plans + previous)
+        try register(release)
+        let latestAuthorization = readAuthorization()
+        _ = try storage.transaction(
+          { state in
+            guard state.focusConfiguration == before.focusConfiguration,
+              state.focusSession == before.focusSession,
+              state.hadAuthorization == before.hadAuthorization,
+              latestAuthorization ?? state.hadAuthorization
+            else { throw ScreenTimeError.configurationChanged }
+            let original = state
+            state.updateAuthorization(latestAuthorization)
+            try state.commitFocus(session, at: Date(), calendar: .current)
+            _ = try focusExceptions(applicationData: session.applicationData, in: state)
+            try validateCapacity(of: state, replacing: original)
+          }, afterSave: applyShields)
+        return try synchronizeCoordinatedSchedules()
+      } catch {
+        // Cancelled/revoked state wins; remove the staged guard without reviving this round.
+        _ = try? synchronizeCoordinatedSchedules()
+        throw error
+      }
+    }
+  }
+
+  func endFocus(id: UUID) throws -> DaywellState {
+    try update { try $0.endFocus(id: id) }
+  }
+
+  private func focusExceptions(applicationData: Data, in state: DaywellState) throws -> Set<
+    ApplicationToken
+  > {
+    var applications = try allowedApplications(in: state)
+    applications.insert(try JSONDecoder().decode(ApplicationToken.self, from: applicationData))
+    guard applications.count <= Self.shieldTokenLimit else {
+      throw ScreenTimeError.focusExceptionLimitExceeded
+    }
+    return applications
   }
 
   func updateFitness(
@@ -266,6 +363,9 @@ final class ScreenTimeService: @unchecked Sendable {
     return try update { state in
       guard state.hadAuthorization else { throw ScreenTimeError.authorizationRequired }
       state.alwaysAllowedApplicationsData = data
+      if let session = state.focusSession {
+        _ = try focusExceptions(applicationData: session.applicationData, in: state)
+      }
     }
   }
 
@@ -353,11 +453,13 @@ final class ScreenTimeService: @unchecked Sendable {
       // A rejected edit never reached the monitor registration step.
       switch error as? DaywellError {
       case .overlappingPeriods?, .deactivationVerificationRequired?, .stateBusy?,
-        .monitoringCapacityExceeded?:
+        .monitoringCapacityExceeded?, .invalidFocusDuration?, .focusApplicationRequired?,
+        .focusUnavailable?, .focusAlreadyActive?, .staleFocusSession?:
         break
       default:
         switch error as? ScreenTimeError {
-        case .authorizationRequired?, .activeSelectionLimitExceeded?: break
+        case .authorizationRequired?, .activeSelectionLimitExceeded?, .focusExceptionLimitExceeded?:
+          break
         default: recordMonitoringError(error)
         }
       }
@@ -474,6 +576,20 @@ final class ScreenTimeService: @unchecked Sendable {
     }
     let now = Date()
     let alwaysAllowed = try allowedApplications(in: state)
+    if state.hasFocusRestriction(at: now), let focus = state.focusSession,
+      registeredActivities.contains(.init(focus.monitorName))
+    {
+      // Focus and sleep are mutually exclusive; reuse the primary store to retain
+      // capacity for legacy sleep batches. Do not block web content in the allowed app.
+      settings.shield.applications = nil
+      settings.shield.applicationCategories = .all(
+        except: try focusExceptions(applicationData: focus.applicationData, in: state))
+      settings.shield.webDomains = nil
+      settings.shield.webDomainCategories = nil
+      for index in 1..<state.sleepShieldStoreCount { sleepStore(at: index).clearAllSettings() }
+      fitnessSettings.clearAllSettings()
+      return
+    }
     let fitnessOwnsLock = state.hasFitnessRestriction(at: now)
     if fitnessOwnsLock { applyFitnessShield(state.fitness, except: alwaysAllowed, at: now) }
     // Install the incoming owner's restriction before removing the outgoing store.
@@ -607,6 +723,19 @@ final class ScreenTimeService: @unchecked Sendable {
 }
 
 extension FamilyActivitySelection {
+  /// A picker may attach a parent category even when only one app is selected.
+  /// Focus saves only the concrete app token; category and website metadata is not a target.
+  var focusSelectionError: String? {
+    switch applicationTokens.count {
+    case 0:
+      return "请选择一个具体的 App，类别或网站不能单独作为聚焦应用。"
+    case 1:
+      return nil
+    default:
+      return "聚焦只能选择 1 个 App，当前已选 \(applicationTokens.count) 个。请取消多余选择。"
+    }
+  }
+
   var isEmpty: Bool {
     applicationTokens.isEmpty && categoryTokens.isEmpty && webDomainTokens.isEmpty
   }

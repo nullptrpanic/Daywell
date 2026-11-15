@@ -57,6 +57,13 @@ final class ScreenTimeService: @unchecked Sendable {
     try storage.transaction { $0.morningPolicy = policy }.state
   }
 
+  func saveFocusMinutes(_ minutes: Int) throws -> DaywellState {
+    try storage.transaction { try $0.focusConfiguration.setMinutes(minutes) }.state
+  }
+
+  func beginFocus() throws -> DaywellState { throw ScreenTimeError.previewUnavailable }
+  func endFocus(id: UUID) throws -> DaywellState { throw ScreenTimeError.previewUnavailable }
+
   func updateFitness(
     initial: FitnessTraining, _ change: (inout FitnessTraining) -> Void
   ) throws -> DaywellState {

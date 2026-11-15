@@ -35,8 +35,8 @@ struct GlobalSettingsView: View {
           Text(ScreenTimeService.isFreePreview ? "Daywell 预览" : "Daywell").font(.headline)
           Text(
             ScreenTimeService.isFreePreview
-              ? "配置仅保存在当前预览应用，不会同步到完整版本。不测量实际睡眠。"
-              : "配置仅保存在当前设备。Daywell 提供时段限制，不测量实际睡眠。"
+              ? "可体验睡眠、聚焦和健身的界面与设置，不会实际锁定应用。配置仅保存在当前预览应用，不会同步到完整版本。不测量实际睡眠。"
+              : "Daywell 提供睡眠时段锁定、聚焦和健身计数，帮助管理日常节奏。配置仅保存在当前设备，不测量实际睡眠。"
           )
           .font(.footnote).foregroundStyle(DaywellTheme.muted)
           Divider().padding(.top, 8)
@@ -69,13 +69,16 @@ struct GlobalSettingsView: View {
     let detail: String
     if ScreenTimeService.isFreePreview {
       status = "预览版"
-      detail = "预览版可保存设置并体验倒计时，应用锁定需要完整版。"
+      detail = "预览版可保存睡眠、聚焦和健身设置，应用圈选与实际锁定需要已授权的完整版真机。"
     } else if ScreenTimeService.isSimulator {
       status = "模拟器"
-      detail = "在 iPhone 或 iPad 上开启授权，即可使用应用圈选和自动锁定。"
+      detail = "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。"
     } else {
       status = model.isAuthorized ? "已授权" : "未授权"
-      detail = "睡眠时段和组间休息共用这项授权。你可以在 iOS 设置中撤销授权。"
+      detail =
+        model.isAuthorized
+        ? "睡眠、聚焦和健身共用这项授权。你可以在 iOS 设置中撤销授权。"
+        : "Daywell 使用屏幕使用时间，为睡眠、聚焦和健身限制应用。点击“继续”查看系统授权请求，你可以选择是否允许。"
     }
     return VStack(alignment: .leading, spacing: 16) {
       HStack {
@@ -85,7 +88,7 @@ struct GlobalSettingsView: View {
       }
       Text(detail).font(.footnote).foregroundStyle(DaywellTheme.muted)
       if !ScreenTimeService.isFreePreview && !ScreenTimeService.isSimulator && !model.isAuthorized {
-        Button("开启授权") { Task { await model.authorize() } }
+        Button("继续") { Task { await model.authorize() } }
           .buttonStyle(PrimaryButtonStyle())
           .disabled(model.isBusy || model.startupError != nil)
       }
@@ -97,7 +100,7 @@ struct GlobalSettingsView: View {
       let count = model.alwaysAllowedSelection.applicationTokens.count
       return VStack(alignment: .leading, spacing: 12) {
         Label("豁免名单", systemImage: "checkmark.shield").font(.headline)
-        Text("名单里的 App 在睡眠和健身锁定时仍可使用。请加入电话、信息等需要保留的 App。")
+        Text("名单里的 App 在睡眠、聚焦和健身锁定时仍可使用。请加入电话、信息等需要保留的 App。")
           .font(.footnote).foregroundStyle(DaywellTheme.muted)
         Button(count == 0 ? "选择要豁免的 App" : "已选 \(count) 个 App，修改") {
           showingExemptionList = true
@@ -124,6 +127,7 @@ struct SettingsView: View {
             FitnessSettingsCard()
             FitnessRestSettingsCard()
           }
+          if tab == .focus { FocusSettingsCard() }
           if tab == .sleep {
             MorningSettingsCard()
               .disabled(model.isBusy || model.startupError != nil)

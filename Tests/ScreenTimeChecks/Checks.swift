@@ -8,6 +8,11 @@ import Foundation
       .appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: World.directory) }
     let store = try StateStore(directory: World.directory)
+    if scenario.hasPrefix("focus-") {
+      try await FocusChecks.run(scenario, store: store)
+      print("Passed:", scenario)
+      return
+    }
     if scenario.hasPrefix("interaction-") {
       try await LockInteractionChecks.run(scenario, store: store)
       print("Passed:", scenario)
@@ -353,6 +358,67 @@ import Foundation
       check(
         service.isFitnessShieldApplied,
         "Correcting the exemption list did not recover fitness locking")
+    } else if scenario == "fitness-shield-navigation" {
+      let service = try ScreenTimeService()
+      let extensionAction = ShieldActionExtension()
+      func tap(_ action: ShieldAction = .primaryButtonPressed) -> [ShieldActionResponse] {
+        var responses: [ShieldActionResponse] = []
+        extensionAction.handle(action: action, for: 2) { responses.append($0) }
+        return responses
+      }
+      _ = try service.refresh()
+      let model = DaywellModel()
+      check(tap() == [.close], "The sleep shield opened the workout")
+      check(!(await model.consumeFitnessNavigation()), "Sleep left a workout navigation request")
+      check(tap(.secondaryButtonPressed) == [.defer], "The sleep exemption stopped working")
+      check(
+        try store.read().activeSessions(at: now).first?.usedCount == 1, "Exemption was not saved")
+
+      try store.transaction { state in
+        state.periods = []
+        state.sessions = []
+        var training = FitnessTraining(restEnabled: true)
+        training.completeGroup(at: now.addingTimeInterval(-60))
+        state.fitness = training
+      }
+      let before = try service.refresh()
+      check(service.isFitnessShieldApplied, "The workout fixture did not apply its shield")
+      check(
+        tap() == [.openParentalControlsApp], "The fitness button did not ask iOS to open Daywell")
+      check(
+        await model.consumeFitnessNavigation(), "The main app did not receive the fitness route")
+      check(!(await model.consumeFitnessNavigation()), "The route was handled more than once")
+      check(try store.read() == before, "Opening Daywell changed the workout or its restrictions")
+      check(service.isFitnessShieldApplied, "Opening Daywell released the workout shield")
+
+      var websiteResponses: [ShieldActionResponse] = []
+      extensionAction.handle(action: .primaryButtonPressed, for: ShieldWebDomainToken()) {
+        websiteResponses.append($0)
+      }
+      check(
+        websiteResponses == [.openParentalControlsApp],
+        "The fitness website shield did not open Daywell")
+      check(await model.consumeFitnessNavigation(), "The website shield lost its route")
+
+      var categoryResponses: [ShieldActionResponse] = []
+      extensionAction.handle(action: .primaryButtonPressed, for: ShieldActivityCategoryToken()) {
+        categoryResponses.append($0)
+      }
+      check(
+        categoryResponses == [.openParentalControlsApp],
+        "The fitness category shield did not open Daywell")
+      check(await model.consumeFitnessNavigation(), "The category shield lost its route")
+
+      try store.requestFitnessNavigation(at: now.addingTimeInterval(-31))
+      check(!(await model.consumeFitnessNavigation()), "An expired route opened the fitness tab")
+      check(
+        !(try store.consumeFitnessNavigation(at: now.addingTimeInterval(-29))),
+        "An expired route was retained")
+
+      try store.transaction { $0.fitness?.reset() }
+      check(service.isFitnessShieldApplied, "The stale shield fixture was not still applied")
+      check(tap() == [.close], "The stale fitness shield opened Daywell")
+      check(!(await model.consumeFitnessNavigation()), "The stale fitness shield left a route")
     } else if scenario == "fitness-no-allowlist" {
       try store.transaction { state in
         state.periods = []

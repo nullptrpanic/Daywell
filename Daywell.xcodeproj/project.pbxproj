@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F0C055000000000000000002 /* App/FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C055000000000000000001 /* App/FocusView.swift */; };
+		F0C055000000000000000003 /* App/FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C055000000000000000001 /* App/FocusView.swift */; };
 		0271D52DEB9C58CD15AD4C49 /* App/Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7953575E987C8F2F60E968AA /* App/Theme.swift */; };
 		0C03625CADA94DE7A00B631F /* DaywellCore in Frameworks */ = {isa = PBXBuildFile; productRef = C06565FEA6E949AA9D5365CC /* DaywellCore */; };
 		19B803E6D03F56468C63232E /* DaywellActivityMonitor.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EF7F33D8B9D9B64B280FCF8A /* DaywellActivityMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -87,6 +89,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F0C055000000000000000001 /* App/FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/FocusView.swift; sourceTree = SOURCE_ROOT; };
 		018BDA9E5A564061A670B9FC /* App/PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = App/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
 		272869B039A19E98189B60EF /* Config/DaywellActivityMonitor-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/DaywellActivityMonitor-Info.plist"; sourceTree = SOURCE_ROOT; };
 		2D9F6CB8FC7E7C102DA19165 /* App/SleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/SleepView.swift; sourceTree = SOURCE_ROOT; };
@@ -196,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				F17E55000000000000000001 /* App/FitnessView.swift */,
+				F0C055000000000000000001 /* App/FocusView.swift */,
 				558DAE83B378239461BE29FA /* App/ApplicationSelectionView.swift */,
 				D3F1094FABA6EEC4494B79F7 /* App/DaywellApp.swift */,
 				D432EA8CF34C374BC95BDF18 /* App/DaywellModel.swift */,
@@ -541,6 +545,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F17E55000000000000000002 /* App/FitnessView.swift in Sources */,
+				F0C055000000000000000002 /* App/FocusView.swift in Sources */,
 				5CFEB29CC4BA4AE30636ACFB /* App/ApplicationSelectionView.swift in Sources */,
 				B6224BFB0187534FB46342D8 /* App/DaywellApp.swift in Sources */,
 				A3A6A736F3CDC3251C8BF961 /* App/DaywellModel.swift in Sources */,
@@ -576,6 +581,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F17E55000000000000000003 /* App/FitnessView.swift in Sources */,
+				F0C055000000000000000003 /* App/FocusView.swift in Sources */,
 				CBAAF3AD9226BD69708A3172 /* App/DaywellApp.swift in Sources */,
 				CE51074F1744E7CAB39DE5E5 /* App/DaywellModel.swift in Sources */,
 				BFE0106AE9AE4CE1E89B967E /* App/DaywellRootView.swift in Sources */,

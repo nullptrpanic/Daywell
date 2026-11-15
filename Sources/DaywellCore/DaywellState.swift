@@ -60,6 +60,8 @@ public struct DaywellState: Codable, Equatable, Sendable {
   public var policy = ExemptionPolicy.standard
   public var morningPolicy = MorningPolicy.standard
   public var fitness: FitnessTraining?
+  public var focusConfiguration = FocusConfiguration()
+  public internal(set) var focusSession: FocusSession?
   public internal(set) var sessions: [LockSession] = []
   public internal(set) var morningWindows: [MorningWindow] = []
   public internal(set) var reservation: ExemptionReservation?
@@ -90,6 +92,10 @@ public struct DaywellState: Codable, Equatable, Sendable {
     morningPolicy =
       version == 1 ? .standard : try values.decode(MorningPolicy.self, forKey: .morningPolicy)
     fitness = try values.decodeIfPresent(FitnessTraining.self, forKey: .fitness)
+    focusConfiguration =
+      try values.decodeIfPresent(FocusConfiguration.self, forKey: .focusConfiguration)
+      ?? FocusConfiguration()
+    focusSession = try values.decodeIfPresent(FocusSession.self, forKey: .focusSession)
     morningCancelledThrough = try values.decodeIfPresent(
       Date.self, forKey: .morningCancelledThrough)
     lastEvaluatedAt = try values.decodeIfPresent(Date.self, forKey: .lastEvaluatedAt)
@@ -143,6 +149,7 @@ public struct DaywellState: Codable, Equatable, Sendable {
       lastEvaluatedAt = max(lastEvaluatedAt ?? date, date)
     }
     // Retain recent occurrences so relaunching or moving the clock back doesn't reset their quota.
+    reconcileFocus(at: date)
     fitness?.refresh(at: date)
     let retention = date.addingTimeInterval(-8 * 24 * 60 * 60)
     sessions.removeAll { $0.occurrence.end < retention }
@@ -363,6 +370,9 @@ public struct DaywellState: Codable, Equatable, Sendable {
     needsApplicationReselection = true
     selectionData = nil
     alwaysAllowedApplicationsData = nil
+    focusSession = nil
+    focusConfiguration.applicationData = nil
+    focusConfiguration.recentApplications = []
     reservation = nil
     // Tokens are void after revocation. Keep counts but never reuse those opaque tokens.
   }
@@ -432,6 +442,8 @@ public struct DaywellState: Codable, Equatable, Sendable {
     guard schemaVersion == 2 else { throw DaywellError.unsupportedSchema }
     guard (1...49).contains(sleepShieldStoreCount) else { throw DaywellError.invalidState }
     try fitness?.validate()
+    try focusConfiguration.validate()
+    try focusSession?.validate()
     guard Set(periods.map(\.id)).count == periods.count,
       Set(sessions.map(\.id)).count == sessions.count,
       Set(morningWindows.map(\.id)).count == morningWindows.count

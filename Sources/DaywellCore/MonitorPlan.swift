@@ -87,6 +87,12 @@ public struct MonitorPlan: Equatable, Sendable {
         addDeadline(name: name, start: pending.createdAt, end: grant.end)
       }
     }
+    if let focus = state.focusSession, state.hasFocusRestriction(at: date) {
+      // Only the system schedule needs whole seconds. Rounding the session's own
+      // deadline would add an extra displayed second to fractional start times.
+      let boundary = Date(timeIntervalSince1970: ceil(focus.end.timeIntervalSince1970))
+      addDeadline(name: focus.monitorName, start: focus.start, end: boundary)
+    }
     if let idleEnd = state.fitness?.inactivityEndsAt {
       let boundary = Date(timeIntervalSince1970: ceil(idleEnd.timeIntervalSince1970))
       addDeadline(name: fitnessIdleName(for: idleEnd), start: boundary, end: boundary)
@@ -99,7 +105,7 @@ public struct MonitorPlan: Equatable, Sendable {
         // Start at the deadline so the first use after an idle rest can wake the monitor.
         addDeadline(
           name: fitnessRestName(for: restEnd), start: boundary,
-          end: boundary.addingTimeInterval(24 * 60 * 60), startPadding: 0)
+          end: boundary.addingTimeInterval(30 * 60), startPadding: 0)
       }
     }
     plans.append(contentsOf: deadlines.values.sorted { $0.name < $1.name })
@@ -146,7 +152,7 @@ public struct MonitorPlan: Equatable, Sendable {
     -> Int
   {
     // Single-owner rules bound the transient monitors: current/next release guards,
-    // one grace, one morning event, fitness rest/idle and two staged replacements.
+    // one grace (or focus end), one morning event, fitness rest/idle and two staged replacements.
     // Daily monitors can also contain a deleted-but-still-running frozen period.
     let plans = make(for: state, at: date, calendar: calendar)
     let daily = plans.filter { $0.name.hasPrefix(prefix + "period.") }.count

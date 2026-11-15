@@ -3,6 +3,7 @@ import Foundation
 extension DaywellState {
   /// Cancelling a task is durable: an old callback or a clock change cannot revive it.
   mutating func reconcileLockRules(at date: Date) {
+    defer { reconcileFocus(at: date) }
     let sleeps = sessions.filter {
       !$0.isMorning && $0.cancelledAt == nil && $0.occurrence.start <= date
     }

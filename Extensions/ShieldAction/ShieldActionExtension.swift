@@ -25,6 +25,12 @@ final class ShieldActionExtension: ShieldActionDelegate {
   private func handle(
     _ action: ShieldAction, completionHandler: @escaping (ShieldActionResponse) -> Void
   ) {
+    if #available(iOS 26.5, *), action == .primaryButtonPressed,
+      (try? ScreenTimeService().requestFitnessNavigation()) == true
+    {
+      completionHandler(.openParentalControlsApp)
+      return
+    }
     guard action == .secondaryButtonPressed else {
       completionHandler(.close)
       return
