@@ -8,6 +8,15 @@ enum DaywellTab: String, CaseIterable, Identifiable {
   case fitness = "健身"
   case settings = "设置"
   var id: Self { self }
+  var title: String {
+    switch self {
+    case .sleep: String(localized: "睡眠")
+    case .focus: String(localized: "聚焦")
+    case .fitness: String(localized: "健身")
+    case .settings: String(localized: "设置")
+    }
+  }
+  var settingsTitle: String { String(localized: "\(title)设置") }
   var icon: String {
     switch self {
     case .sleep: return "moon.zzz.fill"
@@ -88,7 +97,7 @@ struct DaywellRootView: View {
         } label: {
           VStack(spacing: 6) {
             Image(systemName: item.icon).font(.system(size: 20, weight: .medium))
-            Text(item.rawValue).font(.caption.weight(.medium))
+            Text(item.title).font(.caption.weight(.medium))
           }
           .foregroundStyle(tab == item ? DaywellTheme.accent : DaywellTheme.muted)
           .frame(maxWidth: .infinity, minHeight: 58)
@@ -118,7 +127,7 @@ struct PageHeading: View {
       VStack(alignment: .leading, spacing: 7) {
         Text("DAYWELL").font(.caption.weight(.semibold)).tracking(3).foregroundStyle(
           DaywellTheme.muted)
-        Text(tab.rawValue).font(.largeTitle.bold())
+        Text(tab.title).font(.largeTitle.bold())
       }
       Spacer()
       if let openSettings {
@@ -131,7 +140,7 @@ struct PageHeading: View {
           )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(tab.rawValue)设置")
+        .accessibilityLabel(tab.settingsTitle)
         .accessibilityIdentifier("\(tab).settings")
       }
     }

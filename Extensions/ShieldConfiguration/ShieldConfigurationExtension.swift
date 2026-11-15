@@ -1,27 +1,28 @@
 import DaywellCore
+import Foundation
 import ManagedSettings
 import ManagedSettingsUI
 import UIKit
 
 final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
   override func configuration(shielding application: Application) -> ShieldConfiguration {
-    configuration(name: application.localizedDisplayName ?? "这个应用")
+    configuration(name: application.localizedDisplayName ?? String(localized: "这个应用"))
   }
 
   override func configuration(shielding application: Application, in category: ActivityCategory)
     -> ShieldConfiguration
   {
-    configuration(name: application.localizedDisplayName ?? "这个应用")
+    configuration(name: application.localizedDisplayName ?? String(localized: "这个应用"))
   }
 
   override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
-    configuration(name: "这个网站")
+    configuration(name: String(localized: "这个网站"))
   }
 
   override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory)
     -> ShieldConfiguration
   {
-    configuration(name: "这个网站")
+    configuration(name: String(localized: "这个网站"))
   }
 
   private func configuration(name: String) -> ShieldConfiguration {
@@ -40,38 +41,50 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     if isFitness {
       detail =
         ScreenTimeService.supportsOpeningFitnessFromShield
-        ? "点下方按钮回到 Daywell 健身页。练完记一组，下一轮休息就会开始。"
-        : "练完后请手动打开 Daywell，在健身页记一组。"
+        ? String(localized: "点下方按钮回到 Daywell 健身页。练完记一组，下一轮休息就会开始。")
+        : String(localized: "练完后请手动打开 Daywell，在健身页记一组。")
     } else if isFocus {
-      let time = state?.focusSession?.end.formatted(date: .omitted, time: .shortened) ?? "稍后"
-      detail = "把注意力留给你选择的应用。\n聚焦到 \(time) 结束。需要提前结束时，请回 Daywell 输入验证码。"
+      let time =
+        state?.focusSession?.end.formatted(date: .omitted, time: .shortened)
+        ?? String(localized: "稍后")
+      detail = String(localized: "把注意力留给你选择的应用。\n聚焦到 \(time) 结束。需要提前结束时，请回 Daywell 输入验证码。")
     } else if isMorning {
       let end = blocking.map(\.occurrence.end).max()!
       let time = end.formatted(date: .omitted, time: .shortened)
       let allowance: String
       if let offer {
-        allowance = "还可临时豁免 \(offer.remainingCount) 次，本次\(offer.durationLabel)。"
+        allowance = String(localized: "还可临时豁免 \(offer.remainingCount) 次，本次\(offer.durationLabel)。")
       } else if exhausted {
-        allowance = "本轮豁免已用完，洗漱、喝杯水，稍后再回来。"
+        allowance = String(localized: "本轮豁免已用完，洗漱、喝杯水，稍后再回来。")
       } else {
-        allowance = "如需检查限制状态，请打开 Daywell。"
+        allowance = String(localized: "如需检查限制状态，请打开 Daywell。")
       }
-      detail = "先去洗漱、喝杯水，慢慢开始今天。\n本轮休息到 \(time)，之后可再使用\(name)。\n\(allowance)"
+      detail = String(localized: "先去洗漱、喝杯水，慢慢开始今天。\n本轮休息到 \(time)，之后可再使用\(name)。\n\(allowance)")
     } else if let offer {
       detail =
-        "\(name)正在 Daywell 的锁定时段内。\n还可临时豁免 \(offer.remainingCount) 次，本次\(offer.durationLabel)。"
+        String(
+          localized:
+            "\(name)正在 Daywell 的锁定时段内。\n还可临时豁免 \(offer.remainingCount) 次，本次\(offer.durationLabel)。")
     } else if exhausted {
-      detail = "\(name)正在 Daywell 的锁定时段内。\n本时段已无可用豁免，等休息结束再回来。"
+      detail = String(localized: "\(name)正在 Daywell 的锁定时段内。\n本时段已无可用豁免，等休息结束再回来。")
     } else {
-      detail = "\(name)正在 Daywell 的锁定时段内。\n如需检查限制状态，请打开 Daywell。"
+      detail = String(localized: "\(name)正在 Daywell 的锁定时段内。\n如需检查限制状态，请打开 Daywell。")
     }
     let title =
-      isFitness ? "休息好了，该下一组了" : (isFocus ? "一次，只专注一件事" : (isMorning ? "早安，先照顾好自己" : "让屏幕，也休息一会儿"))
+      isFitness
+      ? String(localized: "休息好了，该下一组了")
+      : (isFocus
+        ? String(localized: "一次，只专注一件事")
+        : (isMorning ? String(localized: "早安，先照顾好自己") : String(localized: "让屏幕，也休息一会儿")))
     let symbol =
       isFitness
       ? "dumbbell.fill" : (isFocus ? "scope" : (isMorning ? "sun.horizon.fill" : "moon.zzz.fill"))
     let primaryLabel =
-      isFitness ? "好，去练下一组" : (isFocus ? "好的，继续聚焦" : (isMorning ? "好的，先去洗漱" : "好的，继续休息"))
+      isFitness
+      ? String(localized: "好，去练下一组")
+      : (isFocus
+        ? String(localized: "好的，继续聚焦")
+        : (isMorning ? String(localized: "好的，先去洗漱") : String(localized: "好的，继续休息")))
     let accent = UIColor { traits in
       traits.userInterfaceStyle == .dark
         ? UIColor(red: 0.77, green: 0.72, blue: 1, alpha: 1)
@@ -94,7 +107,7 @@ final class ShieldConfigurationExtension: ShieldConfigurationDataSource {
       primaryButtonLabel: .init(text: primaryLabel, color: buttonText),
       primaryButtonBackgroundColor: accent,
       secondaryButtonLabel: offer.map { _ in
-        .init(text: "临时豁免", color: accent)
+        .init(text: String(localized: "临时豁免"), color: accent)
       }
     )
   }

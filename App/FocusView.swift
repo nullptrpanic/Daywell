@@ -74,7 +74,10 @@ struct FocusView: View {
   private var hero: some View {
     VStack(alignment: .leading, spacing: 22) {
       HStack {
-        Label(session == nil ? "准备开始" : "正在聚焦", systemImage: "scope")
+        Label(
+          session == nil ? String(localized: "准备开始") : String(localized: "正在聚焦"),
+          systemImage: "scope"
+        )
           .font(.caption.weight(.semibold))
           .padding(.horizontal, 12).padding(.vertical, 8)
           .background(DaywellTheme.surface.opacity(0.6), in: Capsule())
@@ -127,9 +130,9 @@ struct FocusView: View {
 
   private func countdown(_ seconds: Int) -> some View {
     HStack(alignment: .firstTextBaseline, spacing: 5) {
-      timePart(seconds / 3600, unit: "小时")
-      timePart(seconds / 60 % 60, unit: "分")
-      timePart(seconds % 60, unit: "秒")
+      timePart(seconds / 3600, unit: String(localized: "小时"))
+      timePart(seconds / 60 % 60, unit: String(localized: "分"))
+      timePart(seconds % 60, unit: String(localized: "秒"))
     }
     .minimumScaleFactor(0.65).lineLimit(1)
     .accessibilityElement(children: .ignore)
@@ -147,12 +150,12 @@ struct FocusView: View {
 
   private var footer: String {
     if ScreenTimeService.isFreePreview || ScreenTimeService.isSimulator {
-      return "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。"
+      return String(localized: "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。")
     }
-    if !model.isAuthorized { return "开启前需要授权屏幕使用时间。" }
-    if unavailable { return "其他锁定正在执行，结束后可开启聚焦。临时豁免不会改变这一状态。" }
+    if !model.isAuthorized { return String(localized: "开启前需要授权屏幕使用时间。") }
+    if unavailable { return String(localized: "其他锁定正在执行，结束后可开启聚焦。临时豁免不会改变这一状态。") }
     return session == nil
-      ? "开启后，请自行打开所选应用。" : "提前关闭需要输入验证码；时间结束后自动恢复。"
+      ? String(localized: "开启后，请自行打开所选应用。") : String(localized: "提前关闭需要输入验证码；时间结束后自动恢复。")
   }
 
   private var applicationCards: some View {
@@ -173,7 +176,10 @@ struct FocusView: View {
         .buttonStyle(.plain)
         .disabled(session != nil || model.isBusy || model.startupError != nil)
         .accessibilityIdentifier("focus.chooseApp")
-        Text(session == nil ? "只选择一个 App，开启前可以更换。" : "本轮应用已固定，结束后可以更换。")
+        Text(
+          session == nil
+            ? String(localized: "只选择一个 App，开启前可以更换。") : String(localized: "本轮应用已固定，结束后可以更换。")
+        )
           .font(.footnote).foregroundStyle(DaywellTheme.muted)
       }.daywellCard()
       if !model.state.focusConfiguration.recentApplications.isEmpty {
@@ -241,8 +247,8 @@ struct FocusView: View {
     if ScreenTimeService.isFreePreview || ScreenTimeService.isSimulator {
       model.errorMessage =
         ScreenTimeService.isFreePreview
-        ? "预览版不支持应用圈选或聚焦锁定。请在已授权的 iPhone 或 iPad 上使用 Daywell 完整版。"
-        : "模拟器无法圈选或锁定真实应用。请在 iPhone 或 iPad 真机上运行 Daywell，授权屏幕使用时间后使用聚焦。"
+        ? String(localized: "预览版不支持应用圈选或聚焦锁定。请在已授权的 iPhone 或 iPad 上使用 Daywell 完整版。")
+        : String(localized: "模拟器无法圈选或锁定真实应用。请在 iPhone 或 iPad 真机上运行 Daywell，授权屏幕使用时间后使用聚焦。")
       return false
     }
     guard model.isAuthorized else {

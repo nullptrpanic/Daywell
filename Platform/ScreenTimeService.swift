@@ -19,17 +19,18 @@ enum ScreenTimeError: LocalizedError {
 
   var errorDescription: String? {
     switch self {
-    case .appGroupUnavailable: return "无法访问共享数据，请检查应用及扩展的 App Groups 签名配置。"
-    case .authorizationRequired: return "请先授权屏幕使用时间，并重新选择需要限制的应用。"
-    case .simulator: return "模拟器可预览界面；应用圈选和实际锁定需要在 iPhone 或 iPad 真机上验证。"
-    case .configurationChanged: return "配置正在更新，请稍后重试。当前限制会保留。"
-    case .emptySelection: return "清晨模式需要先圈选应用，请重新选择需要限制的应用。"
-    case .selectionLimitExceeded: return "应用、类别和网站各可单独选择最多 50 个。需要限制更多应用时，请按类别圈选。"
+    case .appGroupUnavailable: return String(localized: "无法访问共享数据，请检查应用及扩展的 App Groups 签名配置。")
+    case .authorizationRequired: return String(localized: "请先授权屏幕使用时间，并重新选择需要限制的应用。")
+    case .simulator: return String(localized: "模拟器可预览界面；应用圈选和实际锁定需要在 iPhone 或 iPad 真机上验证。")
+    case .configurationChanged: return String(localized: "配置正在更新，请稍后重试。当前限制会保留。")
+    case .emptySelection: return String(localized: "清晨模式需要先圈选应用，请重新选择需要限制的应用。")
+    case .selectionLimitExceeded:
+      return String(localized: "应用、类别和网站各可单独选择最多 50 个。需要限制更多应用时，请按类别圈选。")
     case .activeSelectionLimitExceeded:
-      return "本轮仍保留原来的锁定范围，加入后会超过系统的 50 个上限。请减少新增项，或在本轮结束后修改。"
-    case .invalidAllowedApplications: return "豁免名单最多支持 50 个 App，请减少圈选。"
-    case .combinedSelectionLimitExceeded: return "同时执行的锁定范围过多，请先结束部分时段后重试。"
-    case .focusExceptionLimitExceeded: return "聚焦应用与豁免名单合计最多 50 个 App，请先减少豁免名单。"
+      return String(localized: "本轮仍保留原来的锁定范围，加入后会超过系统的 50 个上限。请减少新增项，或在本轮结束后修改。")
+    case .invalidAllowedApplications: return String(localized: "豁免名单最多支持 50 个 App，请减少圈选。")
+    case .combinedSelectionLimitExceeded: return String(localized: "同时执行的锁定范围过多，请先结束部分时段后重试。")
+    case .focusExceptionLimitExceeded: return String(localized: "聚焦应用与豁免名单合计最多 50 个 App，请先减少豁免名单。")
     }
   }
 }
@@ -728,11 +729,11 @@ extension FamilyActivitySelection {
   var focusSelectionError: String? {
     switch applicationTokens.count {
     case 0:
-      return "请选择一个具体的 App，类别或网站不能单独作为聚焦应用。"
+      return String(localized: "请选择一个具体的 App，类别或网站不能单独作为聚焦应用。")
     case 1:
       return nil
     default:
-      return "聚焦只能选择 1 个 App，当前已选 \(applicationTokens.count) 个。请取消多余选择。"
+      return String(localized: "聚焦只能选择 1 个 App，当前已选 \(applicationTokens.count) 个。请取消多余选择。")
     }
   }
 

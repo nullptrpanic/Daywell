@@ -120,12 +120,12 @@ final class DaywellModel: ObservableObject {
       $0.start < $1.start
     }
   }
-  var exemptionLabel: String { "临时豁免" }
+  var exemptionLabel: String { String(localized: "临时豁免") }
   var exemptionExplanation: String {
     let count = blockingSessions.count
     return count > 1
-      ? "当前有 \(count) 个重叠的锁定时段，将从各时段扣除 1 次机会，并按各自设置计时。到期后自动恢复限制。"
-      : "将使用本时段的 1 次豁免机会。到期后自动恢复限制，提前结束也不会退还次数。"
+      ? String(localized: "当前有 \(count) 个重叠的锁定时段，将从各时段扣除 1 次机会，并按各自设置计时。到期后自动恢复限制。")
+      : String(localized: "将使用本时段的 1 次豁免机会。到期后自动恢复限制，提前结束也不会退还次数。")
   }
 
   func tick(_ date: Date) {

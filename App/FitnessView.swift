@@ -27,10 +27,12 @@ struct FitnessView: View {
             openSettings()
           }
           VStack(spacing: 8) {
-            Text(celebrating ? "这一轮，完成得很棒！" : "一组一组，慢慢变强。")
+            Text(celebrating ? String(localized: "这一轮，完成得很棒！") : String(localized: "一组一组，慢慢变强。"))
               .font(.title3.weight(.semibold))
             Text(
-              celebrating ? "\(completedTarget) 组已完成，准备好再开始。" : "本轮目标 \(progress.targetGroups) 组"
+              celebrating
+                ? String(localized: "\(completedTarget) 组已完成，准备好再开始。")
+                : String(localized: "本轮目标 \(progress.targetGroups) 组")
             )
             .font(.subheadline).foregroundStyle(DaywellTheme.muted)
           }
@@ -88,17 +90,21 @@ struct FitnessView: View {
     let canLock = model.isAuthorized
     let needsRetry = remaining != nil && canLock && model.state.monitoringError != nil
     let locked = remaining == 0 && model.fitnessShieldApplied
-    let title = locked ? "训练锁定中" : (remaining == 0 ? "休息结束" : "组间休息")
+    let title =
+      locked
+      ? String(localized: "训练锁定中")
+      : (remaining == 0 ? String(localized: "休息结束") : String(localized: "组间休息"))
     let statusMessage: String
     if remaining != nil && !model.fitness.locksAfterRest {
-      statusMessage = "睡眠时段已接管，本次休息只计时，不锁定。"
+      statusMessage = String(localized: "睡眠时段已接管，本次休息只计时，不锁定。")
     } else if let remaining {
       statusMessage =
-        remaining == 0 ? "休息时间到。完成下一组后重新计时。" : "记下一组后，从完整时长重新计时。"
+        remaining == 0
+        ? String(localized: "休息时间到。完成下一组后重新计时。") : String(localized: "记下一组后，从完整时长重新计时。")
     } else if progress.targetGroups == 1 {
-      statusMessage = "本轮只有 1 组。设置至少 2 组可使用组间休息。"
+      statusMessage = String(localized: "本轮只有 1 组。设置至少 2 组可使用组间休息。")
     } else {
-      statusMessage = "长按圆形按钮 \(Self.holdSeconds) 秒，记下一组后开始倒计时。"
+      statusMessage = String(localized: "长按圆形按钮 \(Self.holdSeconds) 秒，记下一组后开始倒计时。")
     }
     return VStack(alignment: .leading, spacing: 8) {
       HStack {
@@ -126,8 +132,8 @@ struct FitnessView: View {
       } else if !model.isAuthorized {
         Text(
           ScreenTimeService.isSimulator || ScreenTimeService.isFreePreview
-            ? "可预览倒计时。应用锁定需要在已授权的真机上运行完整版。"
-            : "在底栏「设置」开启屏幕使用时间授权。"
+            ? String(localized: "可预览倒计时。应用锁定需要在已授权的真机上运行完整版。")
+            : String(localized: "在底栏「设置」开启屏幕使用时间授权。")
         )
         .font(.footnote).foregroundStyle(DaywellTheme.muted)
       }
@@ -170,8 +176,10 @@ struct FitnessView: View {
           }
           Text(
             celebrating
-              ? "下一轮，从 0 开始"
-              : (holdStartedAt == nil ? "长按 \(Self.holdSeconds) 秒，完成一组" : "保持按住 · 松手取消")
+              ? String(localized: "下一轮，从 0 开始")
+              : (holdStartedAt == nil
+                ? String(localized: "长按 \(Self.holdSeconds) 秒，完成一组")
+                : String(localized: "保持按住 · 松手取消"))
           )
           .font(.footnote).foregroundStyle(DaywellTheme.muted)
           .multilineTextAlignment(.center)

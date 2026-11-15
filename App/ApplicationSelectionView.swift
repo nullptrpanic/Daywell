@@ -43,10 +43,10 @@ struct ApplicationSelectionView: View {
       VStack(spacing: 0) {
         Text(
           purpose == .focus
-            ? "只选择一个具体的 App。更换时，请先取消原来的勾选，再选择新的应用。"
+            ? String(localized: "只选择一个具体的 App。更换时，请先取消原来的勾选，再选择新的应用。")
             : purpose == .alwaysAllowed
-              ? "选择电话、信息等要保留的 App。勾选类别会加入其中的 App，网站不加入豁免名单。"
-              : "选择要锁定的应用、类别或网站。「豁免名单」中的 App 会跳过。新增项立即加入当前锁定，移除项从下轮生效。"
+              ? String(localized: "选择电话、信息等要保留的 App。勾选类别会加入其中的 App，网站不加入豁免名单。")
+              : String(localized: "选择要锁定的应用、类别或网站。「豁免名单」中的 App 会跳过。新增项立即加入当前锁定，移除项从下轮生效。")
         )
         .font(.footnote).foregroundStyle(.secondary).padding()
         if purpose == .focus {
@@ -80,7 +80,7 @@ struct ApplicationSelectionView: View {
           Text(
             purpose == .restricted
               ? ScreenTimeError.selectionLimitExceeded.localizedDescription
-              : "已超过豁免名单上限，请取消部分 App 后再完成。"
+              : String(localized: "已超过豁免名单上限，请取消部分 App 后再完成。")
           )
           .font(.footnote).foregroundStyle(DaywellTheme.muted).padding(.horizontal)
           Button("清空圈选") {
@@ -93,7 +93,7 @@ struct ApplicationSelectionView: View {
           .disabled(model.isBusy)
       }
       .navigationTitle(
-        purpose == .focus ? "选择聚焦应用" : (purpose == .alwaysAllowed ? "豁免名单" : "选择锁定应用")
+        purpose == .focus ? String(localized: "选择聚焦应用") : (purpose == .alwaysAllowed ? String(localized: "豁免名单") : String(localized: "选择锁定应用"))
       )
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -117,7 +117,7 @@ struct ApplicationSelectionView: View {
               if saved {
                 dismiss()
               } else if purpose == .focus {
-                saveError = model.errorMessage ?? "未能保存，请稍后重试。"
+                saveError = model.errorMessage ?? String(localized: "未能保存，请稍后重试。")
                 model.errorMessage = nil
               }
             }

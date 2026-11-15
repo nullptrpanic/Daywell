@@ -2,8 +2,12 @@ import DaywellCore
 import SwiftUI
 
 private enum DaywellWebsite {
-  static let support = URL(string: "https://nullptrpanic.github.io/Daywell/")!
-  static let privacy = support.appendingPathComponent("privacy.html")
+  private static let root = URL(string: "https://nullptrpanic.github.io/Daywell/")!
+  static var support: URL {
+    Bundle.main.preferredLocalizations.first == "zh-Hans"
+      ? root : root.appendingPathComponent("en", isDirectory: true)
+  }
+  static var privacy: URL { support.appendingPathComponent("privacy.html") }
 }
 
 struct GlobalSettingsView: View {
@@ -32,11 +36,12 @@ struct GlobalSettingsView: View {
           exemptionListCard
         #endif
         VStack(alignment: .leading, spacing: 8) {
-          Text(ScreenTimeService.isFreePreview ? "Daywell 预览" : "Daywell").font(.headline)
+          Text(ScreenTimeService.isFreePreview ? String(localized: "Daywell 预览") : "Daywell").font(
+            .headline)
           Text(
             ScreenTimeService.isFreePreview
-              ? "可体验睡眠、聚焦和健身的界面与设置，不会实际锁定应用。配置仅保存在当前预览应用，不会同步到完整版本。不测量实际睡眠。"
-              : "Daywell 提供睡眠时段锁定、聚焦和健身计数，帮助管理日常节奏。配置仅保存在当前设备，不测量实际睡眠。"
+              ? String(localized: "可体验睡眠、聚焦和健身的界面与设置，不会实际锁定应用。配置仅保存在当前预览应用，不会同步到完整版本。不测量实际睡眠。")
+              : String(localized: "Daywell 提供睡眠时段锁定、聚焦和健身计数，帮助管理日常节奏。配置仅保存在当前设备，不测量实际睡眠。")
           )
           .font(.footnote).foregroundStyle(DaywellTheme.muted)
           Divider().padding(.top, 8)
@@ -68,17 +73,17 @@ struct GlobalSettingsView: View {
     let status: String
     let detail: String
     if ScreenTimeService.isFreePreview {
-      status = "预览版"
-      detail = "预览版可保存睡眠、聚焦和健身设置，应用圈选与实际锁定需要已授权的完整版真机。"
+      status = String(localized: "预览版")
+      detail = String(localized: "预览版可保存睡眠、聚焦和健身设置，应用圈选与实际锁定需要已授权的完整版真机。")
     } else if ScreenTimeService.isSimulator {
-      status = "模拟器"
-      detail = "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。"
+      status = String(localized: "模拟器")
+      detail = String(localized: "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。")
     } else {
-      status = model.isAuthorized ? "已授权" : "未授权"
+      status = model.isAuthorized ? String(localized: "已授权") : String(localized: "未授权")
       detail =
         model.isAuthorized
-        ? "睡眠、聚焦和健身共用这项授权。你可以在 iOS 设置中撤销授权。"
-        : "Daywell 使用屏幕使用时间，为睡眠、聚焦和健身限制应用。点击“继续”查看系统授权请求，你可以选择是否允许。"
+        ? String(localized: "睡眠、聚焦和健身共用这项授权。你可以在 iOS 设置中撤销授权。")
+        : String(localized: "Daywell 使用屏幕使用时间，为睡眠、聚焦和健身限制应用。点击“继续”查看系统授权请求，你可以选择是否允许。")
     }
     return VStack(alignment: .leading, spacing: 16) {
       HStack {
@@ -102,7 +107,9 @@ struct GlobalSettingsView: View {
         Label("豁免名单", systemImage: "checkmark.shield").font(.headline)
         Text("名单里的 App 在睡眠、聚焦和健身锁定时仍可使用。请加入电话、信息等需要保留的 App。")
           .font(.footnote).foregroundStyle(DaywellTheme.muted)
-        Button(count == 0 ? "选择要豁免的 App" : "已选 \(count) 个 App，修改") {
+        Button(
+          count == 0 ? String(localized: "选择要豁免的 App") : String(localized: "已选 \(count) 个 App，修改")
+        ) {
           showingExemptionList = true
         }
         .disabled(!model.isAuthorized || model.isBusy || model.startupError != nil)
@@ -138,7 +145,7 @@ struct SettingsView: View {
       }
       .foregroundStyle(DaywellTheme.text)
       .background(DaywellTheme.background)
-      .navigationTitle("\(tab.rawValue)设置")
+      .navigationTitle(tab.settingsTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
@@ -170,8 +177,9 @@ struct SettingsView: View {
       }
       Text(
         count == 0
-          ? "此设置下不提供临时豁免，锁定页不会显示豁免按钮。修改会在后续时段生效。"
-          : "每轮睡眠与随后的清晨模式共用次数，最多 5 次。默认 2 次，时长依次为 10、5、3、2、1 分钟，可分别调整。修改会在后续时段生效。"
+          ? String(localized: "此设置下不提供临时豁免，锁定页不会显示豁免按钮。修改会在后续时段生效。")
+          : String(
+            localized: "每轮睡眠与随后的清晨模式共用次数，最多 5 次。默认 2 次，时长依次为 10、5、3、2、1 分钟，可分别调整。修改会在后续时段生效。")
       )
       .font(.footnote).foregroundStyle(DaywellTheme.muted)
       if hasChanges {
@@ -189,7 +197,7 @@ struct SettingsView: View {
     count = min(model.state.policy.allowedCount, 5)
     minutes = model.state.policy.configuredDurations
   }
-  private func settingValue(title: String, value: String) -> some View {
+  private func settingValue(title: LocalizedStringKey, value: LocalizedStringKey) -> some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title).font(.subheadline)
       Text(value).font(.headline).foregroundStyle(DaywellTheme.accent)
@@ -229,7 +237,7 @@ private struct MorningSettingsCard: View {
       .onChange(of: model.state.morningPolicy) { _, _ in load() }
   }
 
-  private func settingValue(_ title: String, minutes: Int) -> some View {
+  private func settingValue(_ title: LocalizedStringKey, minutes: Int) -> some View {
     VStack(alignment: .leading, spacing: 5) {
       Text(title).font(.subheadline)
       Text("\(minutes) 分钟").font(.headline).foregroundStyle(DaywellTheme.accent)

@@ -47,7 +47,7 @@ public struct ExemptionOffer: Equatable, Sendable {
   public let duration: TimeInterval
   public let remainingCount: Int
   public var durationLabel: String {
-    duration < 60 ? "不足 1 分钟" : "最多 \(Int(ceil(duration / 60))) 分钟"
+    duration < 60 ? String(localized: "不足 1 分钟") : String(localized: "最多 \(Int(ceil(duration / 60))) 分钟")
   }
 }
 

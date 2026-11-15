@@ -1,0 +1,4756 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ – %@ 次日": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ – %@ next day"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ – %@ 次日"
+          }
+        }
+      }
+    },
+    "%@正在 Daywell 的锁定时段内。\n如需检查限制状态，请打开 Daywell。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is restricted during this Daywell block.\nOpen Daywell to check its status."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@正在 Daywell 的锁定时段内。\n如需检查限制状态，请打开 Daywell。"
+          }
+        }
+      }
+    },
+    "%@正在 Daywell 的锁定时段内。\n本时段已无可用豁免，等休息结束再回来。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is restricted during this Daywell block.\nYou're out of passes. Come back when the block ends."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@正在 Daywell 的锁定时段内。\n本时段已无可用豁免，等休息结束再回来。"
+          }
+        }
+      }
+    },
+    "%@正在 Daywell 的锁定时段内。\n还可临时豁免 %lld 次，本次%@。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is restricted during this Daywell block.\nPasses left: %lld. This pass lasts %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@正在 Daywell 的锁定时段内。\n还可临时豁免 %lld 次，本次%@。"
+          }
+        }
+      }
+    },
+    "%@设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@设置"
+          }
+        }
+      }
+    },
+    "%lld 个 App": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个 App"
+          }
+        }
+      }
+    },
+    "%lld 个网站": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Websites: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个网站"
+          }
+        }
+      }
+    },
+    "%lld 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 分钟"
+          }
+        }
+      }
+    },
+    "%lld 次": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld pass"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld passes"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 次"
+          }
+        }
+      }
+    },
+    "%lld 秒": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sec"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 秒"
+          }
+        }
+      }
+    },
+    "%lld 类": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categories: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 类"
+          }
+        }
+      }
+    },
+    "%lld 组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld set"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld sets"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 组"
+          }
+        }
+      }
+    },
+    "%lld 组已完成，准备好再开始。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sets completed: %lld. Start again when you're ready."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 组已完成，准备好再开始。"
+          }
+        }
+      }
+    },
+    "/ %lld 组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/ %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/ %lld 组"
+          }
+        }
+      }
+    },
+    "30 分钟未完成新一组，本轮自动结束。目标组数可在右上角设置中调整。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your session ends after 30 minutes without a new set. Use the settings above to change your set goal."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 分钟未完成新一组，本轮自动结束。目标组数可在右上角设置中调整。"
+          }
+        }
+      }
+    },
+    "Daywell 使用屏幕使用时间，为睡眠、聚焦和健身限制应用。点击“继续”查看系统授权请求，你可以选择是否允许。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daywell uses Screen Time to limit apps during Sleep, Focus, and workouts. Tap Continue to see the system prompt and choose whether to allow access."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daywell 使用屏幕使用时间，为睡眠、聚焦和健身限制应用。点击“继续”查看系统授权请求，你可以选择是否允许。"
+          }
+        }
+      }
+    },
+    "Daywell 提供睡眠时段锁定、聚焦和健身计数，帮助管理日常节奏。配置仅保存在当前设备，不测量实际睡眠。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daywell helps you schedule app limits, focus on one app, and count workout sets. Settings stay on this device. Daywell doesn't measure your sleep."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daywell 提供睡眠时段锁定、聚焦和健身计数，帮助管理日常节奏。配置仅保存在当前设备，不测量实际睡眠。"
+          }
+        }
+      }
+    },
+    "Daywell 预览": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daywell Preview"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daywell 预览"
+          }
+        }
+      }
+    },
+    "、": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ", "
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "、"
+          }
+        }
+      }
+    },
+    "「%@ %@」与已保存的「%@ %@」重叠。请调整时间或重复星期。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@ %@” overlaps the saved block “%@ %@”. Change the times or repeat days."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「%@ %@」与已保存的「%@ %@」重叠。请调整时间或重复星期。"
+          }
+        }
+      }
+    },
+    "一": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mon"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一"
+          }
+        }
+      }
+    },
+    "一次，\n只专注一件事。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus on one thing\nat a time."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一次，\n只专注一件事。"
+          }
+        }
+      }
+    },
+    "一次，只专注一件事": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus on One Thing"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一次，只专注一件事"
+          }
+        }
+      }
+    },
+    "一组一组，慢慢变强。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take it one set at a time."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一组一组，慢慢变强。"
+          }
+        }
+      }
+    },
+    "三": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "三"
+          }
+        }
+      }
+    },
+    "下一段从 %@ 开始。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The next block starts %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一段从 %@ 开始。"
+          }
+        }
+      }
+    },
+    "下一轮，从 0 开始": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The next session starts at zero"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一轮，从 0 开始"
+          }
+        }
+      }
+    },
+    "不足 1 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "under 1 min"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不足 1 分钟"
+          }
+        }
+      }
+    },
+    "临时使用一会儿": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a Temporary Pass"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临时使用一会儿"
+          }
+        }
+      }
+    },
+    "临时豁免": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporary Pass"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临时豁免"
+          }
+        }
+      }
+    },
+    "临时豁免中": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass Active"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临时豁免中"
+          }
+        }
+      }
+    },
+    "之前的圈选超过了系统上限，请按类别重新圈选。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your previous selection exceeded the system limit. Choose apps by category again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "之前的圈选超过了系统上限，请按类别重新圈选。"
+          }
+        }
+      }
+    },
+    "二": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tue"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "二"
+          }
+        }
+      }
+    },
+    "五": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fri"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "五"
+          }
+        }
+      }
+    },
+    "休息好了，该下一组了": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready for the Next Set?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "休息好了，该下一组了"
+          }
+        }
+      }
+    },
+    "休息时间到。完成下一组后重新计时。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest is over. Log the next set to restart the timer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "休息时间到。完成下一组后重新计时。"
+          }
+        }
+      }
+    },
+    "休息结束": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest Complete"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "休息结束"
+          }
+        }
+      }
+    },
+    "保存": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        }
+      }
+    },
+    "保存清晨设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Morning Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存清晨设置"
+          }
+        }
+      }
+    },
+    "保存聚焦时长": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Duration"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存聚焦时长"
+          }
+        }
+      }
+    },
+    "保存豁免设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save Pass Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存豁免设置"
+          }
+        }
+      }
+    },
+    "保持按住 · 松手取消": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep holding · Release to cancel"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保持按住 · 松手取消"
+          }
+        }
+      }
+    },
+    "修改下次生效": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes Apply Next Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改下次生效"
+          }
+        }
+      }
+    },
+    "修改锁定应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Restricted Apps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改锁定应用"
+          }
+        }
+      }
+    },
+    "健身": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "健身"
+          }
+        }
+      }
+    },
+    "健身计数": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set Counter"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "健身计数"
+          }
+        }
+      }
+    },
+    "偶尔需要使用，也给自己留一点余地。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set aside a little flexibility when you need it."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "偶尔需要使用，也给自己留一点余地。"
+          }
+        }
+      }
+    },
+    "先去洗漱、喝杯水，慢慢开始今天。\n本轮休息到 %@，之后可再使用%@。\n%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a moment to get ready for your day.\nThis break ends at %@. You can use %@ again then.\n%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先去洗漱、喝杯水，慢慢开始今天。\n本轮休息到 %@，之后可再使用%@。\n%@"
+          }
+        }
+      }
+    },
+    "先去洗漱、喝杯水，慢慢开始今天。%@ 结束本轮休息。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a moment to get ready for your day. This break ends at %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先去洗漱、喝杯水，慢慢开始今天。%@ 结束本轮休息。"
+          }
+        }
+      }
+    },
+    "免费预览版": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free Preview"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免费预览版"
+          }
+        }
+      }
+    },
+    "免费预览版可编辑时段和豁免设置，不支持应用圈选、实际锁定或临时解锁。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The free preview lets you edit schedules and passes. App selection, restrictions, and temporary passes require the full app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "免费预览版可编辑时段和豁免设置，不支持应用圈选、实际锁定或临时解锁。"
+          }
+        }
+      }
+    },
+    "六": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sat"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "六"
+          }
+        }
+      }
+    },
+    "关闭聚焦": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End Focus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭聚焦"
+          }
+        }
+      }
+    },
+    "其他锁定正在执行，结束后可开启聚焦。临时豁免不会改变这一状态。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Focus when the current restriction ends. A temporary pass doesn't make Focus available."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他锁定正在执行，结束后可开启聚焦。临时豁免不会改变这一状态。"
+          }
+        }
+      }
+    },
+    "准备开始": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready to Start"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "准备开始"
+          }
+        }
+      }
+    },
+    "分": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "m"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分"
+          }
+        }
+      }
+    },
+    "分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "min"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分钟"
+          }
+        }
+      }
+    },
+    "删除": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除"
+          }
+        }
+      }
+    },
+    "删除时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除时段"
+          }
+        }
+      }
+    },
+    "删除这个时段？": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete This Block?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除这个时段？"
+          }
+        }
+      }
+    },
+    "前往设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "前往设置"
+          }
+        }
+      }
+    },
+    "剩余 %lld / %lld 次": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passes Left: %lld / %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剩余 %lld / %lld 次"
+          }
+        }
+      }
+    },
+    "取消": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        }
+      }
+    },
+    "另选 %lld 个 App": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Additional apps: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "另选 %lld 个 App"
+          }
+        }
+      }
+    },
+    "只选择一个 App，开启前可以更换。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose one app. You can change it before starting."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只选择一个 App，开启前可以更换。"
+          }
+        }
+      }
+    },
+    "只选择一个具体的 App。更换时，请先取消原来的勾选，再选择新的应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select one app. To switch apps, deselect the current one first."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只选择一个具体的 App。更换时，请先取消原来的勾选，再选择新的应用。"
+          }
+        }
+      }
+    },
+    "可以体验界面、编辑时段和豁免设置；此版本不会实际锁定应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can preview the interface and edit blocks and passes. Actual restrictions are unavailable in this version."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可以体验界面、编辑时段和豁免设置；此版本不会实际锁定应用。"
+          }
+        }
+      }
+    },
+    "可以添加多个时段，按星期重复。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add several blocks and repeat them on the days you choose."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可以添加多个时段，按星期重复。"
+          }
+        }
+      }
+    },
+    "可体验睡眠、聚焦和健身的界面与设置，不会实际锁定应用。配置仅保存在当前预览应用，不会同步到完整版本。不测量实际睡眠。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview Sleep, Focus, and Workout settings. The preview can't restrict apps, sync its settings to the full app, or measure your sleep."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可体验睡眠、聚焦和健身的界面与设置，不会实际锁定应用。配置仅保存在当前预览应用，不会同步到完整版本。不测量实际睡眠。"
+          }
+        }
+      }
+    },
+    "可预览倒计时。应用锁定需要在已授权的真机上运行完整版。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can preview the timer. To limit apps, use the full app on an authorized iPhone or iPad."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可预览倒计时。应用锁定需要在已授权的真机上运行完整版。"
+          }
+        }
+      }
+    },
+    "同时安排的锁定任务过多，无法保证按时恢复。请先关闭部分时段后重试，原有设置已保留。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many restrictions are scheduled to guarantee that they end on time. Disable some blocks and try again. Your existing settings are saved."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同时安排的锁定任务过多，无法保证按时恢复。请先关闭部分时段后重试，原有设置已保留。"
+          }
+        }
+      }
+    },
+    "同时执行的锁定范围过多，请先结束部分时段后重试。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many overlapping restrictions. End some blocks and try again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同时执行的锁定范围过多，请先结束部分时段后重试。"
+          }
+        }
+      }
+    },
+    "同步锁定": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync Restrictions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同步锁定"
+          }
+        }
+      }
+    },
+    "名单里的 App 在睡眠、聚焦和健身锁定时仍可使用。请加入电话、信息等需要保留的 App。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps on this list remain available during Sleep, Focus, and workouts. Add essentials such as Phone or Messages."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名单里的 App 在睡眠、聚焦和健身锁定时仍可使用。请加入电话、信息等需要保留的 App。"
+          }
+        }
+      }
+    },
+    "后恢复限制": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "until restrictions resume"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "后恢复限制"
+          }
+        }
+      }
+    },
+    "启用 %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用 %@"
+          }
+        }
+      }
+    },
+    "启用此时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable This Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启用此时段"
+          }
+        }
+      }
+    },
+    "周%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "周%@"
+          }
+        }
+      }
+    },
+    "周末": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekends"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "周末"
+          }
+        }
+      }
+    },
+    "四": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thu"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "四"
+          }
+        }
+      }
+    },
+    "圈选应用合计可用 %lld 分钟，用满后休息 %lld 分钟。中途退出会保留已用时长。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected apps share %lld min of use, followed by a %lld min break. Usage already counted is kept when you leave the app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圈选应用合计可用 %lld 分钟，用满后休息 %lld 分钟。中途退出会保留已用时长。"
+          }
+        }
+      }
+    },
+    "在底栏「设置」开启屏幕使用时间授权。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To limit apps, grant Screen Time access in the Settings tab."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在底栏「设置」开启屏幕使用时间授权。"
+          }
+        }
+      }
+    },
+    "在睡眠时段里开启清晨模式后，使用这些统一设置。累计使用圈选应用，用满后锁定一次。豁免次数与对应睡眠时段共用，时长接着睡眠期间的使用顺序计算。修改从后续睡眠生效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These settings apply to sleep blocks with Morning Mode enabled. When the selected apps use up their combined allowance, they're restricted once. Morning Mode uses the remaining passes from that sleep block. Changes apply to future blocks."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在睡眠时段里开启清晨模式后，使用这些统一设置。累计使用圈选应用，用满后锁定一次。豁免次数与对应睡眠时段共用，时长接着睡眠期间的使用顺序计算。修改从后续睡眠生效。"
+          }
+        }
+      }
+    },
+    "外观": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外观"
+          }
+        }
+      }
+    },
+    "外观模式": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外观模式"
+          }
+        }
+      }
+    },
+    "好的，先去洗漱": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a Break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好的，先去洗漱"
+          }
+        }
+      }
+    },
+    "好的，继续休息": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep Resting"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好的，继续休息"
+          }
+        }
+      }
+    },
+    "好的，继续聚焦": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep Focusing"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好的，继续聚焦"
+          }
+        }
+      }
+    },
+    "好，去练下一组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go to Workout"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好，去练下一组"
+          }
+        }
+      }
+    },
+    "如果当前时段正在执行，将继续到原定结束时间。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the block is active, restrictions continue until its scheduled end."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果当前时段正在执行，将继续到原定结束时间。"
+          }
+        }
+      }
+    },
+    "如需检查限制状态，请打开 Daywell。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Daywell to check restriction status."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如需检查限制状态，请打开 Daywell。"
+          }
+        }
+      }
+    },
+    "安排第一段休息时间": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule Your First Break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安排第一段休息时间"
+          }
+        }
+      }
+    },
+    "完成": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
+          }
+        }
+      }
+    },
+    "完成 %lld 组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sets completed: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成 %lld 组"
+          }
+        }
+      }
+    },
+    "完成一组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log a Set"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成一组"
+          }
+        }
+      }
+    },
+    "将使用本时段的 1 次豁免机会。到期后自动恢复限制，提前结束也不会退还次数。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This uses one pass for this block. Restrictions resume when the pass ends. Ending early still uses a pass."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将使用本时段的 1 次豁免机会。到期后自动恢复限制，提前结束也不会退还次数。"
+          }
+        }
+      }
+    },
+    "小时": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小时"
+          }
+        }
+      }
+    },
+    "尚未开启": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setup Needed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚未开启"
+          }
+        }
+      }
+    },
+    "屏幕使用时间": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "屏幕使用时间"
+          }
+        }
+      }
+    },
+    "工作日": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekdays"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "工作日"
+          }
+        }
+      }
+    },
+    "已完成 %lld 组，共 %lld 组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sets completed: %lld of %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已完成 %lld 组，共 %lld 组"
+          }
+        }
+      }
+    },
+    "已授权": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authorized"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已授权"
+          }
+        }
+      }
+    },
+    "已超过豁免名单上限，请取消部分 App 后再完成。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The allowed list is full. Deselect some apps to continue."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已超过豁免名单上限，请取消部分 App 后再完成。"
+          }
+        }
+      }
+    },
+    "已选 %lld 个 App": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps selected: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %lld 个 App"
+          }
+        }
+      }
+    },
+    "已选 %lld 个 App，修改": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Selection (%lld)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %lld 个 App，修改"
+          }
+        }
+      }
+    },
+    "已选 %lld 个 App，最多 50 个": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps selected: %lld of 50"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %lld 个 App，最多 50 个"
+          }
+        }
+      }
+    },
+    "帮助与反馈": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Help & Feedback"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "帮助与反馈"
+          }
+        }
+      }
+    },
+    "应用、类别和网站各可单独选择最多 50 个。需要限制更多应用时，请按类别圈选。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can select up to 50 apps, 50 categories, and 50 websites. Select categories to cover more apps."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用、类别和网站各可单独选择最多 50 个。需要限制更多应用时，请按类别圈选。"
+          }
+        }
+      }
+    },
+    "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App selection and restrictions require an authorized iPhone or iPad."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用圈选与实际锁定需要在已授权的 iPhone 或 iPad 上使用。"
+          }
+        }
+      }
+    },
+    "开启前需要授权屏幕使用时间。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant Screen Time access to start."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启前需要授权屏幕使用时间。"
+          }
+        }
+      }
+    },
+    "开启后，请自行打开所选应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Once you start, open the selected app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启后，请自行打开所选应用。"
+          }
+        }
+      }
+    },
+    "开启授权后，在你设定的时间里，帮你暂时放下选中的应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "With Screen Time access, Daywell can limit your selected apps during the times you choose."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启授权后，在你设定的时间里，帮你暂时放下选中的应用。"
+          }
+        }
+      }
+    },
+    "开启聚焦": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Focus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启聚焦"
+          }
+        }
+      }
+    },
+    "开始时间": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始时间"
+          }
+        }
+      }
+    },
+    "开始豁免": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Pass"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始豁免"
+          }
+        }
+      }
+    },
+    "当前时段最晚于 %@ 结束，豁免机会按各时段分别计算。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current blocks end by %@. Each block tracks its passes separately."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前时段最晚于 %@ 结束，豁免机会按各时段分别计算。"
+          }
+        }
+      }
+    },
+    "当前有 %lld 个重叠的锁定时段，将从各时段扣除 1 次机会，并按各自设置计时。到期后自动恢复限制。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld blocks overlap. Each uses one pass for its configured duration. Restrictions resume as each pass expires."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前有 %lld 个重叠的锁定时段，将从各时段扣除 1 次机会，并按各自设置计时。到期后自动恢复限制。"
+          }
+        }
+      }
+    },
+    "当前有其他锁定正在执行，结束后可开启聚焦。临时豁免期间也不能开启。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Another restriction is active. Start Focus once it ends. A temporary pass doesn't make Focus available."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前有其他锁定正在执行，结束后可开启聚焦。临时豁免期间也不能开启。"
+          }
+        }
+      }
+    },
+    "当前没有需要豁免的锁定时段。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is no active block for a temporary pass."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前没有需要豁免的锁定时段。"
+          }
+        }
+      }
+    },
+    "当前至少有一个时段的豁免机会已用完。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At least one active block has no passes left."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前至少有一个时段的豁免机会已用完。"
+          }
+        }
+      }
+    },
+    "把休息，\n留在日程里": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make time\nfor a break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "把休息，\n留在日程里"
+          }
+        }
+      }
+    },
+    "把注意力留给你选择的应用。\n聚焦到 %@ 结束。需要提前结束时，请回 Daywell 输入验证码。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stay with the app you picked.\nFocus ends at %@. To end early, enter the code in Daywell."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "把注意力留给你选择的应用。\n聚焦到 %@ 结束。需要提前结束时，请回 Daywell 输入验证码。"
+          }
+        }
+      }
+    },
+    "把注意力，留给此刻想做的事。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Give your attention to what you're doing now."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "把注意力，留给此刻想做的事。"
+          }
+        }
+      }
+    },
+    "按设定时间自动开始": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starts Automatically"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按设定时间自动开始"
+          }
+        }
+      }
+    },
+    "授权曾被撤销，原来的应用选择已失效。请重新圈选。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen Time access was revoked and the old selection is no longer valid. Choose your apps again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权曾被撤销，原来的应用选择已失效。请重新圈选。"
+          }
+        }
+      }
+    },
+    "提前关闭需要输入验证码；时间结束后自动恢复。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ending early requires a confirmation code. Restrictions lift when the session ends."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提前关闭需要输入验证码；时间结束后自动恢复。"
+          }
+        }
+      }
+    },
+    "提前结束豁免": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End Pass Early"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提前结束豁免"
+          }
+        }
+      }
+    },
+    "无法保存时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Save Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存时段"
+          }
+        }
+      }
+    },
+    "无法保存选择": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Save Selection"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存选择"
+          }
+        }
+      }
+    },
+    "无法访问共享数据，请检查应用及扩展的 App Groups 签名配置。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared data isn't available. Check App Groups signing for the app and its extensions."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法访问共享数据，请检查应用及扩展的 App Groups 签名配置。"
+          }
+        }
+      }
+    },
+    "日": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sun"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日"
+          }
+        }
+      }
+    },
+    "早安，\n先照顾好自己": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good morning.\nTake a moment for yourself."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "早安，\n先照顾好自己"
+          }
+        }
+      }
+    },
+    "早安，先照顾好自己": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good Morning"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "早安，先照顾好自己"
+          }
+        }
+      }
+    },
+    "早安，先照顾好自己。给洗漱、喝水和早餐留一点时间。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave a little time in the morning to get ready and have breakfast."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "早安，先照顾好自己。给洗漱、喝水和早餐留一点时间。"
+          }
+        }
+      }
+    },
+    "早安，给自己留一点\n清醒的时间": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make time for\na calmer morning"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "早安，给自己留一点\n清醒的时间"
+          }
+        }
+      }
+    },
+    "时间格式无效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid time."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "时间格式无效。"
+          }
+        }
+      }
+    },
+    "星期%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "星期%@"
+          }
+        }
+      }
+    },
+    "暂时放行，\n记得回来休息": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your pass is active.\nCome back for your break."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂时放行，\n记得回来休息"
+          }
+        }
+      }
+    },
+    "暂时无法读取配置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Load Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂时无法读取配置"
+          }
+        }
+      }
+    },
+    "最多 %lld 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "up to %lld min"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最多 %lld 分钟"
+          }
+        }
+      }
+    },
+    "最多 5 个": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up to 5 apps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最多 5 个"
+          }
+        }
+      }
+    },
+    "最近聚焦": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent Focus Apps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近聚焦"
+          }
+        }
+      }
+    },
+    "未授权": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Authorized"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未授权"
+          }
+        }
+      }
+    },
+    "未能保存，请稍后重试。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't save. Try again in a moment."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未能保存，请稍后重试。"
+          }
+        }
+      }
+    },
+    "本地数据无效，已保留原文件，请勿清除数据后重试。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The saved data couldn't be read. Your original data is still on the device."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本地数据无效，已保留原文件，请勿清除数据后重试。"
+          }
+        }
+      }
+    },
+    "本地数据来自更新版本，请更新 Daywell。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This data was saved by a newer version. Update Daywell to open it."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本地数据来自更新版本，请更新 Daywell。"
+          }
+        }
+      }
+    },
+    "本时段已无可用豁免，等休息结束再回来。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No passes remain for this block. Come back when it ends."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本时段已无可用豁免，等休息结束再回来。"
+          }
+        }
+      }
+    },
+    "本次聚焦 %lld 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus duration: %lld min"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本次聚焦 %lld 分钟"
+          }
+        }
+      }
+    },
+    "本轮仍保留原来的锁定范围，加入后会超过系统的 50 个上限。请减少新增项，或在本轮结束后修改。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The additions would exceed the system limit of 50. The current block still uses the original selection. Select fewer items or wait until the block ends."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮仍保留原来的锁定范围，加入后会超过系统的 50 个上限。请减少新增项，或在本轮结束后修改。"
+          }
+        }
+      }
+    },
+    "本轮只有 1 组。设置至少 2 组可使用组间休息。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is only one set in this session. Set a goal of at least two sets to use the rest timer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮只有 1 组。设置至少 2 组可使用组间休息。"
+          }
+        }
+      }
+    },
+    "本轮应用已固定，结束后可以更换。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected app is set for this session. You can change it afterward."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮应用已固定，结束后可以更换。"
+          }
+        }
+      }
+    },
+    "本轮目标 %lld 组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set goal: %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮目标 %lld 组"
+          }
+        }
+      }
+    },
+    "本轮豁免已用完，洗漱、喝杯水，稍后再回来。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're out of passes for this break. Take a moment to get ready for your day."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本轮豁免已用完，洗漱、喝杯水，稍后再回来。"
+          }
+        }
+      }
+    },
+    "模拟器": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulator"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模拟器"
+          }
+        }
+      }
+    },
+    "模拟器可设置时段和豁免规则；应用圈选与实际锁定需在真机上使用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the simulator to try schedules and passes. App selection and restrictions require a physical device."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模拟器可设置时段和豁免规则；应用圈选与实际锁定需在真机上使用。"
+          }
+        }
+      }
+    },
+    "模拟器可预览界面；应用圈选和实际锁定需要在 iPhone 或 iPad 真机上验证。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can preview the interface in the simulator. Test app selection and restrictions on an iPhone or iPad."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模拟器可预览界面；应用圈选和实际锁定需要在 iPhone 或 iPad 真机上验证。"
+          }
+        }
+      }
+    },
+    "模拟器无法圈选或锁定真实应用。请在 iPhone 或 iPad 真机上运行 Daywell，授权屏幕使用时间后使用聚焦。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The simulator can't select or restrict real apps. To use Focus, open Daywell on an iPhone or iPad and grant Screen Time access."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模拟器无法圈选或锁定真实应用。请在 iPhone 或 iPad 真机上运行 Daywell，授权屏幕使用时间后使用聚焦。"
+          }
+        }
+      }
+    },
+    "正在准备豁免，请稍后重试。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A temporary pass is being prepared. Try again in a moment."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在准备豁免，请稍后重试。"
+          }
+        }
+      }
+    },
+    "正在聚焦": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus Active"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在聚焦"
+          }
+        }
+      }
+    },
+    "正在锁定": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrictions Active"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在锁定"
+          }
+        }
+      }
+    },
+    "此时段正在锁定，请输入验证码后再关闭。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This block is active. Enter the confirmation code to turn it off."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此时段正在锁定，请输入验证码后再关闭。"
+          }
+        }
+      }
+    },
+    "此设置下不提供临时豁免，锁定页不会显示豁免按钮。修改会在后续时段生效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No passes will be offered on the restriction screen. The change applies to future blocks."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此设置下不提供临时豁免，锁定页不会显示豁免按钮。修改会在后续时段生效。"
+          }
+        }
+      }
+    },
+    "每个时段单独计算豁免次数；正在执行的时段保留原定时间与豁免规则。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passes are tracked per block. A block in progress keeps its original schedule and pass rules."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每个时段单独计算豁免次数；正在执行的时段保留原定时间与豁免规则。"
+          }
+        }
+      }
+    },
+    "每个时段可设置 0–5 次豁免，每次时长需为 1–1440 分钟。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each block can offer 0 to 5 passes. Each pass must last between 1 and 1,440 minutes."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每个时段可设置 0–5 次豁免，每次时长需为 1–1440 分钟。"
+          }
+        }
+      }
+    },
+    "每个时段可豁免": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passes per Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每个时段可豁免"
+          }
+        }
+      }
+    },
+    "每天": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every Day"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每天"
+          }
+        }
+      }
+    },
+    "每组休息时长": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest Between Sets"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每组休息时长"
+          }
+        }
+      }
+    },
+    "每组完成后重新计时，休息结束会锁定应用。睡眠时段内只计时。完成本轮或 30 分钟未完成新一组后，自动结束本轮并解除运动锁定。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The timer restarts after each set. Apps are restricted when rest ends. During sleep blocks, only the timer runs. Completing the workout or going 30 minutes without a new set ends the session and lifts workout restrictions."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每组完成后重新计时，休息结束会锁定应用。睡眠时段内只计时。完成本轮或 30 分钟未完成新一组后，自动结束本轮并解除运动锁定。"
+          }
+        }
+      }
+    },
+    "每轮目标组数": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set Goal"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每轮目标组数"
+          }
+        }
+      }
+    },
+    "每轮睡眠与随后的清晨模式共用次数，最多 5 次。默认 2 次，时长依次为 10、5、3、2、1 分钟，可分别调整。修改会在后续时段生效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A sleep block and its Morning Mode share up to five passes. The default is two. Preset lengths are 10, 5, 3, 2, and 1 min. You can adjust each one. Changes apply to future blocks."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每轮睡眠与随后的清晨模式共用次数，最多 5 次。默认 2 次，时长依次为 10、5、3、2、1 分钟，可分别调整。修改会在后续时段生效。"
+          }
+        }
+      }
+    },
+    "浅色": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浅色"
+          }
+        }
+      }
+    },
+    "深色": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "深色"
+          }
+        }
+      }
+    },
+    "添加休息时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加休息时段"
+          }
+        }
+      }
+    },
+    "添加时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加时段"
+          }
+        }
+      }
+    },
+    "添加锁定时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加锁定时段"
+          }
+        }
+      }
+    },
+    "清晨 · %@ 后": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning · After %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清晨 · %@ 后"
+          }
+        }
+      }
+    },
+    "清晨 · 休息一下": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning Break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清晨 · 休息一下"
+          }
+        }
+      }
+    },
+    "清晨 · 可用 %lld 分钟 → 休息 %lld 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning · %lld min of use → %lld min break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清晨 · 可用 %lld 分钟 → 休息 %lld 分钟"
+          }
+        }
+      }
+    },
+    "清晨模式": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning Mode"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清晨模式"
+          }
+        }
+      }
+    },
+    "清晨模式的可用时长和锁定时长需为 1–1440 分钟。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both Morning Mode durations must be between 1 and 1,440 minutes."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清晨模式的可用时长和锁定时长需为 1–1440 分钟。"
+          }
+        }
+      }
+    },
+    "清晨模式需要先圈选应用，请重新选择需要限制的应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morning Mode needs an app selection. Choose the apps you want to restrict."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清晨模式需要先圈选应用，请重新选择需要限制的应用。"
+          }
+        }
+      }
+    },
+    "清空圈选": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear Selection"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空圈选"
+          }
+        }
+      }
+    },
+    "点下方按钮回到 Daywell 健身页。练完记一组，下一轮休息就会开始。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Daywell's Workout tab to log your next set and start the next rest timer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点下方按钮回到 Daywell 健身页。练完记一组，下一轮休息就会开始。"
+          }
+        }
+      }
+    },
+    "用满后锁定": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Break After Allowance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用满后锁定"
+          }
+        }
+      }
+    },
+    "界面预览模式": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulator Preview"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "界面预览模式"
+          }
+        }
+      }
+    },
+    "白天或夜晚，都可以安排": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schedule by day or night"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "白天或夜晚，都可以安排"
+          }
+        }
+      }
+    },
+    "睡眠": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sleep"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠"
+          }
+        }
+      }
+    },
+    "睡眠、聚焦和健身共用这项授权。你可以在 iOS 设置中撤销授权。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sleep, Focus, and workouts share this permission. You can revoke it in iOS Settings."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠、聚焦和健身共用这项授权。你可以在 iOS 设置中撤销授权。"
+          }
+        }
+      }
+    },
+    "睡眠时段已接管，本次休息只计时，不锁定。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A sleep block is active. This rest timer runs without adding workout restrictions."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠时段已接管，本次休息只计时，不锁定。"
+          }
+        }
+      }
+    },
+    "睡眠结束后，圈选应用合计可用 %lld 分钟，用满后锁定 %lld 分钟。时长在睡眠页右上角设置中统一调整，沿用睡眠的应用和豁免设置。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After your sleep block, you can use the selected apps for %lld min in total. Then they'll be restricted for %lld min. Change these durations in Sleep settings. Apps and passes carry over from the sleep block."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "睡眠结束后，圈选应用合计可用 %lld 分钟，用满后锁定 %lld 分钟。时长在睡眠页右上角设置中统一调整，沿用睡眠的应用和豁免设置。"
+          }
+        }
+      }
+    },
+    "知道了": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "知道了"
+          }
+        }
+      }
+    },
+    "确认关闭": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认关闭"
+          }
+        }
+      }
+    },
+    "秒": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "s"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "秒"
+          }
+        }
+      }
+    },
+    "秒后完成一组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sec to log a set"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "秒后完成一组"
+          }
+        }
+      }
+    },
+    "稍后": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a later time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍后"
+          }
+        }
+      }
+    },
+    "第 %lld 次豁免": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第 %lld 次豁免"
+          }
+        }
+      }
+    },
+    "等待开始": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scheduled"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待开始"
+          }
+        }
+      }
+    },
+    "系统限制尚未同步": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrictions haven't synced"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统限制尚未同步"
+          }
+        }
+      }
+    },
+    "系统限制需要重新安排": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrictions Need Attention"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统限制需要重新安排"
+          }
+        }
+      }
+    },
+    "累计使用，用满后自动休息": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A break starts when the usage allowance runs out"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "累计使用，用满后自动休息"
+          }
+        }
+      }
+    },
+    "累计可用时长": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usage Allowance"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "累计可用时长"
+          }
+        }
+      }
+    },
+    "练完后请手动打开 Daywell，在健身页记一组。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Daywell after your next set and log it in the Workout tab."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "练完后请手动打开 Daywell，在健身页记一组。"
+          }
+        }
+      }
+    },
+    "组间休息": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rest Timer"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "组间休息"
+          }
+        }
+      }
+    },
+    "组间休息已结束。完成下一组后会开始新的休息。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your rest is over. Log the next set to start a new rest timer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "组间休息已结束。完成下一组后会开始新的休息。"
+          }
+        }
+      }
+    },
+    "结束当前聚焦？": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End This Focus Session?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "结束当前聚焦？"
+          }
+        }
+      }
+    },
+    "结束当前锁定？": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End the Current Block?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "结束当前锁定？"
+          }
+        }
+      }
+    },
+    "结束时间": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End Time"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "结束时间"
+          }
+        }
+      }
+    },
+    "给自己留一段不被屏幕打扰的时间。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set aside time away from your screen."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "给自己留一段不被屏幕打扰的时间。"
+          }
+        }
+      }
+    },
+    "继续": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "继续"
+          }
+        }
+      }
+    },
+    "继续休息": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep Resting"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "继续休息"
+          }
+        }
+      }
+    },
+    "编辑时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Block"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑时段"
+          }
+        }
+      }
+    },
+    "聚焦": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦"
+          }
+        }
+      }
+    },
+    "聚焦只能选择 1 个 App，当前已选 %lld 个。请取消多余选择。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose just one app for Focus. Apps currently selected: %lld."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦只能选择 1 个 App，当前已选 %lld 个。请取消多余选择。"
+          }
+        }
+      }
+    },
+    "聚焦应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus App"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦应用"
+          }
+        }
+      }
+    },
+    "聚焦应用与豁免名单合计最多 50 个 App，请先减少豁免名单。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The focus app and allowed list can include up to 50 apps in total. Remove some allowed apps first."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦应用与豁免名单合计最多 50 个 App，请先减少豁免名单。"
+          }
+        }
+      }
+    },
+    "聚焦时长": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus Duration"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦时长"
+          }
+        }
+      }
+    },
+    "聚焦时长需为 1–1440 的整数分钟。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a whole number of minutes from 1 to 1,440."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦时长需为 1–1440 的整数分钟。"
+          }
+        }
+      }
+    },
+    "聚焦时长，分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus duration in minutes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦时长，分钟"
+          }
+        }
+      }
+    },
+    "聚焦期间保留全局豁免名单。睡眠、清晨或健身开始锁定时，会结束聚焦。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allowed apps stay available during Focus. A Sleep, Morning, or Workout restriction ends the session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦期间保留全局豁免名单。睡眠、清晨或健身开始锁定时，会结束聚焦。"
+          }
+        }
+      }
+    },
+    "聚焦模式还剩余": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus Time Left"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦模式还剩余"
+          }
+        }
+      }
+    },
+    "聚焦模式还剩余 %lld 小时 %lld 分 %lld 秒": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus time left: %lld hr, %lld min, %lld sec"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦模式还剩余 %lld 小时 %lld 分 %lld 秒"
+          }
+        }
+      }
+    },
+    "聚焦正在进行，请先结束当前这一轮。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus is already active. End the current session first."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "聚焦正在进行，请先结束当前这一轮。"
+          }
+        }
+      }
+    },
+    "让屏幕，\n也休息一会儿": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Give your screen\na break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "让屏幕，\n也休息一会儿"
+          }
+        }
+      }
+    },
+    "让屏幕，也休息一会儿": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time for a Screen Break"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "让屏幕，也休息一会儿"
+          }
+        }
+      }
+    },
+    "训练锁定中": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout Restrictions Active"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "训练锁定中"
+          }
+        }
+      }
+    },
+    "记下一组后，从完整时长重新计时。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log a set to restart the full rest timer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "记下一组后，从完整时长重新计时。"
+          }
+        }
+      }
+    },
+    "设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
+          }
+        }
+      }
+    },
+    "设置多个时间段，给生活留一点安静。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set up recurring blocks for some quiet time."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置多个时间段，给生活留一点安静。"
+          }
+        }
+      }
+    },
+    "试着安排几段休息时间，再到右上角设置中调整每次豁免的时长。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try scheduling a break. Open the settings above to adjust how long passes last."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "试着安排几段休息时间，再到右上角设置中调整每次豁免的时长。"
+          }
+        }
+      }
+    },
+    "请先授权屏幕使用时间，并重新选择需要限制的应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant Screen Time access and choose the apps to restrict again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先授权屏幕使用时间，并重新选择需要限制的应用。"
+          }
+        }
+      }
+    },
+    "请先选择一个聚焦应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a focus app first."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先选择一个聚焦应用。"
+          }
+        }
+      }
+    },
+    "请设置不同的开始与结束时间，并至少选择一天。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose different start and end times and select at least one day."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请设置不同的开始与结束时间，并至少选择一天。"
+          }
+        }
+      }
+    },
+    "请输入验证码 %@。确认后将结束本轮聚焦。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter %@ to end this focus session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入验证码 %@。确认后将结束本轮聚焦。"
+          }
+        }
+      }
+    },
+    "请输入验证码 %@。确认后将结束本轮锁定，并关闭这个时段的后续重复。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter %@ to end the current block and disable its future repeats."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入验证码 %@。确认后将结束本轮锁定，并关闭这个时段的后续重复。"
+          }
+        }
+      }
+    },
+    "请选择一个具体的 App，类别或网站不能单独作为聚焦应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a specific app. A category or website alone can't be the focus app."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请选择一个具体的 App，类别或网站不能单独作为聚焦应用。"
+          }
+        }
+      }
+    },
+    "豁免名单": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allowed Apps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "豁免名单"
+          }
+        }
+      }
+    },
+    "豁免名单最多支持 50 个 App，请减少圈选。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The allowed list supports up to 50 apps. Deselect some apps."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "豁免名单最多支持 50 个 App，请减少圈选。"
+          }
+        }
+      }
+    },
+    "跟随系统": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟随系统"
+          }
+        }
+      }
+    },
+    "输入 1–1440 的整数分钟。修改从下一轮聚焦开始生效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a whole number of minutes from 1 to 1,440. Changes apply to the next session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入 1–1440 的整数分钟。修改从下一轮聚焦开始生效。"
+          }
+        }
+      }
+    },
+    "输入 6 位验证码": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter the six-digit code"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入 6 位验证码"
+          }
+        }
+      }
+    },
+    "还可临时豁免 %lld 次，本次%@。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passes left: %lld. This pass lasts %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还可临时豁免 %lld 次，本次%@。"
+          }
+        }
+      }
+    },
+    "这一轮，完成得很棒！": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout complete!"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这一轮，完成得很棒！"
+          }
+        }
+      }
+    },
+    "这个应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "this app"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个应用"
+          }
+        }
+      }
+    },
+    "这个网站": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "this website"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个网站"
+          }
+        }
+      }
+    },
+    "这段时间，专注使用你选择的应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the app you chose for this session."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这段时间，专注使用你选择的应用。"
+          }
+        }
+      }
+    },
+    "这轮聚焦已结束，请查看当前状态。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This focus session has ended. Check the current status."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这轮聚焦已结束，请查看当前状态。"
+          }
+        }
+      }
+    },
+    "进行中": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Progress"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "进行中"
+          }
+        }
+      }
+    },
+    "选一个应用，给自己一段专注的时间。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick one app and set aside time to focus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选一个应用，给自己一段专注的时间。"
+          }
+        }
+      }
+    },
+    "选择电话、信息等要保留的 App。勾选类别会加入其中的 App，网站不加入豁免名单。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose apps you always want to use, such as Phone or Messages. Selecting a category adds its apps. Websites aren't included in this list."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择电话、信息等要保留的 App。勾选类别会加入其中的 App，网站不加入豁免名单。"
+          }
+        }
+      }
+    },
+    "选择聚焦应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Focus App"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择聚焦应用"
+          }
+        }
+      }
+    },
+    "选择要豁免的 App": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Allowed Apps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择要豁免的 App"
+          }
+        }
+      }
+    },
+    "选择要锁定的应用、类别或网站。「豁免名单」中的 App 会跳过。新增项立即加入当前锁定，移除项从下轮生效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the apps, categories, or websites to restrict. Allowed apps stay available. Additions apply now. Removals apply from the next block."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择要锁定的应用、类别或网站。「豁免名单」中的 App 会跳过。新增项立即加入当前锁定，移除项从下轮生效。"
+          }
+        }
+      }
+    },
+    "选择锁定应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Apps to Restrict"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择锁定应用"
+          }
+        }
+      }
+    },
+    "选择需要锁定的应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Apps to Restrict"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择需要锁定的应用"
+          }
+        }
+      }
+    },
+    "配置正在更新，请稍后重试。当前限制会保留。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings are updating. Try again in a moment. Current restrictions will stay active."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配置正在更新，请稍后重试。当前限制会保留。"
+          }
+        }
+      }
+    },
+    "重复": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重复"
+          }
+        }
+      }
+    },
+    "重复星期以开始日期为准。关闭正在锁定的时段需要验证码，确认后立即结束本轮。其他修改从后续时段生效。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days apply to the block's start date. To end an active block immediately, enter the confirmation code. Other changes apply to future blocks."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重复星期以开始日期为准。关闭正在锁定的时段需要验证码，确认后立即结束本轮。其他修改从后续时段生效。"
+          }
+        }
+      }
+    },
+    "重新选好，\n继续你的节奏": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose your apps\nagain"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新选好，\n继续你的节奏"
+          }
+        }
+      }
+    },
+    "重新选择应用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Apps Again"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新选择应用"
+          }
+        }
+      }
+    },
+    "重置本轮": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重置本轮"
+          }
+        }
+      }
+    },
+    "重试": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重试"
+          }
+        }
+      }
+    },
+    "锁定时段": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restriction Schedule"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "锁定时段"
+          }
+        }
+      }
+    },
+    "锁定时段不能重叠。结束时间早于开始时间时，自动延续至次日。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocks can't overlap. If the end time is earlier than the start time, the block runs into the next day."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "锁定时段不能重叠。结束时间早于开始时间时，自动延续至次日。"
+          }
+        }
+      }
+    },
+    "锁定状态已变化，请重新发起豁免。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrictions changed. Request a temporary pass again."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "锁定状态已变化，请重新发起豁免。"
+          }
+        }
+      }
+    },
+    "锁定状态正在更新，请稍后重试。已保存的设置不会丢失。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrictions are updating. Try again in a moment. Your saved settings will be kept."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "锁定状态正在更新，请稍后重试。已保存的设置不会丢失。"
+          }
+        }
+      }
+    },
+    "长按 %lld 秒完成一组，提前松手取消。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold for %lld sec to log a set. Release early to cancel."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "长按 %lld 秒完成一组，提前松手取消。"
+          }
+        }
+      }
+    },
+    "长按 %lld 秒完成一组，达到目标后自动归零。修改目标组数会重置本轮计数，设置自动保存。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold for %lld sec to log a set. The count resets after reaching your goal. Changing the goal resets the current count. Settings save automatically."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "长按 %lld 秒完成一组，达到目标后自动归零。修改目标组数会重置本轮计数，设置自动保存。"
+          }
+        }
+      }
+    },
+    "长按 %lld 秒，完成一组": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold for %lld sec to log a set"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "长按 %lld 秒，完成一组"
+          }
+        }
+      }
+    },
+    "长按圆形按钮 %lld 秒，记下一组后开始倒计时。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold the round button for %lld sec to log a set and start the timer."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "长按圆形按钮 %lld 秒，记下一组后开始倒计时。"
+          }
+        }
+      }
+    },
+    "隐私政策": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私政策"
+          }
+        }
+      }
+    },
+    "需要处理": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Action Needed"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要处理"
+          }
+        }
+      }
+    },
+    "需要处理一下": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something Needs Attention"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要处理一下"
+          }
+        }
+      }
+    },
+    "需要重新圈选": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Apps Again"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要重新圈选"
+          }
+        }
+      }
+    },
+    "预览模式": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview Mode"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览模式"
+          }
+        }
+      }
+    },
+    "预览版": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览版"
+          }
+        }
+      }
+    },
+    "预览版不支持应用圈选或聚焦锁定。请在已授权的 iPhone 或 iPad 上使用 Daywell 完整版。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The preview can't select or restrict apps. To use Focus, open the full version on an authorized iPhone or iPad."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览版不支持应用圈选或聚焦锁定。请在已授权的 iPhone 或 iPad 上使用 Daywell 完整版。"
+          }
+        }
+      }
+    },
+    "预览版仅保存设置，启用时段不会实际锁定应用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The preview saves your schedule. Enabling blocks here won't restrict apps."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览版仅保存设置，启用时段不会实际锁定应用。"
+          }
+        }
+      }
+    },
+    "预览版可保存睡眠、聚焦和健身设置，应用圈选与实际锁定需要已授权的完整版真机。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The preview saves Sleep, Focus, and Workout settings. For app selection and restrictions, use the full app on an authorized device."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览版可保存睡眠、聚焦和健身设置，应用圈选与实际锁定需要已授权的完整版真机。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
