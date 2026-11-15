@@ -16,26 +16,40 @@ public enum DaywellError: LocalizedError, Equatable {
   case stateBusy
   case monitoringCapacityExceeded
   case unsupportedSchema
+  case invalidFocusDuration
+  case focusApplicationRequired
+  case focusUnavailable
+  case focusAlreadyActive
+  case staleFocusSession
 
   public var errorDescription: String? {
     switch self {
-    case .invalidTime: return "时间格式无效。"
-    case .invalidPeriod: return "请设置不同的开始与结束时间，并至少选择一天。"
+    case .invalidTime: return String(localized: "时间格式无效。")
+    case .invalidPeriod: return String(localized: "请设置不同的开始与结束时间，并至少选择一天。")
     case .overlappingPeriods(let candidate, let existing):
       return
-        "「\(candidate.repeatLabel) \(candidate.timeLabel)」与已保存的「\(existing.repeatLabel) \(existing.timeLabel)」重叠。请调整时间或重复星期。"
-    case .deactivationVerificationRequired: return "此时段正在锁定，请输入验证码后再关闭。"
-    case .invalidPolicy: return "每个时段可设置 0–5 次豁免，每次时长需为 1–1440 分钟。"
-    case .invalidMorningPolicy: return "清晨模式的可用时长和锁定时长需为 1–1440 分钟。"
-    case .noActivePeriod: return "当前没有需要豁免的锁定时段。"
-    case .allowanceExhausted: return "当前至少有一个时段的豁免机会已用完。"
-    case .fitnessRestrictionActive: return "组间休息已结束。完成下一组后会开始新的休息。"
-    case .reservationInProgress: return "正在准备豁免，请稍后重试。"
-    case .staleReservation: return "锁定状态已变化，请重新发起豁免。"
-    case .invalidState: return "本地数据无效，已保留原文件，请勿清除数据后重试。"
-    case .stateBusy: return "锁定状态正在更新，请稍后重试。已保存的设置不会丢失。"
-    case .monitoringCapacityExceeded: return "同时安排的锁定任务过多，无法保证按时恢复。请先关闭部分时段后重试，原有设置已保留。"
-    case .unsupportedSchema: return "本地数据来自更新版本，请更新 Daywell。"
+        String(
+          localized:
+            "「\(candidate.repeatLabel) \(candidate.timeLabel)」与已保存的「\(existing.repeatLabel) \(existing.timeLabel)」重叠。请调整时间或重复星期。"
+        )
+    case .deactivationVerificationRequired: return String(localized: "此时段正在锁定，请输入验证码后再关闭。")
+    case .invalidPolicy: return String(localized: "每个时段可设置 0–5 次豁免，每次时长需为 1–1440 分钟。")
+    case .invalidMorningPolicy: return String(localized: "清晨模式的可用时长和锁定时长需为 1–1440 分钟。")
+    case .noActivePeriod: return String(localized: "当前没有需要豁免的锁定时段。")
+    case .allowanceExhausted: return String(localized: "当前至少有一个时段的豁免机会已用完。")
+    case .fitnessRestrictionActive: return String(localized: "组间休息已结束。完成下一组后会开始新的休息。")
+    case .reservationInProgress: return String(localized: "正在准备豁免，请稍后重试。")
+    case .staleReservation: return String(localized: "锁定状态已变化，请重新发起豁免。")
+    case .invalidState: return String(localized: "本地数据无效，已保留原文件，请勿清除数据后重试。")
+    case .stateBusy: return String(localized: "锁定状态正在更新，请稍后重试。已保存的设置不会丢失。")
+    case .monitoringCapacityExceeded:
+      return String(localized: "同时安排的锁定任务过多，无法保证按时恢复。请先关闭部分时段后重试，原有设置已保留。")
+    case .unsupportedSchema: return String(localized: "本地数据来自更新版本，请更新 Daywell。")
+    case .invalidFocusDuration: return String(localized: "聚焦时长需为 1–1440 的整数分钟。")
+    case .focusApplicationRequired: return String(localized: "请先选择一个聚焦应用。")
+    case .focusUnavailable: return String(localized: "当前有其他锁定正在执行，结束后可开启聚焦。临时豁免期间也不能开启。")
+    case .focusAlreadyActive: return String(localized: "聚焦正在进行，请先结束当前这一轮。")
+    case .staleFocusSession: return String(localized: "这轮聚焦已结束，请查看当前状态。")
     }
   }
 }
@@ -70,7 +84,17 @@ public enum Weekday: Int, CaseIterable, Codable, Sendable {
   public static let displayOrder: [Self] = [
     .monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday,
   ]
-  public var shortName: String { ["", "日", "一", "二", "三", "四", "五", "六"][rawValue] }
+  public var shortName: String {
+    switch self {
+    case .sunday: String(localized: "日")
+    case .monday: String(localized: "一")
+    case .tuesday: String(localized: "二")
+    case .wednesday: String(localized: "三")
+    case .thursday: String(localized: "四")
+    case .friday: String(localized: "五")
+    case .saturday: String(localized: "六")
+    }
+  }
 }
 
 public struct PeriodOccurrence: Codable, Equatable, Sendable, Identifiable {
@@ -132,15 +156,20 @@ public struct LockPeriod: Codable, Equatable, Sendable, Identifiable {
   public var crossesMidnight: Bool { end < start }
   public var durationMinutes: Int { (end.minutes - start.minutes + 1440) % 1440 }
   public var timeLabel: String {
-    "\(start.formatted) – \(end.formatted)\(crossesMidnight ? " 次日" : "")"
+    if crossesMidnight {
+      return String(localized: "\(start.formatted) – \(end.formatted) 次日")
+    }
+    return "\(start.formatted) – \(end.formatted)"
   }
   public var repeatLabel: String {
-    if weekdays.count == 7 { return "每天" }
-    if weekdays == Set([.monday, .tuesday, .wednesday, .thursday, .friday]) { return "工作日" }
-    if weekdays == Set([.saturday, .sunday]) { return "周末" }
-    return "周"
-      + Weekday.displayOrder.filter { weekdays.contains($0) }.map(\.shortName).joined(
-        separator: "、")
+    if weekdays.count == 7 { return String(localized: "每天") }
+    if weekdays == Set([.monday, .tuesday, .wednesday, .thursday, .friday]) {
+      return String(localized: "工作日")
+    }
+    if weekdays == Set([.saturday, .sunday]) { return String(localized: "周末") }
+    let days = Weekday.displayOrder.filter { weekdays.contains($0) }.map(\.shortName)
+    let list = days.joined(separator: String(localized: "、"))
+    return String(localized: "周\(list)")
   }
 
   public func validate() throws {

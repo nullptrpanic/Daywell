@@ -5,6 +5,7 @@ import Foundation
 public final class StateStore: @unchecked Sendable {
   private let directory: URL
   private var stateURL: URL { directory.appendingPathComponent("state.json") }
+  private var fitnessNavigationURL: URL { directory.appendingPathComponent("open-fitness.json") }
 
   public init(directory: URL) throws {
     self.directory = directory
@@ -14,6 +15,29 @@ public final class StateStore: @unchecked Sendable {
   // Atomic replacement exposes either the previous or the next complete file.
   // Shield UI callbacks must be able to read it while a writer applies restrictions.
   public func read() throws -> DaywellState { try load() }
+
+  /// Persist the request before the shield action asks iOS to activate the app.
+  public func requestFitnessNavigation(at date: Date) throws {
+    try withLock(name: "navigation.lock") {
+      try JSONEncoder().encode(date).write(to: fitnessNavigationURL, options: .atomic)
+    }
+  }
+
+  /// Consume the request across processes so only one foreground scene can handle it.
+  public func consumeFitnessNavigation(at date: Date) throws -> Bool {
+    try withLock(name: "navigation.lock") {
+      let data: Data
+      do {
+        data = try Data(contentsOf: fitnessNavigationURL)
+      } catch let error as CocoaError where error.code == .fileReadNoSuchFile {
+        return false
+      }
+      try FileManager.default.removeItem(at: fitnessNavigationURL)
+      guard let requestedAt = try? JSONDecoder().decode(Date.self, from: data) else { return false }
+      let age = date.timeIntervalSince(requestedAt)
+      return age >= 0 && age < 30
+    }
+  }
 
   /// A system monitor call may call the extension before returning. Reentrant
   /// callbacks save their state but must not wait for, or reenter, that call.

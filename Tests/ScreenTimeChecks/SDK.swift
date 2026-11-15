@@ -12,6 +12,7 @@ enum World {
   static var onStart: (() throws -> Void)?
   static var onStop: (() throws -> Void)?
   static var rejectGrace = false
+  static var rejectFocus = false
   static var rejectFitness = false
   static var rejectFitnessIdle = false
   static var monitorLimit: Int?
@@ -33,6 +34,25 @@ enum World {
 typealias ApplicationToken = Int
 typealias ActivityCategoryToken = Int
 typealias WebDomainToken = Int
+// Keep the shield delegate's token overloads distinct in the macOS harness.
+struct ShieldWebDomainToken {}
+struct ShieldActivityCategoryToken {}
+enum ShieldAction { case primaryButtonPressed, secondaryButtonPressed }
+enum ShieldActionResponse { case close, `defer`, openParentalControlsApp }
+class ShieldActionDelegate {
+  func handle(
+    action: ShieldAction, for application: ApplicationToken,
+    completionHandler: @escaping (ShieldActionResponse) -> Void
+  ) {}
+  func handle(
+    action: ShieldAction, for webDomain: ShieldWebDomainToken,
+    completionHandler: @escaping (ShieldActionResponse) -> Void
+  ) {}
+  func handle(
+    action: ShieldAction, for category: ShieldActivityCategoryToken,
+    completionHandler: @escaping (ShieldActionResponse) -> Void
+  ) {}
+}
 struct FamilyActivitySelection: Codable, Equatable {
   let includeEntireCategory: Bool
   var applicationTokens: Set<Int> = []
@@ -96,6 +116,7 @@ struct DeviceActivityCenter {
   ) throws {
     World.deviceActivityCall("startMonitoring")
     if World.rejectGrace && name.rawValue.contains(".grace.") { throw POSIXError(.EIO) }
+    if World.rejectFocus && name.rawValue.hasPrefix("daywell.focus.end.") { throw POSIXError(.EIO) }
     if World.rejectFitness && name.rawValue.hasPrefix(MonitorPlan.fitnessRestPrefix) {
       throw POSIXError(.EIO)
     }

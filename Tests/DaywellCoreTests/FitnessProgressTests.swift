@@ -45,6 +45,19 @@ struct FitnessProgressTests {
     #expect(training.restEndsAt == nil)
   }
 
+  @Test func newGroupsCannotRestForMoreThanTenMinutes() {
+    let start = date("2026-11-11T13:01:00+08:00")
+    var training = FitnessTraining(restEnabled: true)
+    training.setRestSeconds(630)
+    training.completeGroup(at: start)
+
+    #expect(training.restSeconds == 600)
+    #expect(training.restSecondsRemaining(at: start) == 600)
+    #expect(!training.isLocked(at: start.addingTimeInterval(599)))
+    #expect(training.isLocked(at: start.addingTimeInterval(600)))
+    #expect(!training.isLocked(at: start.addingTimeInterval(1800)))
+  }
+
   @Test func completingAGroupDuringRestReplacesTheCountdownAndLockDeadline() throws {
     let firstGroup = date("2026-11-11T13:01:00+08:00")
     let nextGroup = firstGroup.addingTimeInterval(13)
@@ -69,24 +82,27 @@ struct FitnessProgressTests {
     #expect(shanghai.date(from: plan.start) == nextGroup.addingTimeInterval(120))
   }
 
-  @Test func trainingRestAndCounterSurviveReloadAndUseALegalWakeWindow() throws {
-    let start = date("2026-11-11T13:01:00+08:00")
+  @Test(arguments: [30, 600])
+  func trainingRestAndCounterSurviveReloadWithAFixedWakeWindow(restSeconds: Int) throws {
+    let start = date("2026-11-11T23:55:00+08:00")
     var state = DaywellState()
     var training = FitnessTraining(restEnabled: true)
+    training.setRestSeconds(restSeconds)
     training.completeGroup(at: start)
     state.fitness = training
     state.alwaysAllowedApplicationsData = Data([1])
     let restored = try JSONDecoder().decode(DaywellState.self, from: JSONEncoder().encode(state))
     #expect(restored.fitness?.progress.completedGroups == 1)
-    #expect(restored.fitness?.restSecondsRemaining(at: start.addingTimeInterval(12)) == 18)
+    #expect(
+      restored.fitness?.restSecondsRemaining(at: start.addingTimeInterval(12)) == restSeconds - 12)
 
     let plans = MonitorPlan.make(for: restored, at: start, calendar: shanghai)
     let wake = try #require(plans.first { $0.name.hasPrefix(MonitorPlan.fitnessRestPrefix) })
     let monitorStart = try #require(shanghai.date(from: wake.start))
     let monitorEnd = try #require(shanghai.date(from: wake.end))
     #expect(plans.count == 2)
-    #expect(monitorStart == start.addingTimeInterval(30))
-    #expect(monitorEnd.timeIntervalSince(monitorStart) >= 15 * 60)
+    #expect(monitorStart == start.addingTimeInterval(Double(restSeconds)))
+    #expect(monitorEnd.timeIntervalSince(monitorStart) == 1800)
     #expect(!wake.repeats)
     #expect(
       MonitorPlan.make(for: restored, at: monitorStart, calendar: shanghai).map(\.name) == [

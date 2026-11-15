@@ -46,8 +46,11 @@ struct PeriodEditorView: View {
         } footer: {
           Text(
             morningEnabled
-              ? "睡眠结束后，圈选应用合计可用 \(model.state.morningPolicy.usageMinutes) 分钟，用满后锁定 \(model.state.morningPolicy.lockMinutes) 分钟。时长在睡眠页右上角设置中统一调整，沿用睡眠的应用和豁免设置。"
-              : "早安，先照顾好自己。给洗漱、喝水和早餐留一点时间。")
+              ? String(
+                localized:
+                  "睡眠结束后，圈选应用合计可用 \(model.state.morningPolicy.usageMinutes) 分钟，用满后锁定 \(model.state.morningPolicy.lockMinutes) 分钟。时长在睡眠页右上角设置中统一调整，沿用睡眠的应用和豁免设置。"
+              )
+              : String(localized: "早安，先照顾好自己。给洗漱、喝水和早餐留一点时间。"))
         }
         Section("重复") {
           ForEach(Weekday.displayOrder, id: \.self) { weekday in
@@ -80,7 +83,8 @@ struct PeriodEditorView: View {
         }
       }
       .scrollContentBackground(.hidden).background(DaywellTheme.background)
-      .navigationTitle(period == nil ? "添加时段" : "编辑时段").navigationBarTitleDisplayMode(.inline)
+      .navigationTitle(period == nil ? String(localized: "添加时段") : String(localized: "编辑时段"))
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("取消") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {
@@ -154,7 +158,7 @@ private struct PeriodSaveAlert: ViewModifier {
   func body(content: Content) -> some View {
     content
       .alert(
-        verificationCode == nil ? "无法保存时段" : "结束当前锁定？",
+        verificationCode == nil ? String(localized: "无法保存时段") : String(localized: "结束当前锁定？"),
         isPresented: Binding(
           get: { prompt != nil },
           set: { if !$0 { prompt = nil } }),

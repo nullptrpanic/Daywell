@@ -236,13 +236,24 @@ struct LockRulesTests {
     #expect(s.pendingMornings(at: end.addingTimeInterval(30)).isEmpty)
   }
 
-  @Test func inactivityResetsWithoutClearingSleepAndRestCannotOutliveTimeout() throws {
+  @Test func legacyLongRestKeepsItsDeadlineAndInactivityResetsWithoutClearingSleep() throws {
     var s = try state()
     let group = date("2026-11-12T06:45:00+08:00")
-    s.updateFitness(initial: FitnessTraining(restEnabled: true)) {
-      $0.setRestSeconds(1800)
-      $0.completeGroup(at: group)
-    }
+    var training = FitnessTraining(restEnabled: true)
+    training.completeGroup(at: group)
+    var saved = try #require(
+      JSONSerialization.jsonObject(with: JSONEncoder().encode(training)) as? [String: Any])
+    let oldRestEnd = group.addingTimeInterval(3600)
+    saved["restSeconds"] = 3600
+    saved["restEndsAt"] = oldRestEnd.timeIntervalSinceReferenceDate
+    saved.removeValue(forKey: "lastCompletedAt")
+    s.fitness = try JSONDecoder().decode(
+      FitnessTraining.self, from: JSONSerialization.data(withJSONObject: saved))
+    try s.validate()
+    #expect(s.fitness?.restSeconds == 600)
+    #expect(s.fitness?.restEndsAt == oldRestEnd)
+    #expect(s.fitness?.lastCompletedAt == group)
+    #expect(s.fitness?.progress.completedGroups == 1)
     let end = group.addingTimeInterval(1800)
     s.refresh(at: end, calendar: shanghai)
     #expect(s.fitness?.progress.completedGroups == 0)

@@ -19,6 +19,11 @@ enum PeriodSavePrompt {
   case verify(PeriodDeactivation)
 }
 
+struct FocusDeactivation {
+  let sessionID: UUID
+  let code = String(Int.random(in: 100_000...999_999))
+}
+
 private actor ScreenTimeClient {
   private var service: ScreenTimeService?
 
@@ -41,6 +46,12 @@ private actor ScreenTimeClient {
     let state = try service.read()
     return (state, service.isFitnessShieldApplied)
   }
+
+  #if !DAYWELL_PREVIEW
+    func consumeFitnessNavigation() throws -> Bool {
+      try connectedService().consumeFitnessNavigation()
+    }
+  #endif
 }
 
 @MainActor
@@ -109,12 +120,12 @@ final class DaywellModel: ObservableObject {
       $0.start < $1.start
     }
   }
-  var exemptionLabel: String { "临时豁免" }
+  var exemptionLabel: String { String(localized: "临时豁免") }
   var exemptionExplanation: String {
     let count = blockingSessions.count
     return count > 1
-      ? "当前有 \(count) 个重叠的锁定时段，将从各时段扣除 1 次机会，并按各自设置计时。到期后自动恢复限制。"
-      : "将使用本时段的 1 次豁免机会。到期后自动恢复限制，提前结束也不会退还次数。"
+      ? String(localized: "当前有 \(count) 个重叠的锁定时段，将从各时段扣除 1 次机会，并按各自设置计时。到期后自动恢复限制。")
+      : String(localized: "将使用本时段的 1 次豁免机会。到期后自动恢复限制，提前结束也不会退还次数。")
   }
 
   func tick(_ date: Date) {
@@ -127,6 +138,14 @@ final class DaywellModel: ObservableObject {
 
   func refresh() async {
     _ = await perform(showError: false) { try $0.refresh() }
+  }
+
+  func consumeFitnessNavigation() async -> Bool {
+    #if DAYWELL_PREVIEW
+      false
+    #else
+      (try? await client.consumeFitnessNavigation()) == true
+    #endif
   }
 
   func authorize() async {
@@ -203,7 +222,38 @@ final class DaywellModel: ObservableObject {
         return false
       }
     }
+
+    func saveFocusSelection(_ selection: FamilyActivitySelection) async -> Bool {
+      if let error = selection.focusSelectionError {
+        errorMessage = error
+        return false
+      }
+      guard let token = selection.applicationTokens.first else { return false }
+      errorMessage = nil
+      do {
+        let data = try JSONEncoder().encode(token)
+        return await perform { try $0.saveFocusApplication(data) }
+      } catch {
+        errorMessage = error.localizedDescription
+        return false
+      }
+    }
+
+    func selectRecentFocusApplication(_ data: Data) async -> Bool {
+      await perform { try $0.saveFocusApplication(data) }
+    }
   #endif
+
+  func saveFocusMinutes(_ minutes: Int) async -> Bool {
+    await perform { try $0.saveFocusMinutes(minutes) }
+  }
+
+  func beginFocus() async -> Bool { await perform { try $0.beginFocus() } }
+
+  func endFocus(_ verification: FocusDeactivation, enteredCode: String) async -> Bool {
+    guard enteredCode == verification.code else { return false }
+    return await perform { try $0.endFocus(id: verification.sessionID) }
+  }
 
   func savePolicy(count: Int, durationsMinutes: [Int]) async -> Bool {
     do {
@@ -280,7 +330,7 @@ final class DaywellModel: ObservableObject {
         + state.periods.compactMap {
           $0.nextOccurrence(after: startedAt, calendar: .current)?.start
         }
-        + [fitness.restEndsAt, fitness.inactivityEndsAt].compactMap { $0 }
+        + [fitness.restEndsAt, fitness.inactivityEndsAt, state.focusSession?.end].compactMap { $0 }
       nextRefresh = boundaries.filter { $0 > startedAt }.min() ?? now.addingTimeInterval(60)
       nextRefresh = min(nextRefresh, now.addingTimeInterval(60))
     }

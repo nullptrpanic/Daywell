@@ -37,7 +37,7 @@ public struct FitnessProgress: Codable, Equatable, Sendable {
 public struct FitnessTraining: Codable, Equatable, Sendable {
   public static let inactivitySeconds: TimeInterval = 30 * 60
   public static let restStepSeconds = 30
-  public static let restSecondsRange = 30...3600
+  public static let restSecondsRange = 30...600
 
   public private(set) var progress: FitnessProgress
   public private(set) var restEnabled: Bool
@@ -53,11 +53,18 @@ public struct FitnessTraining: Codable, Equatable, Sendable {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     progress = try values.decode(FitnessProgress.self, forKey: .progress)
     restEnabled = try values.decode(Bool.self, forKey: .restEnabled)
-    restSeconds = try values.decode(Int.self, forKey: .restSeconds)
+    let savedRestSeconds = try values.decode(Int.self, forKey: .restSeconds)
+    restSeconds = savedRestSeconds
+    // Earlier versions accepted rests up to an hour in the same 30-second steps.
+    if savedRestSeconds > Self.restSecondsRange.upperBound, savedRestSeconds <= 3600,
+      savedRestSeconds.isMultiple(of: Self.restStepSeconds)
+    {
+      restSeconds = Self.restSecondsRange.upperBound
+    }
     restEndsAt = try values.decodeIfPresent(Date.self, forKey: .restEndsAt)
     lastCompletedAt =
       try values.decodeIfPresent(Date.self, forKey: .lastCompletedAt)
-      ?? restEndsAt?.addingTimeInterval(-Double(restSeconds))
+      ?? restEndsAt?.addingTimeInterval(-Double(savedRestSeconds))
     locksAfterRest = try values.decodeIfPresent(Bool.self, forKey: .locksAfterRest) ?? true
   }
 

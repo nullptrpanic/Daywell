@@ -5,7 +5,7 @@ enum ScreenTimeError: LocalizedError {
   case previewUnavailable
 
   var errorDescription: String? {
-    "免费预览版可编辑时段和豁免设置，不支持应用圈选、实际锁定或临时解锁。"
+    String(localized: "免费预览版可编辑时段和豁免设置，不支持应用圈选、实际锁定或临时解锁。")
   }
 }
 
@@ -56,6 +56,13 @@ final class ScreenTimeService: @unchecked Sendable {
   func saveMorningPolicy(_ policy: MorningPolicy) throws -> DaywellState {
     try storage.transaction { $0.morningPolicy = policy }.state
   }
+
+  func saveFocusMinutes(_ minutes: Int) throws -> DaywellState {
+    try storage.transaction { try $0.focusConfiguration.setMinutes(minutes) }.state
+  }
+
+  func beginFocus() throws -> DaywellState { throw ScreenTimeError.previewUnavailable }
+  func endFocus(id: UUID) throws -> DaywellState { throw ScreenTimeError.previewUnavailable }
 
   func updateFitness(
     initial: FitnessTraining, _ change: (inout FitnessTraining) -> Void

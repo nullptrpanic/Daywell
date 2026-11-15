@@ -4,12 +4,23 @@ import UIKit
 
 enum DaywellTab: String, CaseIterable, Identifiable {
   case sleep = "睡眠"
+  case focus = "聚焦"
   case fitness = "健身"
   case settings = "设置"
   var id: Self { self }
+  var title: String {
+    switch self {
+    case .sleep: String(localized: "睡眠")
+    case .focus: String(localized: "聚焦")
+    case .fitness: String(localized: "健身")
+    case .settings: String(localized: "设置")
+    }
+  }
+  var settingsTitle: String { String(localized: "\(title)设置") }
   var icon: String {
     switch self {
     case .sleep: return "moon.zzz.fill"
+    case .focus: return "scope"
     case .fitness: return "figure.strengthtraining.traditional"
     case .settings: return "gearshape"
     }
@@ -31,6 +42,10 @@ struct DaywellRootView: View {
           openSettings: { settingsTab = .sleep },
           openAuthorizationSettings: openAuthorizationSettings)
       case .fitness: FitnessView { settingsTab = .fitness }
+      case .focus:
+        FocusView(
+          openSettings: { settingsTab = .focus },
+          openAuthorizationSettings: openAuthorizationSettings)
       case .settings: GlobalSettingsView()
       }
     }
@@ -38,11 +53,13 @@ struct DaywellRootView: View {
     .background(DaywellTheme.background)
     .safeAreaInset(edge: .bottom, spacing: 0) { tabBar }
     .sheet(item: $settingsTab) { SettingsView(tab: $0) }
-    .task { await model.refresh() }
-    .onReceive(timer) { if scenePhase == .active { model.tick($0) } }
-    .onChange(of: scenePhase) { _, phase in
-      if phase == .active { Task { await model.refresh() } }
+    .task { await refreshOnActivation() }
+    .onReceive(
+      NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+    ) { _ in
+      Task { await refreshOnActivation() }
     }
+    .onReceive(timer) { if scenePhase == .active { model.tick($0) } }
     .onReceive(
       NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)
     ) { _ in
@@ -52,7 +69,7 @@ struct DaywellRootView: View {
       "需要处理一下",
       isPresented: Binding(
         get: { model.errorMessage != nil },
-        set: { if !$0 { model.errorMessage = nil } })
+        set: { if !$0 && model.errorMessage != nil { model.errorMessage = nil } })
     ) {
       Button("知道了") { model.errorMessage = nil }
     } message: {
@@ -64,6 +81,14 @@ struct DaywellRootView: View {
     tab = .settings
   }
 
+  private func refreshOnActivation() async {
+    if await model.consumeFitnessNavigation() {
+      settingsTab = nil
+      tab = .fitness
+    }
+    await model.refresh()
+  }
+
   private var tabBar: some View {
     HStack(spacing: 4) {
       ForEach(DaywellTab.allCases, id: \.self) { item in
@@ -72,7 +97,7 @@ struct DaywellRootView: View {
         } label: {
           VStack(spacing: 6) {
             Image(systemName: item.icon).font(.system(size: 20, weight: .medium))
-            Text(item.rawValue).font(.caption.weight(.medium))
+            Text(item.title).font(.caption.weight(.medium))
           }
           .foregroundStyle(tab == item ? DaywellTheme.accent : DaywellTheme.muted)
           .frame(maxWidth: .infinity, minHeight: 58)
@@ -102,7 +127,7 @@ struct PageHeading: View {
       VStack(alignment: .leading, spacing: 7) {
         Text("DAYWELL").font(.caption.weight(.semibold)).tracking(3).foregroundStyle(
           DaywellTheme.muted)
-        Text(tab.rawValue).font(.largeTitle.bold())
+        Text(tab.title).font(.largeTitle.bold())
       }
       Spacer()
       if let openSettings {
@@ -115,7 +140,7 @@ struct PageHeading: View {
           )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("\(tab.rawValue)设置")
+        .accessibilityLabel(tab.settingsTitle)
         .accessibilityIdentifier("\(tab).settings")
       }
     }
